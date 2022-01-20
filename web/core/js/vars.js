@@ -6,7 +6,7 @@ const URLS = {
     "dominioWeb" : dominio + "web/",
     "dominioCore" : dominio + "web/core/",
     "dominioCss" : dominio + "web/css/",
-    "dominioFramework" : dominio + "web/frameworks/",
+    "dominioFramework" : dominio + "web/core/frameworks/",
     "dominioJs" : dominio + "web/js/",
     "dominioPages" : dominio + "pages/",
     "dominioJsGlobal" : dominio + "web/js/global/",
