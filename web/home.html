@@ -11,11 +11,14 @@
 
 <body>
     <script type="text/javascript">
-        var Scripts = [
-            '{{domain}}js/pages/index.js'
-        ];
-        function init(){
-            log('teste');
+        const Lis = {
+            'scripts' : [
+                '{{domain}}js/pages/home.js'
+            ],
+            'init' : function (){
+                iniciaPagina();
+                log('teste');
+            }
         }
     </script>
     <script type="module" src="core/index.js"></script>
