@@ -1,4 +1,6 @@
+const dominio = "http://localhost/lis/";
 const URLS = {
-    "dominio" : "http://gerenciador/v4/web/"
+    "dominio" : dominio,
+    "dominioWeb" : dominio + "web/"
 };
 const NomeApp = "Lis"; //nome do app
