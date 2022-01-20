@@ -42,6 +42,9 @@ para importar os javascript do projeto basta importar o arquivo ```web/core/js/i
         'scripts' : [
             '{{js}}pages/home.js'
         ],
+        'styles' : [
+            '{{css}}pages/home.css'
+        ],
         'init' : function (){
             iniciaPagina();
             log('teste');
@@ -53,4 +56,5 @@ para importar os javascript do projeto basta importar o arquivo ```web/core/js/i
 
 antes de se importar o ```web/core/js/index.js``` é necessario declarar uma contante ```Lis```. Ela recebera os seguintes parametros:
 **scripts -** os scripts js que são importados nesta pagina
+**styles -** caminhos para os css que serão carregados na pagina
 **init -** função js que sera executada apos o carragamento de todos os js
