@@ -1,4 +1,4 @@
-#modelo de pagina
+# modelo de pagina
 
 a pagina em sí não passa de arquivos html css e js com os frameworks que você desejar
 ```
@@ -40,7 +40,7 @@ para importar todos os css usados no projeto basta importar o arquivo localizado
 
 para importar os javascript do projeto basta importar o arquivo ```web/core/js/index.js```
 
-##entendendo a inicialização
+## entendendo a inicialização
 ```
 <script type="text/javascript">
     const Lis = {
