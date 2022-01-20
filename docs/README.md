@@ -1,3 +1,3 @@
 #Lis
 
-Para criar uma nova pagina basta pegar o [Modelo de pagina](./modelo.md>)
+Para criar uma nova pagina basta pegar o [Modelo de pagina](./modelo.md)
