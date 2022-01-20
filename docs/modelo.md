@@ -1,6 +1,6 @@
 #modelo de pagina
 
-a pagina em sí não passa de arquivos html css e js com os frameworks que voçê desejar
+a pagina em sí não passa de arquivos html css e js com os frameworks que você desejar
 ```
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -14,14 +14,19 @@ a pagina em sí não passa de arquivos html css e js com os frameworks que voç�
 </head>
 
 <body>
+
+    <!--Sua pagina aqui-->
+
     <script type="text/javascript">
         const Lis = {
-            'scripts' : [
-                '{{domain}}js/pages/home.js'
+            'scripts': [
+                //strings de arquivos js da pagina
             ],
-            'init' : function (){
-                iniciaPagina();
-                log('teste');
+            'styles': [
+                //strings de arquivos css da pagina
+            ],
+            'init': function () {
+                //js a ser executado apos a inicialização
             }
         }
     </script>
@@ -35,19 +40,18 @@ para importar todos os css usados no projeto basta importar o arquivo localizado
 
 para importar os javascript do projeto basta importar o arquivo ```web/core/js/index.js```
 
-####entendendo a inicialização
+##entendendo a inicialização
 ```
 <script type="text/javascript">
     const Lis = {
-        'scripts' : [
-            '{{js}}pages/home.js'
+        'scripts': [
+            //strings de arquivos js da pagina
         ],
-        'styles' : [
-            '{{css}}pages/home.css'
+        'styles': [
+            //strings de arquivos css da pagina
         ],
-        'init' : function (){
-            iniciaPagina();
-            log('teste');
+        'init': function () {
+            //js a ser executado apos a inicialização
         }
     }
 </script>
@@ -57,4 +61,12 @@ para importar os javascript do projeto basta importar o arquivo ```web/core/js/i
 antes de se importar o ```web/core/js/index.js``` é necessario declarar uma contante ```Lis```. Ela recebera os seguintes parametros:
 **scripts -** os scripts js que são importados nesta pagina
 **styles -** caminhos para os css que serão carregados na pagina
-**init -** função js que sera executada apos o carragamento de todos os js
+**init -** função js que sera executada apos o carragamento de todos os arquivos
+
+#### scripts:
+Para os scripts se pode declarar a url completa de arquivos ```"https://meu-arquivo.js"``` ou caso seja um arquivo dentro da pasta ```web/js``` pode se usar: ```"{{js}}arquivo.js"``` ou ```"{{js}}pasta/arquivo.js"```, onde a string ```{{js}}``` será substituida pelo caminho da pasta
+caminho esse que pode ser editado em ```core/js/vars.js```
+
+#### styles:
+Para os css se pode declarar a url completa de arquivos ```"https://meu-arquivo.css"``` ou caso seja um arquivo dentro da pasta ```web/css``` pode se usar: ```"{{css}}arquivo.js"``` ou ```"{{css}}pasta/arquivo.css"```, onde a string ```{{css}}``` será substituida pelo caminho da pasta,
+caminho esse que pode ser editado em ```core/js/vars.js```
