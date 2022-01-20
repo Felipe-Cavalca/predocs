@@ -1,2 +1,4 @@
-var domain = "http://gerenciador/v4/web/"; //dominio do servidor
-var nomeApp = "Gerenciador"; //nome do app
+const URLS = {
+    "dominio" : "http://gerenciador/v4/web/"
+};
+const NomeApp = "Lis"; //nome do app
