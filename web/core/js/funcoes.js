@@ -3,9 +3,9 @@
  * @param {arr} urls - array das urls
  * Adiciona os scripts js a pagina
  */
-export function incluiScript(urls, domain) {
-    //incluindo urls dos frameworks
-    urls.forEach(url => {
+export function incluiScript(links, URLS) {
+    //incluindo links dos frameworks
+    links.forEach(url => {
         var script = document.createElement("script")
         script.setAttribute('src', url)
         document.querySelector("body").appendChild(script)
@@ -13,7 +13,7 @@ export function incluiScript(urls, domain) {
 
     //incluindo scripts dos usuarios
     Lis.scripts.forEach(url => {
-        url = url.replace("{{domain}}", domain + "web/");
+        url = url.replace("{{js}}", URLS.dominioJs);
         var script = document.createElement("script")
         script.setAttribute('src', url)
         document.querySelector("body").appendChild(script)

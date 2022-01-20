@@ -40,7 +40,7 @@ para importar os javascript do projeto basta importar o arquivo ```web/core/js/i
 <script type="text/javascript">
     const Lis = {
         'scripts' : [
-            '{{domain}}js/pages/home.js'
+            '{{js}}pages/home.js'
         ],
         'init' : function (){
             iniciaPagina();

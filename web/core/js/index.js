@@ -1,3 +1,3 @@
 import { incluiScript } from './funcoes.js';
-import { linksFramework, domain } from './vars.js';
-incluiScript(linksFramework, domain);
+import { linksFramework, URLS } from './vars.js';
+incluiScript(linksFramework, URLS);
