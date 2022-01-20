@@ -1,4 +1,11 @@
+function iniciaPagina() {
+    const app = {
+        data() {
+            return {
+                NomeApp: NomeApp
+            }
+        }
+    }
 
-function iniciaPagina(){
-    console.log('iniciou');
+    Vue.createApp(app).mount('#app')
 }
