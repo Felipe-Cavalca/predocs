@@ -18,7 +18,6 @@ var linksFramework = [
     URLS.dominioFramework + "jquery-3.6.0.js",
     URLS.dominioFramework + "materialize/js/materialize.js",
     URLS.dominioFramework + "vue.global.js",
-    URLS.dominioFramework + "axios.min.js",
     URLS.dominioJsGlobal + "variaveis.js",
     URLS.dominioJsGlobal + "funcoes.js",
 ];
