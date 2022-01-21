@@ -5,61 +5,24 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="core/css/index.css">
+    <link rel="stylesheet" href="core/index.css">
     <title>Login</title>
 </head>
 
 <body>
 
-    <section id="app">
-        <div class="parallax-container">
-            <div class="parallax"><img src="img/parallax1.jpeg"></div>
-        </div>
-        <div class="section white">
-            <div class="row container">
-                <h2 class="header">{{NomeApp}}</h2>
-                <p class="grey-text text-darken-3 lighten-3">Simples e facil de se desenvolver, veja a documentação <a href="https://github.com/Felipe-Cavalca/lis">Aqui</a></p>
-            </div>
-        </div>
-        <div class="parallax-container">
-            <div class="parallax"><img src="img/parallax2.jpeg"></div>
-        </div>
-        <div class="section white">
-            <div class="row container">
-                <h2 class="header">Sobre o projeto</h2>
-                <p class="grey-text text-darken-3 lighten-3">Uma plataforma de desenvolvimento feita por Felipe Cavalca</p>
-            </div>
-        </div>
-        <div class="parallax-container">
-            <div class="parallax"><img src="img/parallax3.jpeg"></div>
-        </div>
-        <div class="section white">
-            <div class="row container">
-                <h2 class="header">Sobre mim</h2>
-                <p class="grey-text text-darken-3 lighten-3">Aqui fala sobre mim</p>
-            </div>
-        </div>
-    </section>
-
 
     <script type="text/javascript">
         const Lis = {
-            'scripts': [
-                '{{js}}welcome.js'
-            ],
-            'styles': [
-                '{{css}}welcome.css'
-            ],
             'init': function () {
-                iniciaPagina();
                 $(document).ready(function () {
                     $('.parallax').parallax();
                 });
-                Lis.get('http://localhost/lis/server');
+                console.log(Lis.get('http://localhost/lis/server'));
             }
         }
     </script>
-    <script type="module" src="core/js/index.js"></script>
+    <script type="module" src="core/index.js"></script>
 </body>
 
 </html>
