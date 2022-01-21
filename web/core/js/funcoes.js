@@ -34,3 +34,12 @@ export function incluiScript(links, URLS) {
         Lis.init();
     }, 1000);
 }
+
+//incluindo funções na Lis
+Lis.get = function (url, sincrono = false){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, sincrono);
+    xhttp.send();//A execução do script pára aqui até a requisição retornar do servidor
+
+    console.log(xhttp.responseText);
+}
