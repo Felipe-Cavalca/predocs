@@ -15,10 +15,7 @@
     <script type="text/javascript">
         const Lis = {
             'init': function () {
-                $(document).ready(function () {
-                    $('.parallax').parallax();
-                });
-                console.log(Lis.get('http://localhost/lis/server'));
+                console.log(Lis.get('{{server}}server'));
             }
         }
     </script>

@@ -4,6 +4,7 @@ const dominio = "http://localhost/lis/";
 //caminhos para as pastas da aplicação
 const URLS = {
     'dominio' : dominio,
+    "dominioServer" : dominio + "server/",
     "dominioWeb" : dominio + "web/",
     "dominioCore" : dominio + "web/core/",
     "dominioCss" : dominio + "web/css/",
@@ -73,6 +74,7 @@ function incluiScript(links) {
 function substituiCaminho(url){
     url.replace("{{js}}", URLS.dominioJs);
     url.replace("{{css}}", URLS.dominioCss);
+    url.replace("{{server}}", URLS.dominioServer);
     return url;
 }
 
