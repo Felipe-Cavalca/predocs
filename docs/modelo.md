@@ -1,6 +1,6 @@
-# modelo de pagina
+# Modelo de página
 
-a pagina em sí não passa de arquivos html css e js com os frameworks que você desejar
+A pagina em sí não passa de arquivos html css e js com os frameworks que você desejar
 ```
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -36,11 +36,11 @@ a pagina em sí não passa de arquivos html css e js com os frameworks que você
 </html>
 ```
 
-para importar todos os css usados no projeto basta importar o arquivo localizado em ```web/core/css/index.css```
+Para importar todos os css usados no projeto basta importar o arquivo localizado em ```web/core/css/index.css```
 
-para importar os javascript do projeto basta importar o arquivo ```web/core/js/index.js```
+Para importar os javascript do projeto basta importar o arquivo ```web/core/js/index.js```
 
-## entendendo a inicialização
+## Entendendo a inicialização
 ```
 <script type="text/javascript">
     const Lis = {
@@ -58,7 +58,7 @@ para importar os javascript do projeto basta importar o arquivo ```web/core/js/i
 <script type="module" src="core/js/index.js"></script>
 ```
 
-antes de se importar o ```web/core/js/index.js``` é necessario declarar uma contante ```Lis```. Ela recebera os seguintes parametros:
+Antes de se importar o ```web/core/js/index.js``` é necessário declarar uma constante ```Lis```. Ela receberá os seguintes parametros:
 **scripts -** os scripts js que são importados nesta pagina
 **styles -** caminhos para os css que serão carregados na pagina
 **init -** função js que sera executada apos o carragamento de todos os arquivos
