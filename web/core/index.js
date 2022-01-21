@@ -91,7 +91,7 @@ Lis.URLS = URLS;
 Lis.get = function (url, assincrona = false){
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", url, assincrona);
+    xhttp.open("GET", substituiCaminho(url), assincrona);
     xhttp.send();//A execução do script pára aqui até a requisição retornar do servidor
 
     return xhttp.responseText;
