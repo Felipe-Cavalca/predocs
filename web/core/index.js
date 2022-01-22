@@ -59,11 +59,14 @@ function incluiScript(links) {
         });
     }
 
-    //aguarda o carregamento das paginas e executa o init
-    //necessario alterar para uma função que detexte o carregamento
-    setTimeout(function () {
-        Lis.init();
-    }, 1000);
+    if (Lis && typeof Lis.init === 'function') {
+        //aguarda o carregamento das paginas e executa o init
+        //necessario alterar para uma função que detecte o carregamento
+        setTimeout(function () {
+            Lis.init();
+        }, 1000);
+    }
+
 }
 
 /**
