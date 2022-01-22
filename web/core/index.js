@@ -72,9 +72,9 @@ function incluiScript(links) {
  * @returns url completa
  */
 function substituiCaminho(url){
-    url.replace("{{js}}", URLS.dominioJs);
-    url.replace("{{css}}", URLS.dominioCss);
-    url.replace("{{server}}", URLS.dominioServer);
+    url = url.replace("{{js}}", URLS.dominioJs);
+    url = url.replace("{{css}}", URLS.dominioCss);
+    url = url.replace("{{server}}", URLS.dominioServer);
     return url;
 }
 
@@ -89,11 +89,17 @@ Lis.URLS = URLS;
  * @param {boolean} assincrona função assincrona ? - padrão false
  */
 Lis.get = function (url, assincrona = false){
-
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", substituiCaminho(url), assincrona);
-    xhttp.send();//A execução do script pára aqui até a requisição retornar do servidor
+    xhttp.send();
+    return xhttp.responseText;
+}
 
+Lis.post = function (url, dados, assincrona = false){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", substituiCaminho(url), assincrona);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.send(JSON.stringify(dados));
     return xhttp.responseText;
 }
 
