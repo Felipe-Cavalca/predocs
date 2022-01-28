@@ -107,4 +107,4 @@ Lis.post = function (url, dados, assincrona = false){
 }
 
 //iniciando a pagina ===========================================
-incluiScript(linksFramework, URLS);
+incluiScript(linksFramework);
