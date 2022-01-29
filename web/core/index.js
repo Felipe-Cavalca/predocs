@@ -12,6 +12,7 @@ const URLS = {
     "dominioJs" : dominio + "web/js/",
     "dominioPages" : dominio + "pages/",
     "dominioJsGlobal" : dominio + "web/js/global/",
+    "dominioImg" : dominio + "web/img/"
 }
 
 //links a serem incluidos na pagina
@@ -19,6 +20,8 @@ export const linksFramework = [
     URLS.dominioFramework + "jquery-3.6.0.js",
     URLS.dominioFramework + "materialize/js/materialize.js",
     URLS.dominioFramework + "vue.global.js",
+    URLS.dominioJs + "global/variaveis.js",
+    URLS.dominioJs + "global/funcoes.js",
 ];
 
 
@@ -64,6 +67,9 @@ function incluiScript(links) {
         //necessario alterar para uma função que detecte o carregamento
         setTimeout(function () {
             Lis.init();
+            setTimeout(function () {
+                Lis.carregandoHide();
+            }, 300);
         }, 1000);
     }
 
@@ -78,7 +84,24 @@ function substituiCaminho(url){
     url = url.replace("{{js}}", URLS.dominioJs);
     url = url.replace("{{css}}", URLS.dominioCss);
     url = url.replace("{{server}}", URLS.dominioServer);
+    url = url.replace("{{img}}", URLS.dominioImg);
     return url;
+}
+
+function criarCarregando(){
+    var carregando = document.createElement("carregando");
+    carregando.setAttribute('class', 'scale-transition scale-in');
+    document.querySelector("html").appendChild(carregando);
+
+    var img = document.createElement("img");
+    img.setAttribute('class', 'materialboxed');
+    img.setAttribute('src', substituiCaminho("{{img}}carregando.gif"));
+
+    var body = document.querySelector('body');
+    body.setAttribute('class', 'scale-transition scale-out');
+    body.setAttribute('style', 'display: none;');
+
+    document.querySelector("carregando").appendChild(img);
 }
 
 //incluindo variaveis na Lis ==================================
@@ -107,8 +130,8 @@ Lis.post = function (url, dados, assincrona = false){
 }
 
 Lis.carregandoHide = function (){
-    const carregando = document.querySelector('#carregandoPagina');
-    const pagina = document.querySelector('#pagina')
+    const carregando = document.querySelector('carregando');
+    const pagina = document.querySelector('body')
 
     carregando.classList.remove("scale-in");
     carregando.classList.add("scale-out");
@@ -123,8 +146,8 @@ Lis.carregandoHide = function (){
 }
 
 Lis.carregandoShow = function (){
-    const carregando = document.querySelector('#carregandoPagina');
-    const pagina = document.querySelector('#pagina')
+    const carregando = document.querySelector('carregando');
+    const pagina = document.querySelector('body')
 
     pagina.classList.remove("scale-in");
     pagina.classList.add("scale-out");
@@ -139,4 +162,5 @@ Lis.carregandoShow = function (){
 }
 
 //iniciando a pagina ===========================================
+criarCarregando();
 incluiScript(linksFramework);
