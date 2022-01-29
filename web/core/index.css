@@ -1,3 +1,43 @@
 /*importa os css das paginas*/
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("./frameworks/materialize/css/materialize.css");
+
+#carregandoPagina {
+    width: 100%;
+    height: 98vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.scale-transition {
+    -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
+    transition: -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
+    transition: transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
+    transition: transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63), -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
+}
+
+.scale-transition.scale-out {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-transition: -webkit-transform .2s !important;
+    transition: -webkit-transform .2s !important;
+    transition: transform .2s !important;
+    transition: transform .2s, -webkit-transform .2s !important;
+}
+
+.scale-transition.scale-in {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+.materialboxed {
+    display: block;
+    cursor: -webkit-zoom-in;
+    cursor: zoom-in;
+    position: relative;
+    -webkit-transition: opacity .4s;
+    transition: opacity .4s;
+    -webkit-backface-visibility: hidden;
+}

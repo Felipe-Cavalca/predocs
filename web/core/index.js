@@ -106,5 +106,37 @@ Lis.post = function (url, dados, assincrona = false){
     return xhttp.responseText;
 }
 
+Lis.carregandoHide = function (){
+    const carregando = document.querySelector('#carregandoPagina');
+    const pagina = document.querySelector('#pagina')
+
+    carregando.classList.remove("scale-in");
+    carregando.classList.add("scale-out");
+    setTimeout(function () {
+        carregando.style.display = "none";
+        pagina.style.display = null;
+        setTimeout(function () {
+            pagina.classList.remove("scale-out");
+            pagina.classList.add("scale-in");
+        }, 200);
+    }, 500);
+}
+
+Lis.carregandoShow = function (){
+    const carregando = document.querySelector('#carregandoPagina');
+    const pagina = document.querySelector('#pagina')
+
+    pagina.classList.remove("scale-in");
+    pagina.classList.add("scale-out");
+    setTimeout(function () {
+        pagina.style.display = "none";
+        carregando.style.display = null;
+        setTimeout(function () {
+            carregando.classList.remove("scale-out");
+            carregando.classList.add("scale-in");
+        }, 200);
+    }, 500);
+}
+
 //iniciando a pagina ===========================================
 incluiScript(linksFramework);
