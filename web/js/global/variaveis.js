@@ -1,0 +1,3 @@
+const VarsGlobal = {
+    'nomeApp' : 'Gerenciador'
+};
