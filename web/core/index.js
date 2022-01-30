@@ -16,7 +16,7 @@ const URLS = {
 }
 
 //links a serem incluidos na pagina
-export const linksFramework = [
+const liksGlobais = [
     URLS.dominioFramework + "jquery-3.6.0.js",
     URLS.dominioFramework + "materialize/js/materialize.js",
     URLS.dominioFramework + "vue.global.js",
@@ -30,7 +30,7 @@ export const linksFramework = [
 /**
  *
  * @param {arr} urls - array das urls
- * Adiciona os scripts js a pagina
+ * Adiciona as tags de script e link a tela
  */
 function incluiScript(links) {
 
@@ -68,6 +68,7 @@ function incluiScript(links) {
         setTimeout(function () {
             Lis.init();
             setTimeout(function () {
+                //apos o carregamento some a tela de carregamento
                 Lis.carregandoHide();
             }, 300);
         }, 1000);
@@ -88,20 +89,26 @@ function substituiCaminho(url){
     return url;
 }
 
+/**
+ * Função para criar o elemento "carregando" na tela
+ */
 function criarCarregando(){
+    //cria o elemento de carregando
     var carregando = document.createElement("carregando");
     carregando.setAttribute('class', 'scale-transition scale-in');
     document.querySelector("html").appendChild(carregando);
 
+    //insere a imagem no mesmo
     var img = document.createElement("img");
     img.setAttribute('class', 'materialboxed');
     img.setAttribute('src', substituiCaminho("{{img}}carregando.gif"));
+    //coloca a imagem dentro do carregando
+    document.querySelector("carregando").appendChild(img);
 
+    //some com o body
     var body = document.querySelector('body');
     body.setAttribute('class', 'scale-transition scale-out');
     body.setAttribute('style', 'display: none;');
-
-    document.querySelector("carregando").appendChild(img);
 }
 
 //incluindo variaveis na Lis ==================================
@@ -121,6 +128,13 @@ Lis.get = function (url, assincrona = false){
     return xhttp.responseText;
 }
 
+/**
+ *
+ * @param {string} url link para a requisição post
+ * @param {obj} dados dados a serem enviados para o servidor
+ * @param {boolean} assincrona função assincrona ?
+ * @returns resposta do post
+ */
 Lis.post = function (url, dados, assincrona = false){
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", substituiCaminho(url), assincrona);
@@ -129,6 +143,9 @@ Lis.post = function (url, dados, assincrona = false){
     return xhttp.responseText;
 }
 
+/**
+ * Esconde a tela de carregando
+ */
 Lis.carregandoHide = function (){
     const carregando = document.querySelector('carregando');
     const pagina = document.querySelector('body')
@@ -145,6 +162,9 @@ Lis.carregandoHide = function (){
     }, 500);
 }
 
+/**
+ * Exibe a tela de carregando
+ */
 Lis.carregandoShow = function (){
     const carregando = document.querySelector('carregando');
     const pagina = document.querySelector('body')
@@ -163,4 +183,4 @@ Lis.carregandoShow = function (){
 
 //iniciando a pagina ===========================================
 criarCarregando();
-incluiScript(linksFramework);
+incluiScript(liksGlobais);

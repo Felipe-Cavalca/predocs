@@ -3,6 +3,7 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("./frameworks/materialize/css/materialize.css");
 
+/* Css do elemento carregando */
 carregando {
     width: 100%;
     height: 98vh;
@@ -12,6 +13,7 @@ carregando {
     align-items: center;
 }
 
+/* animação de aparecer e sumir */
 .scale-transition {
     -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
     transition: -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
@@ -33,6 +35,8 @@ carregando {
     transform: scale(1);
 }
 
+
+/* para a imagem */
 .materialboxed {
     display: block;
     cursor: -webkit-zoom-in;

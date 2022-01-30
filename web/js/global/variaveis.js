@@ -1,3 +1,4 @@
+//variaveis globais
 const VarsGlobal = {
-    'nomeApp' : 'Gerenciador'
+    'nomeApp' : 'Lis'
 };
