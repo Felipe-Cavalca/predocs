@@ -16,13 +16,19 @@ const URLS = {
 }
 
 //links a serem incluidos na pagina
-const liksGlobais = [
+const scriptsGlobais = [
     URLS.dominioFramework + "jquery-3.6.0.js",
     URLS.dominioFramework + "materialize/js/materialize.js",
     URLS.dominioFramework + "vue.global.js",
     URLS.dominioJs + "global/variaveis.js",
     URLS.dominioJs + "global/funcoes.js",
 ];
+
+const stylesGlobais = [
+    URLS.dominioCore+"index.css",
+    URLS.dominioFramework + "materialize/css/materialize.css",
+    "https://fonts.googleapis.com/icon?family=Material+Icons"
+]
 
 
 //funções ==================================================
@@ -32,11 +38,20 @@ const liksGlobais = [
  * @param {arr} urls - array das urls
  * Adiciona as tags de script e link a tela
  */
-function incluiScript(links) {
+function incluiScript(scripts, styles) {
+
+    if(styles){
+        styles.forEach(url => {
+            var style = document.createElement("link");
+            style.setAttribute('rel', "stylesheet");
+            style.setAttribute('href', substituiCaminho(url));
+            document.querySelector("head").appendChild(style);
+        });
+    }
 
     //incluindo links dos frameworks
-    if(links){
-        links.forEach(url => {
+    if(scripts){
+        scripts.forEach(url => {
             var script = document.createElement("script");
             script.setAttribute('src', url);
             document.querySelector("body").appendChild(script);
@@ -183,4 +198,4 @@ Lis.carregandoShow = function (){
 
 //iniciando a pagina ===========================================
 criarCarregando();
-incluiScript(liksGlobais);
+incluiScript(scriptsGlobais, stylesGlobais);
