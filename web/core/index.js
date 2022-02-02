@@ -12,7 +12,8 @@ const URLS = {
     "dominioJs" : dominio + "web/js/",
     "dominioPages" : dominio + "pages/",
     "dominioJsGlobal" : dominio + "web/js/global/",
-    "dominioImg" : dominio + "web/img/"
+    "dominioImg" : dominio + "web/img/",
+    'dominioComponents' : dominio + "web/components/"
 }
 
 //links a serem incluidos na pagina
@@ -196,6 +197,18 @@ Lis.carregandoShow = function (){
     }, 500);
 }
 
+/**
+ *
+ * @param {string} component Nome do component a ser colocado
+ * @param {string} element local onde o elemento será criado
+ */
+Lis.createComponent = function (component, element){
+    var elemento = document.createElement(component);
+    document.querySelector(element).prepend(elemento);
+    elemento.innerHTML = Lis.get(URLS.dominioComponents + component + '.html', false);
+}
+
 //iniciando a pagina ===========================================
 criarCarregando();
+Lis.createComponent('nav', "body");
 incluiScript(scriptsGlobais, stylesGlobais);
