@@ -116,6 +116,11 @@ function init(){
             //aguarda o carregamento das paginas e executa o init
             document.querySelector('body').onload = function () {
                 Lis.init();
+
+                //apenas com o vue js3
+                if(Lis.nav != false)
+                    window.initVueDefault(document.querySelector('nav'));
+
                 setTimeout(function () {
                     //apos o carregamento some a tela de carregamento
                     Lis.carregandoHide();
