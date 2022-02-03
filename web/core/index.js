@@ -26,7 +26,6 @@ const scriptsGlobais = [
 ];
 
 const stylesGlobais = [
-    URLS.dominioCore+"index.css",
     URLS.dominioFramework + "materialize/css/materialize.css",
     "https://fonts.googleapis.com/icon?family=Material+Icons"
 ]
@@ -39,57 +38,22 @@ const stylesGlobais = [
  * @param {arr} urls - array das urls
  * Adiciona as tags de script e link a tela
  */
-function incluiScript(scripts, styles) {
+function incluiScript(links, tipo) {
 
-    if(styles){
-        styles.forEach(url => {
+    if(tipo == 'css'){
+        links.forEach(url => {
             var style = document.createElement("link");
             style.setAttribute('rel', "stylesheet");
             style.setAttribute('href', substituiCaminho(url));
             document.querySelector("head").appendChild(style);
         });
-    }
-
-    //incluindo links dos frameworks
-    if(scripts){
-        scripts.forEach(url => {
+    }else{
+        links.forEach(url => {
             var script = document.createElement("script");
             script.setAttribute('src', url);
             document.querySelector("body").appendChild(script);
         });
     }
-
-    //incluindo scripts dos usuarios
-    if(Lis.scripts){
-        Lis.scripts.forEach(url => {
-            var script = document.createElement("script");
-            script.setAttribute('src', substituiCaminho(url));
-            document.querySelector("body").appendChild(script);
-        });
-    }
-
-    //incluindo arquivos css do usuario
-    if(Lis.styles){
-        Lis.styles.forEach(url => {
-            var style = document.createElement("link");
-            style.setAttribute('rel', "stylesheet");
-            style.setAttribute('href', substituiCaminho(url));
-            document.querySelector("head").appendChild(style);
-        });
-    }
-
-    if (Lis && typeof Lis.init === 'function') {
-        //aguarda o carregamento das paginas e executa o init
-        //necessario alterar para uma função que detecte o carregamento
-        setTimeout(function () {
-            Lis.init();
-            setTimeout(function () {
-                //apos o carregamento some a tela de carregamento
-                Lis.carregandoHide();
-            }, 300);
-        }, 1000);
-    }
-
 }
 
 /**
@@ -125,6 +89,39 @@ function criarCarregando(){
     var body = document.querySelector('body');
     body.setAttribute('class', 'scale-transition scale-out');
     body.setAttribute('style', 'display: none;');
+}
+
+function init(){
+    criarCarregando();
+
+    incluiScript([URLS.dominioCore+"index.css"], 'css');
+
+    if(document.querySelector("nav") == null && Lis.nav != false)
+        Lis.createComponent('nav', "body");
+
+    incluiScript(stylesGlobais, 'css');
+    incluiScript(scriptsGlobais, 'js');
+
+    //incluindo arquivos css do usuario
+    if(Lis.styles){
+        incluiScript(stylesGlobais, 'css');
+    }
+    //incluindo scripts dos usuarios
+    if(Lis.scripts){
+        incluiScript(scriptsGlobais, 'js');
+    }
+
+    if (Lis && typeof Lis.init === 'function') {
+        //aguarda o carregamento das paginas e executa o init
+        //necessario alterar para uma função que detecte o carregamento
+        setTimeout(function () {
+            Lis.init();
+            setTimeout(function () {
+                //apos o carregamento some a tela de carregamento
+                Lis.carregandoHide();
+            }, 300);
+        }, 1000);
+    }
 }
 
 //incluindo variaveis na Lis ==================================
@@ -209,6 +206,4 @@ Lis.createComponent = function (component, element){
 }
 
 //iniciando a pagina ===========================================
-criarCarregando();
-Lis.createComponent('nav', "body");
-incluiScript(scriptsGlobais, stylesGlobais);
+init();
