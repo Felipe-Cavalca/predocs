@@ -96,32 +96,35 @@ function init(){
 
     incluiScript([URLS.dominioCore+"index.css"], 'css');
 
-    if(document.querySelector("nav") == null && Lis.nav != false)
-        Lis.createComponent('nav', "body");
+    document.querySelector('carregando img').onload = function () {
+        if(document.querySelector("nav") == null && Lis.nav != false)
+            Lis.createComponent('nav', "body");
 
-    incluiScript(stylesGlobais, 'css');
-    incluiScript(scriptsGlobais, 'js');
-
-    //incluindo arquivos css do usuario
-    if(Lis.styles){
         incluiScript(stylesGlobais, 'css');
-    }
-    //incluindo scripts dos usuarios
-    if(Lis.scripts){
         incluiScript(scriptsGlobais, 'js');
+
+        //incluindo arquivos css do usuario
+        if(Lis.styles){
+            incluiScript(stylesGlobais, 'css');
+        }
+        //incluindo scripts dos usuarios
+        if(Lis.scripts){
+            incluiScript(scriptsGlobais, 'js');
+        }
+
+        if (Lis && typeof Lis.init === 'function') {
+            //aguarda o carregamento das paginas e executa o init
+            document.querySelector('body').onload = function () {
+                Lis.init();
+                setTimeout(function () {
+                    //apos o carregamento some a tela de carregamento
+                    Lis.carregandoHide();
+                }, 300);
+            }
+        }
     }
 
-    if (Lis && typeof Lis.init === 'function') {
-        //aguarda o carregamento das paginas e executa o init
-        //necessario alterar para uma função que detecte o carregamento
-        setTimeout(function () {
-            Lis.init();
-            setTimeout(function () {
-                //apos o carregamento some a tela de carregamento
-                Lis.carregandoHide();
-            }, 300);
-        }, 1000);
-    }
+
 }
 
 //incluindo variaveis na Lis ==================================
