@@ -13,7 +13,8 @@ const URLS = {
     "dominioPages" : dominio + "pages/",
     "dominioJsGlobal" : dominio + "web/js/global/",
     "dominioImg" : dominio + "web/img/",
-    'dominioComponents' : dominio + "web/components/"
+    "dominioComponents" : dominio + "web/components/",
+    "dominioErros" : dominio + "web/error/"
 }
 
 //links a serem incluidos na pagina
@@ -97,8 +98,9 @@ function init(){
     incluiScript([URLS.dominioCore+"index.css"], 'css');
 
     document.querySelector('carregando img').onload = function () {
-        if(document.querySelector("nav") == null && Lis.nav != false)
+        if(document.querySelector("nav") == null && Lis.nav != false){
             Lis.createComponent('nav', "body");
+        }
 
         incluiScript(stylesGlobais, 'css');
         incluiScript(scriptsGlobais, 'js');
@@ -117,9 +119,12 @@ function init(){
             document.querySelector('body').onload = function () {
                 Lis.init();
 
-                //apenas com o vue js3
-                if(Lis.nav != false)
-                    window.initVueDefault(document.querySelector('nav'));
+                if(Lis.nav != false){
+                    //valida se o vue existe
+                    if(typeof window.Vue !== 'undefined'){
+                        window.initVueDefault(document.querySelector('nav'));
+                    }
+                }
 
                 setTimeout(function () {
                     //apos o carregamento some a tela de carregamento
@@ -129,7 +134,21 @@ function init(){
         }
     }
 
+    document.querySelector('body').onbeforeunload = function (a) {
+        alert('onbeforeunload');
+        alert(a);
+    }
 
+    document.querySelector('body').onunload = function (a) {
+        alert('onunload');
+        alert(a);
+    }
+
+    document.querySelector('body').onerror = function (erro) {
+        if(window.location.href != URLS.dominioErros+"700.html"){
+            window.location.href = URLS.dominioErros+"700.html";
+        }
+    }
 }
 
 //incluindo variaveis na Lis ==================================
