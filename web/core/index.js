@@ -92,6 +92,26 @@ function criarCarregando(){
     body.setAttribute('style', 'display: none;');
 }
 
+function createMeta(){
+    //os elementos meta
+    var meta = document.createElement("meta");
+    meta.setAttribute('name', 'viewport');
+    meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+    document.querySelector("head").prepend(meta);
+
+    var meta = document.createElement("meta");
+    meta.setAttribute('http-equiv', 'X-UA-Compatible');
+    meta.setAttribute('content', 'IE=edge');
+    document.querySelector("head").prepend(meta);
+
+    var meta = document.createElement("meta");
+    meta.setAttribute('charset', 'utf-8');
+    document.querySelector("head").prepend(meta);
+
+    var html = document.querySelector('html');
+    html.setAttribute('lang', 'pt-br');
+}
+
 function init(){
     criarCarregando();
 
@@ -101,6 +121,8 @@ function init(){
         if(document.querySelector("nav") == null && Lis.nav != false){
             Lis.createComponent('nav', "body");
         }
+
+        createMeta();
 
         incluiScript(stylesGlobais, 'css');
         incluiScript(scriptsGlobais, 'js');
@@ -207,7 +229,7 @@ Lis.carregandoHide = function (){
  */
 Lis.carregandoShow = function (){
     const carregando = document.querySelector('carregando');
-    const pagina = document.querySelector('body')
+    const pagina = document.querySelector('body');
 
     pagina.classList.remove("scale-in");
     pagina.classList.add("scale-out");
