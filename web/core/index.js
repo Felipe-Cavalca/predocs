@@ -129,11 +129,11 @@ function init(){
 
         //incluindo arquivos css do usuario
         if(Lis.styles){
-            incluiScript(stylesGlobais, 'css');
+            incluiScript(Lis.styles, 'css');
         }
         //incluindo scripts dos usuarios
         if(Lis.scripts){
-            incluiScript(scriptsGlobais, 'js');
+            incluiScript(Lis.scripts, 'js');
         }
 
         if (Lis && typeof Lis.init === 'function') {
