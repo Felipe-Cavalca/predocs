@@ -1,7 +1,9 @@
 /* variaveis css */
 :root {
     --background-color: #DCDCDC;
+    --background-color-nav: red;
     --primary-color: blue;
+    --secundary-color: cadetblue;
 }
 
 html, body, carregando{
@@ -16,6 +18,10 @@ carregando {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+nav {
+    background-color: var(--background-color-nav);
 }
 
 /* animação de aparecer e sumir */
