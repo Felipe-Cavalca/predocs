@@ -1,11 +1,3 @@
-/* variaveis css */
-:root {
-    --background-color: #DCDCDC;
-    --background-color-nav: red;
-    --primary-color: blue;
-    --secundary-color: cadetblue;
-}
-
 html, body, carregando{
     background-color: var(--background-color);
 }

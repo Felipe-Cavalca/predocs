@@ -27,8 +27,9 @@ const scriptsGlobais = [
 ];
 
 const stylesGlobais = [
+    URLS.dominioCss + "variaveis.css",
     URLS.dominioFramework + "materialize/css/materialize.css",
-    "https://fonts.googleapis.com/icon?family=Material+Icons"
+    "https://fonts.googleapis.com/icon?family=Material+Icons",
 ]
 
 
