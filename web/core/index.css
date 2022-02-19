@@ -1,3 +1,13 @@
+/* variaveis css */
+:root {
+    --background-color: #DCDCDC;
+    --primary-color: blue;
+}
+
+html, body, carregando{
+    background-color: var(--background-color);
+}
+
 /* Css do elemento carregando */
 carregando {
     width: 100%;
