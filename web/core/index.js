@@ -27,7 +27,6 @@ const scriptsGlobais = [
 ];
 
 const stylesGlobais = [
-    URLS.dominioCss + "variaveis.css",
     URLS.dominioFramework + "materialize/css/materialize.css",
     "https://fonts.googleapis.com/icon?family=Material+Icons",
 ]
@@ -116,7 +115,7 @@ function createMeta(){
 function init(){
     criarCarregando();
 
-    incluiScript([URLS.dominioCore+"index.css"], 'css');
+    incluiScript([URLS.dominioCss + "variaveis.css",URLS.dominioCore+"index.css"], 'css');
 
     document.querySelector('carregando img').onload = function () {
         if(document.querySelector("nav") == null && Lis.nav != false){
