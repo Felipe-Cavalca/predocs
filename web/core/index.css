@@ -13,7 +13,7 @@ carregando {
 }
 
 nav {
-    background-color: var(--background-color-nav);
+    background-color: var(--background-color-nav) !important;
 }
 
 /* animação de aparecer e sumir */
