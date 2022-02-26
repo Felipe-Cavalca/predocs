@@ -1,4 +1,6 @@
-html, body, carregando{
+html,
+body,
+carregando {
     background-color: var(--background-color);
 }
 
@@ -21,16 +23,17 @@ nav {
     -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
     transition: -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
     transition: transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
-    transition: transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63), -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
+    transition: transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63),
+        -webkit-transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important;
 }
 
 .scale-transition.scale-out {
     -webkit-transform: scale(0);
     transform: scale(0);
-    -webkit-transition: -webkit-transform .2s !important;
-    transition: -webkit-transform .2s !important;
-    transition: transform .2s !important;
-    transition: transform .2s, -webkit-transform .2s !important;
+    -webkit-transition: -webkit-transform 0.2s !important;
+    transition: -webkit-transform 0.2s !important;
+    transition: transform 0.2s !important;
+    transition: transform 0.2s, -webkit-transform 0.2s !important;
 }
 
 .scale-transition.scale-in {
@@ -38,14 +41,13 @@ nav {
     transform: scale(1);
 }
 
-
 /* para a imagem */
 .materialboxed {
     display: block;
     cursor: -webkit-zoom-in;
     cursor: zoom-in;
     position: relative;
-    -webkit-transition: opacity .4s;
-    transition: opacity .4s;
+    -webkit-transition: opacity 0.4s;
+    transition: opacity 0.4s;
     -webkit-backface-visibility: hidden;
 }
