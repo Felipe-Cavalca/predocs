@@ -154,16 +154,6 @@ function init() {
         }
     };
 
-    document.querySelector('body').onbeforeunload = function (a) {
-        alert('onbeforeunload');
-        alert(a);
-    };
-
-    document.querySelector('body').onunload = function (a) {
-        alert('onunload');
-        alert(a);
-    };
-
     document.querySelector('body').onerror = function (erro) {
         if (window.location.href != URLS.dominioErros + '700.html') {
             window.location.href = URLS.dominioErros + '700.html';

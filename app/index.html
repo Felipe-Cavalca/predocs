@@ -79,14 +79,11 @@
             <iframe src="http://localhost/lis/web/pages/"></iframe>
         </section>
         <carregando class="scale-transition scale-in">
-            <img class="materialboxed" id="pagina" src="img/Carregando.gif">
+            <img class="materialboxed" src="img/Carregando.gif">
         </carregando>
 
         <script type="text/javascript">
 
-            document.querySelector('#pagina').onload = function () {
-                carregandoHide();
-            }
 
             function carregandoHide() {
                 const carregando = document.querySelector('carregando');
@@ -100,6 +97,7 @@
                     setTimeout(function () {
                         pagina.classList.remove("scale-out");
                         pagina.classList.add("scale-in");
+                        return true;
                     }, 200);
                 }, 500);
             }
@@ -116,9 +114,37 @@
                     setTimeout(function () {
                         carregando.classList.remove("scale-out");
                         carregando.classList.add("scale-in");
+                        return true
                     }, 200);
                 }, 500);
             }
+
+            //seta a variavel do tempo do intervalo
+            var idIntervalAddLoad = 0;
+
+            //executa o 1 addLoad
+            addLoad();
+
+            function addLoad() {
+                document.querySelector('iframe').contentWindow.addEventListener("load", function (event) {
+                    clearInterval(idIntervalAddLoad);
+                    idIntervalAddLoad = 0;
+                    setTimeout(function () {
+                        carregandoHide();
+                        addUnload();
+                    }, 2000);
+                });
+            }
+
+            function addUnload() {
+                document.querySelector('iframe').contentWindow.addEventListener("beforeunload", function (event) {
+                    carregandoShow()
+                    if (idIntervalAddLoad == 0) {
+                        idIntervalAddLoad = setInterval(addLoad, 1);
+                    }
+                });
+            }
+
         </script>
     </body>
 
