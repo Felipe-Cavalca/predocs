@@ -7,6 +7,8 @@ include 'core/vars.php';
 include 'core/funcoes.php';
 include 'core/banco.php';
 
+$_POST = json_decode(file_get_contents("php://input"));
+
 //verifica se o arquivo existe
 if (isset($_GET['_Pagina']) &&  file_exists('controllers/' . $_GET['_Pagina'] . '.php')) {
     $_Retorno['status'] = true;

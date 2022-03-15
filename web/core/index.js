@@ -21,7 +21,8 @@ const URLS = {
 //links a serem incluidos na pagina
 const scriptsGlobais = [URLS.dominioFramework + "jquery-3.6.0.js", URLS.dominioFramework + "materialize/js/materialize.js", URLS.dominioFramework + "vue.global.js", URLS.dominioJs + "global/variaveis.js", URLS.dominioJs + "global/funcoes.js", URLS.dominioAssets + "scripts/carregando.js"];
 
-const stylesGlobais = [URLS.dominioFramework + "materialize/css/materialize.css", "https://fonts.googleapis.com/icon?family=Material+Icons", URLS.dominioAssets + "styles/carregando.css"];
+// const stylesGlobais = [URLS.dominioFramework + "materialize/css/materialize.css", "https://fonts.googleapis.com/icon?family=Material+Icons", URLS.dominioAssets + "styles/carregando.css"];
+const stylesGlobais = [URLS.dominioFramework + "materialize/css/materialize.css", URLS.dominioAssets + "styles/carregando.css"];
 
 //funções ==================================================
 
@@ -147,11 +148,11 @@ function init() {
         }
     };
 
-    document.querySelector("body").onerror = function (erro) {
-        if (window.location.href != URLS.dominioErros + "700.html") {
-            window.location.href = URLS.dominioErros + "700.html";
-        }
-    };
+    // document.querySelector("body").onerror = function (erro) {
+    //     if (window.location.href != URLS.dominioErros + "700.html") {
+    //         window.location.href = URLS.dominioErros + "700.html";
+    //     }
+    // };
 }
 
 //incluindo variaveis na Lis ==================================
@@ -178,12 +179,19 @@ Lis.get = function (url, assincrona = false) {
  * @param {boolean} assincrona função assincrona ?
  * @returns resposta do post
  */
-Lis.post = function (url, dados, assincrona = false) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", substituiCaminho(url), assincrona);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify(dados));
-    return xhttp.responseText;
+Lis.post = async function (url, dados) {
+    const data = await fetch(url, {
+        body: JSON.stringify(dados),
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json",
+        },
+        data: dados,
+    });
+
+    var texto = await data.text();
+
+    return texto;
 };
 
 /**
@@ -233,6 +241,29 @@ Lis.createComponent = function (component, element) {
     var elemento = document.createElement(component);
     document.querySelector(element).prepend(elemento);
     elemento.innerHTML = Lis.get(URLS.dominioComponents + component + ".html", false);
+};
+
+Lis.form = (element) => {
+    document.querySelector(element).addEventListener(
+        "submit",
+        async function (event) {
+            event.preventDefault();
+            const data = new FormData(event.target);
+            const value = Object.fromEntries(data.entries());
+
+            var url = URLS.dominioServer + document.querySelector("form").action.replace(location.origin, "").replace("/", "");
+
+            if (document.querySelector(element).method == "post") {
+                console.log("fznd request");
+
+                // console.log(JSON.parse(Lis.post(url, value)));
+                await Lis.post(url, value);
+            }
+
+            // console.log(value);
+        },
+        true
+    );
 };
 
 //iniciando a pagina ===========================================
