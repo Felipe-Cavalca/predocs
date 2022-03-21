@@ -1,7 +1,6 @@
 <?php
 
 $_NomeApp = "Lis";
-$_Retorno = [];
 
 //Banco
 $_HostBanco = 'localhost';
