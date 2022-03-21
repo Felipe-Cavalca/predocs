@@ -254,9 +254,6 @@ Lis.form = (element) => {
             var url = URLS.dominioServer + document.querySelector("form").action.replace(location.origin, "").replace("/", "");
 
             if (document.querySelector(element).method == "post") {
-                console.log("fznd request");
-
-                // console.log(JSON.parse(Lis.post(url, value)));
                 await Lis.post(url, value);
             }
 
