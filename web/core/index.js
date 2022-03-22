@@ -256,8 +256,6 @@ Lis.form = (element) => {
             if (document.querySelector(element).method == "post") {
                 await Lis.post(url, value);
             }
-
-            // console.log(value);
         },
         true
     );
