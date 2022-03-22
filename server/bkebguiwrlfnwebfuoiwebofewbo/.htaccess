@@ -1,0 +1,13 @@
+#caminho para o arquivo .htpasswd da pasta includes
+AuthUserFile ..\htdocs\lis\includes\bkebguiwrlfnwebfuoiwebofewbo\.htpasswd
+AuthType Basic
+AuthName "Acesso restrito"
+Require valid-user
+
+#bloquear arquivo
+order allow,deny
+deny from all
+satisfy all
+
+#bloqueando listagem de diretorios
+Options -Indexes
