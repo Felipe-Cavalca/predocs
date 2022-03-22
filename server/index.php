@@ -2,23 +2,25 @@
 
 header('Content-Type: application/json');
 
-//inclui os arquivos
-include 'core/vars.php';
-include 'core/funcoes.php';
-include 'core/banco.php';
+//variavel da pasta onde está os dados - mudar o nome da pasta de tempos em tempos por questões de segurança
+$_Pasta = 'bkebguiwrlfnwebfuoiwebofewbo/';
 
 //pega os dados do post
 $_POST = json_decode(file_get_contents("php://input"));
 
 //divite o pagina pela / para qu consiga controler o controller e a função
-if(isset($_GET['_Pagina'])){
+if (isset($_GET['_Pagina'])) {
     $_GET['_Pagina'] = explode('/', $_GET['_Pagina']);
 
     //verifica se o arquivo existe
-    if (isset($_GET['_Pagina']) &&  file_exists('controllers/' . $_GET['_Pagina'][0] . 'Controller.php')) {
+    if (isset($_GET['_Pagina']) &&  file_exists($_Pasta . 'controllers/' . $_GET['_Pagina'][0] . 'Controller.php')) {
 
+        //inclui os arquivos
+        include $_Pasta . 'core/vars.php';
+        include $_Pasta . 'core/funcoes.php';
+        include $_Pasta . 'core/banco.php';
         //inclui o arquivo
-        include 'controllers/' . $_GET['_Pagina'][0] . 'Controller.php';
+        include $_Pasta . 'controllers/' . $_GET['_Pagina'][0] . 'Controller.php';
 
         //verifica se a função existe
         if (isset($_GET['_Pagina'][1]) && function_exists($_GET['_Pagina'][1])) {
@@ -55,7 +57,7 @@ if(isset($_GET['_Pagina'])){
             'msg' => 'Controller não encontrado'
         ];
     }
-}else{
+} else {
     $_Retorno['servidor'] = [
         'status' => false,
         'msg' => 'Nenhum caminho definido'
