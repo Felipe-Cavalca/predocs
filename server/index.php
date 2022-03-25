@@ -8,8 +8,8 @@ $_Pasta = 'bkebguiwrlfnwebfuoiwebofewbo/';
 //pega os dados do post
 $_POST = json_decode(file_get_contents("php://input"));
 
-//divite o pagina pela / para qu consiga controler o controller e a função
 if (isset($_GET['_Pagina'])) {
+    //divide o valor passado pela url apartir da "/" para que se consiga o controller e a função a ser chamada
     $_GET['_Pagina'] = explode('/', $_GET['_Pagina']);
 
     //verifica se o arquivo existe
