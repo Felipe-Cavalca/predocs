@@ -3,7 +3,7 @@
 header('Content-Type: application/json');
 
 //variavel da pasta onde está os dados - mudar o nome da pasta de tempos em tempos por questões de segurança
-$_Pasta = 'bkebguiwrlfnwebfuoiwebofewbo/';
+$_Pasta = 'security/';
 
 //pega os dados do post
 $_POST = json_decode(file_get_contents("php://input"));
