@@ -4,7 +4,7 @@ ErrorDocument 403 http://localhost/lis/error/acesso-negado.html
 ErrorDocument 404 http://localhost/lis/error/nao-encontrado.html
 ErrorDocument 500 http://localhost/lis/error/internal-server.html
 
-#forçar alteração de http para https
+##forçar alteração de http para https
 #RewriteEngine On
 #RewriteCond %{HTTPS} !on
 #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
@@ -13,3 +13,33 @@ ErrorDocument 500 http://localhost/lis/error/internal-server.html
 <FilesMatch ".(htm|html|css|js)$">
 AddDefaultCharset UTF-8
 </FilesMatch>
+
+##Exemplo de codigo para forçar o cache do navegador
+#<IfModule mod_expires.c>
+#ExpiresActive On
+#ExpiresByType image/jpg "access 1 year"
+#ExpiresByType image/jpeg "access 1 year"
+#ExpiresByType image/gif "access 1 year"
+#ExpiresByType image/png "access 1 year"
+#ExpiresByType text/css "access 1 month"
+#ExpiresByType application/pdf "access 1 month"
+#ExpiresByType text/x-javascript "access 1 month"
+#ExpiresByType application/x-shockwave-flash "access 1 month"
+#ExpiresByType image/x-icon "access 1 year"
+#ExpiresDefault "access 2 days"
+#</IfModule>
+
+#Forçando cache do navegador
+<IfModule mod_expires.c>
+ExpiresActive On
+#imagens
+ExpiresByType image/jpg "access 1 year"
+ExpiresByType image/jpeg "access 1 year"
+ExpiresByType image/gif "access 1 year"
+ExpiresByType image/png "access 1 year"
+#css e js
+ExpiresByType text/css "access 1 month"
+ExpiresByType text/x-javascript "access 1 month"
+#parão
+ExpiresDefault "access 2 days"
+</IfModule>
