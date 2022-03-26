@@ -1,6 +1,10 @@
-RewriteEngine On
 ErrorDocument 400 http://localhost/lis/error/nao-encontrado.html
 ErrorDocument 401 http://localhost/lis/error/autenticacao-requerida.html
 ErrorDocument 403 http://localhost/lis/error/acesso-negado.html
 ErrorDocument 404 http://localhost/lis/error/nao-encontrado.html
 ErrorDocument 500 http://localhost/lis/error/internal-server.html
+
+#forçar alteração de http para https
+#RewriteEngine On
+#RewriteCond %{HTTPS} !on
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
