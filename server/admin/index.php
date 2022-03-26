@@ -2,6 +2,8 @@
 $URLS['dominio'] = '../../';
 $URLS['assets'] = $URLS['dominio'] . 'assets/';
 $URLS['coreServer'] = './../security/core/';
+$URLS['web'] = $URLS['dominio'] . 'web/';
+$URLS['app'] = $URLS['dominio'] . 'app/';
 
 include 'php/arquivos.php';
 
@@ -30,8 +32,34 @@ if($_POST){
             <label for="variavies_core_server">Variaveis do core do servidor</label><br>
             <input type="hidden" name="arquivo" value="<?= $URLS['coreServer'] . 'vars.php' ?>">
             <textarea id="variavies_core_server" name="conteudo"><?= lerArquivo($URLS['coreServer'] . 'vars.php') ?></textarea>
+            <br>
             <button type="submit">Salvar</button>
         </form>
+
+        <form action="#" method="POST">
+            <label for="variavies_core_server">Variaveis CSS</label><br>
+            <input type="hidden" name="arquivo" value="<?= $URLS['web'] . 'css/variaveis.css' ?>">
+            <textarea id="variavies_core_server" name="conteudo"><?= lerArquivo($URLS['web'] . 'css/variaveis.css') ?></textarea>
+            <br>
+            <button type="submit">Salvar</button>
+        </form>
+
+        <form action="#" method="POST">
+            <label for="variavies_core_server">index js - core da aplicação</label><br>
+            <input type="hidden" name="arquivo" value="<?= $URLS['web'] . 'core/index.js' ?>">
+            <textarea id="variavies_core_server" name="conteudo"><?= lerArquivo($URLS['web'] . 'core/index.js') ?></textarea>
+            <br>
+            <button type="submit">Salvar</button>
+        </form>
+
+        <form action="#" method="POST">
+            <label for="variavies_core_server">APP</label><br>
+            <input type="hidden" name="arquivo" value="<?= $URLS['app'] . 'index.html' ?>">
+            <textarea id="variavies_core_server" name="conteudo"><?= lerArquivo($URLS['app'] . 'index.html') ?></textarea>
+            <br>
+            <button type="submit">Salvar</button>
+        </form>
+
 
     </section>
     <carregando class="scale-transition scale-in">
