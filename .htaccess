@@ -8,3 +8,8 @@ ErrorDocument 500 http://localhost/lis/error/internal-server.html
 #RewriteEngine On
 #RewriteCond %{HTTPS} !on
 #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+#forçando utf-8
+<FilesMatch ".(htm|html|css|js)$">
+AddDefaultCharset UTF-8
+</FilesMatch>
