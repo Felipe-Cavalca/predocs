@@ -1,5 +1,5 @@
 <?php
-$URLS['dominio'] = 'http://localhost/lis/';
+$URLS['dominio'] = '../../';
 $URLS['assets'] = $URLS['dominio'] . 'assets/';
 $URLS['coreServer'] = './../security/core/';
 
