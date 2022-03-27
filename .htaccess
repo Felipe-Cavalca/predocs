@@ -43,3 +43,6 @@ ExpiresByType text/x-javascript "access 1 month"
 #parão
 ExpiresDefault "access 2 days"
 </IfModule>
+
+#bloqueando listagem de diretorios
+Options -Indexes
