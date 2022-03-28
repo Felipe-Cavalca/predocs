@@ -2,9 +2,6 @@
 
 header('Content-Type: application/json');
 
-//variavel da pasta onde está os dados - mudar o nome da pasta de tempos em tempos por questões de segurança
-$_Pasta = 'security/';
-
 //pega os dados do post
 $_POST = json_decode(file_get_contents("php://input"));
 
@@ -13,14 +10,14 @@ if (isset($_GET['_Pagina'])) {
     $_GET['_Pagina'] = explode('/', $_GET['_Pagina']);
 
     //verifica se o arquivo existe
-    if (isset($_GET['_Pagina']) &&  file_exists($_Pasta . 'controllers/' . $_GET['_Pagina'][0] . 'Controller.php')) {
+    if (isset($_GET['_Pagina']) &&  file_exists('security/controllers/' . $_GET['_Pagina'][0] . 'Controller.php')) {
 
         //inclui os arquivos
-        include $_Pasta . 'core/vars.php';
-        include $_Pasta . 'core/funcoes.php';
-        include $_Pasta . 'core/banco.php';
+        include 'security/core/vars.php';
+        include 'security/core/funcoes.php';
+        include 'security/core/banco.php';
         //inclui o arquivo
-        include $_Pasta . 'controllers/' . $_GET['_Pagina'][0] . 'Controller.php';
+        include 'security/controllers/' . $_GET['_Pagina'][0] . 'Controller.php';
 
         //verifica se a função existe
         if (isset($_GET['_Pagina'][1]) && function_exists($_GET['_Pagina'][1])) {
