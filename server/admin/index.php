@@ -4,10 +4,11 @@ $URLS['assets'] = $URLS['dominio'] . 'assets/';
 $URLS['coreServer'] = './../security/core/';
 $URLS['web'] = $URLS['dominio'] . 'web/';
 $URLS['app'] = $URLS['dominio'] . 'app/';
+$URLS['includes'] = $URLS['dominio'] . 'includes/';
 
-include 'php/arquivos.php';
+include $URLS['includes'] . 'arquivos.php';
 
-if($_POST){
+if ($_POST) {
     gravarArquivo($_POST['arquivo'], $_POST['conteudo']);
 }
 ?>
@@ -23,6 +24,12 @@ if($_POST){
     <link href="styles/index.css" rel="stylesheet">
     <title>Admin</title>
 </head>
+<style>
+    textarea {
+        width: 95vw;
+        height: 500px;
+    }
+</style>
 
 <body>
     <section id="body" class="scale-transition scale-out" style="display:none">
@@ -66,7 +73,12 @@ if($_POST){
         <img class="materialboxed" src="<?= $URLS['assets'] ?>img/Carregando.gif">
     </carregando>
     <script type="text/javascript" src="<?= $URLS['assets'] ?>scripts/carregando.js"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
+    <script type="text/javascript">
+        //apos o carregamento some a tela de carregamento
+        document.querySelector("body").onload = () => {
+            carregandoHide();
+        };
+    </script>
 </body>
 
 </html>
