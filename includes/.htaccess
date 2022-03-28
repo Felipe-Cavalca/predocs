@@ -1,0 +1,7 @@
+#bloquear arquivo
+order allow,deny
+deny from all
+satisfy all
+
+#bloqueando listagem de diretorios
+Options -Indexes
