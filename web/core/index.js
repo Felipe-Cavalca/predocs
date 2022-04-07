@@ -4,25 +4,33 @@ const dominio = "http://localhost/lis/";
 //caminhos para as pastas da aplicação
 const URLS = {
     dominio: dominio,
+    dominioErros: dominio + "web/error/",
     dominioServer: dominio + "server/",
     dominioWeb: dominio + "web/",
+    dominioComponents: dominio + "web/components/",
     dominioCore: dominio + "web/core/",
-    dominioCss: dominio + "web/css/",
     dominioFramework: dominio + "web/core/frameworks/",
+    dominioCss: dominio + "web/css/",
+    dominioImg: dominio + "web/img/",
     dominioJs: dominio + "web/js/",
     dominioPages: dominio + "pages/",
-    dominioJsGlobal: dominio + "web/js/global/",
-    dominioImg: dominio + "web/img/",
-    dominioComponents: dominio + "web/components/",
-    dominioErros: dominio + "web/error/",
-    dominioAssets: dominio + "assets/",
 };
 
 //links a serem incluidos na pagina
-const scriptsGlobais = [URLS.dominioFramework + "jquery-3.6.0.js", URLS.dominioFramework + "materialize/js/materialize.js", URLS.dominioFramework + "vue.global.js", URLS.dominioJs + "global/variaveis.js", URLS.dominioJs + "global/funcoes.js", URLS.dominioAssets + "scripts/carregando.js"];
+const scriptsGlobais = [
+    URLS.dominioFramework + "jquery-3.6.0.js", 
+    URLS.dominioFramework + "materialize/js/materialize.js", 
+    URLS.dominioFramework + "vue.global.js", 
+    URLS.dominioJs + "global/variaveis.js", 
+    URLS.dominioJs + "global/funcoes.js", 
+    URLS.dominioJs + "global/carregando.js"
+];
 
-// const stylesGlobais = [URLS.dominioFramework + "materialize/css/materialize.css", "https://fonts.googleapis.com/icon?family=Material+Icons", URLS.dominioAssets + "styles/carregando.css"];
-const stylesGlobais = [URLS.dominioFramework + "materialize/css/materialize.css", URLS.dominioAssets + "styles/carregando.css"];
+// const stylesGlobais = [URLS.dominioFramework + "materialize/css/materialize.css", URLS.dominioAssets + "styles/carregando.css"];
+const stylesGlobais = [
+    URLS.dominioFramework + "materialize/css/materialize.css", 
+    "https://fonts.googleapis.com/icon?family=Material+Icons", 
+    URLS.dominioCss + "global/carregando.css"];
 
 //funções ==================================================
 
@@ -58,7 +66,6 @@ function substituiCaminho(url) {
     url = url.replace("{{css}}", URLS.dominioCss);
     url = url.replace("{{server}}", URLS.dominioServer);
     url = url.replace("{{img}}", URLS.dominioImg);
-    url = url.replace("{{assets}}", URLS.dominioAssets);
     return url;
 }
 
@@ -74,7 +81,7 @@ function criarCarregando() {
     //insere a imagem no mesmo
     var img = document.createElement("img");
     img.setAttribute("class", "materialboxed");
-    img.setAttribute("src", substituiCaminho("{{assets}}img/Carregando.gif"));
+    img.setAttribute("src", substituiCaminho("{{img}}global/Carregando.gif"));
     //coloca a imagem dentro do carregando
     document.querySelector("carregando").appendChild(img);
 
@@ -107,7 +114,7 @@ function createMeta() {
 function init() {
     criarCarregando();
 
-    incluiScript([URLS.dominioCss + "variaveis.css", URLS.dominioCore + "index.css"], "css");
+    incluiScript([ URLS.dominioCss + "global/variaveis.css", URLS.dominioCore + "index.css"], "css");
 
     document.querySelector("carregando img").onload = function () {
         if (document.querySelector("nav") == null && Lis.nav != false) {
