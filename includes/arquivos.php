@@ -8,7 +8,7 @@ class Arquivos
      * @param string $arquivo - caminho até o arquivo
      * @return string - conteudo do arquivo
      */
-    public function lerArquivo($arquivo)
+    public function ler($arquivo)
     {
         // Cria o recurso (abrir o arquivo)
         $handle = fopen($arquivo, "r");
@@ -26,7 +26,7 @@ class Arquivos
      * @param string $conteudo
      * @return void
      */
-    public function gravarArquivo($arquivo, $conteudo)
+    public function gravar($arquivo, $conteudo)
     {
         //criamos o arquivo
         $arquivo = fopen($arquivo, "w");
