@@ -10,7 +10,7 @@ if (isset($_GET['_Pagina'])) {
     $_GET['_Pagina'] = explode('/', $_GET['_Pagina']);
 
     //verifica se o arquivo existe
-    if (isset($_GET['_Pagina']) &&  file_exists('security/controllers/' . $_GET['_Pagina'][0] . 'Controller.php')) {
+    if (isset($_GET['_Pagina']) && file_exists('security/controllers/' . $_GET['_Pagina'][0] . 'Controller.php')) {
 
         //inclui os arquivos
         include 'security/core/vars.php';
