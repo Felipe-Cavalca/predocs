@@ -7,9 +7,10 @@ $URLS['app'] = $URLS['dominio'] . 'app/';
 $URLS['includes'] = $URLS['dominio'] . 'includes/';
 
 include $URLS['includes'] . 'arquivos.php';
+$Arquivo = new Arquivos;
 
 if ($_POST) {
-    gravarArquivo($_POST['arquivo'], $_POST['conteudo']);
+    $Arquivo->gravarArquivo($_POST['arquivo'], $_POST['conteudo']);
 }
 ?>
 
@@ -32,13 +33,13 @@ if ($_POST) {
 </style>
 
 <body>
-    <section id="body" class="scale-transition scale-out" style="display:none">
+    <section id="body" class="scale-transition scale-out">
         <p>Manutenção do framework</p>
 
         <form action="#" method="POST">
             <label for="variavies_core_server">Variaveis do core do servidor</label><br>
             <input type="hidden" name="arquivo" value="<?= $URLS['coreServer'] . 'vars.php' ?>">
-            <textarea id="variavies_core_server" name="conteudo"><?= lerArquivo($URLS['coreServer'] . 'vars.php') ?></textarea>
+            <textarea id="variavies_core_server" name="conteudo"><?= $Arquivo->lerArquivo($URLS['coreServer'] . 'vars.php') ?></textarea>
             <br>
             <button type="submit">Salvar</button>
         </form>
@@ -46,7 +47,7 @@ if ($_POST) {
         <form action="#" method="POST">
             <label for="variavies_core_server">Variaveis CSS</label><br>
             <input type="hidden" name="arquivo" value="<?= $URLS['web'] . 'css/variaveis.css' ?>">
-            <textarea id="variavies_core_server" name="conteudo"><?= lerArquivo($URLS['web'] . 'css/variaveis.css') ?></textarea>
+            <textarea id="variavies_core_server" name="conteudo"><?= $Arquivo->lerArquivo($URLS['web'] . 'css/variaveis.css') ?></textarea>
             <br>
             <button type="submit">Salvar</button>
         </form>
@@ -54,7 +55,7 @@ if ($_POST) {
         <form action="#" method="POST">
             <label for="variavies_core_server">index js - core da aplicação</label><br>
             <input type="hidden" name="arquivo" value="<?= $URLS['web'] . 'core/index.js' ?>">
-            <textarea id="variavies_core_server" name="conteudo"><?= lerArquivo($URLS['web'] . 'core/index.js') ?></textarea>
+            <textarea id="variavies_core_server" name="conteudo"><?= $Arquivo->lerArquivo($URLS['web'] . 'core/index.js') ?></textarea>
             <br>
             <button type="submit">Salvar</button>
         </form>
@@ -62,7 +63,7 @@ if ($_POST) {
         <form action="#" method="POST">
             <label for="variavies_core_server">APP</label><br>
             <input type="hidden" name="arquivo" value="<?= $URLS['app'] . 'index.html' ?>">
-            <textarea id="variavies_core_server" name="conteudo"><?= lerArquivo($URLS['app'] . 'index.html') ?></textarea>
+            <textarea id="variavies_core_server" name="conteudo"><?= $Arquivo->lerArquivo($URLS['app'] . 'index.html') ?></textarea>
             <br>
             <button type="submit">Salvar</button>
         </form>

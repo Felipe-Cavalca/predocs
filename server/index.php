@@ -14,7 +14,8 @@ if (isset($_GET['_Pagina'])) {
 
         //inclui os arquivos
         include 'security/core/vars.php';
-        include 'security/core/funcoes.php';
+        include '../includes/funcoes.php';
+        $Funcoes = new Funcoes;
         include 'security/core/banco.php';
         //inclui o arquivo
         include 'security/controllers/' . $_GET['_Pagina'][0] . 'Controller.php';
