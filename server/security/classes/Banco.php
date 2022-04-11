@@ -8,17 +8,13 @@ class Banco
      *
      * @return pdo com a conexão com o banco
      */
-    function conexao()
+    public function conexao()
     {
-
-        global $_HostBanco;
-        global $_PortaBanco;
-        global $_NomeBanco;
-        global $_UsuarioBanco;
-        global $_SenhaBanco;
+        $Config = new Config;
+        $banco = $Config->getConfigBanco();
 
         try {
-            $pdo = new PDO("mysql:host=$_HostBanco:$_PortaBanco;dbname=$_NomeBanco", $_UsuarioBanco, $_SenhaBanco);
+            $pdo = new PDO("mysql:host={$banco["host"]}:{$banco["porta"]};dbname={$banco["nome"]}", $banco["credencial"]["nome"], $banco["credencial"]["senha"]);
             return $pdo;
         } catch (Exception $e) {
             return false;

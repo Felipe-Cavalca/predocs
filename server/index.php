@@ -12,14 +12,17 @@ if (isset($_GET['_Pagina'])) {
     //verifica se o arquivo existe
     if (isset($_GET['_Pagina']) && file_exists('security/controllers/' . $_GET['_Pagina'][0] . 'Controller.php')) {
 
-        //inclui os arquivos
-        include 'security/core/vars.php';
-        include 'security/classes/funcoes.php';
-        $Funcoes = new Funcoes;
+        //inclui as config
+        include 'security/classes/Config.php';
+        $_CONFIG = new Config;
 
-        //inclui o bancp
-        include 'security/core/banco.php';
-        $Banco = new Banco;
+        //inclui as funções
+        include 'security/classes/Funcoes.php';
+        $_FUNCOES = new Funcoes;
+
+        //inclui o banco
+        include 'security/classes/Banco.php';
+        $_BANCO = new Banco;
 
         //inclui o arquivo
         include 'security/controllers/' . $_GET['_Pagina'][0] . 'Controller.php';
