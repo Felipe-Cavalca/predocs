@@ -14,9 +14,7 @@ if (isset($_GET['_Pagina'])) {
 
         //inclui os arquivos
         include 'security/core/vars.php';
-
-        //pega as funções
-        include '../includes/funcoes.php';
+        include 'security/classes/funcoes.php';
         $Funcoes = new Funcoes;
 
         //inclui o bancp
