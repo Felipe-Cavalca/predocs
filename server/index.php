@@ -14,15 +14,15 @@ if (isset($_GET['_Pagina'])) {
 
         //inclui as config
         include 'security/classes/Config.php';
-        $Config = new Config;
+        $_CONFIG = new Config;
 
         //inclui as funções
         include 'security/classes/Funcoes.php';
-        $Funcoes = new Funcoes;
+        $_FUNCOES = new Funcoes;
 
         //inclui o banco
         include 'security/classes/Banco.php';
-        $Banco = new Banco;
+        $_BANCO = new Banco;
 
         //inclui o arquivo
         include 'security/controllers/' . $_GET['_Pagina'][0] . 'Controller.php';
