@@ -12,6 +12,10 @@ if (isset($_GET['_Pagina'])) {
     //verifica se o arquivo existe
     if (isset($_GET['_Pagina']) && file_exists('security/controllers/' . $_GET['_Pagina'][0] . 'Controller.php')) {
 
+        //inclui as funções de arquivos
+        include "security/classes/arquivos.php";
+        $_ARQUIVOS = new Arquivos;
+
         //inclui as config
         include 'security/classes/Config.php';
         $_CONFIG = new Config;

@@ -9,13 +9,7 @@ Class Config {
      * @return arr - dados do banco
      */
     public function getConfigBanco(){
-        //setando variaveis do banco
-        $banco = [];
-        $banco["host"] = "localhost";
-        $banco["porta"] = "3307";
-        $banco["nome"] = "lis";
-        $banco["credencial"]["nome"] = "root";
-        $banco["credencial"]["senha"] = "";
-        return $banco;
+        global $_ARQUIVOS;
+        return $_ARQUIVOS->getJson("../includes/config.json")["banco"];
     }
 }

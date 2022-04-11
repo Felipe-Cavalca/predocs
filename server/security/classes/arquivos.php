@@ -66,6 +66,6 @@ class Arquivos
     public function getJson($caminho)
     {
         $json = file_get_contents($caminho);
-        return json_decode($json);
+        return json_decode($json, true);
     }
 }

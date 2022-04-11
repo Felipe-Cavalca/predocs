@@ -1,0 +1,17 @@
+{
+    "instalou" : false,
+    "url" : "",
+    "app" : {
+        "nome" : "Lis"
+    },
+    "pasta" : "",
+    "banco" : {
+        "host" : "localhost",
+        "porta" : "3306",
+        "nome" : "lis",
+        "credenciais" : {
+            "usuario" : "root",
+            "senha" : ""
+        }
+    }
+}
