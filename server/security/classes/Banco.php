@@ -10,11 +10,13 @@ class Banco
      */
     public function conexao()
     {
-        $Config = new Config;
-        $banco = $Config->getConfigBanco();
+        //importando a classe de arquivos globais
+        global $_CONFIG;
+
+        $banco = $_CONFIG->getConfigBanco();
 
         try {
-            $pdo = new PDO("mysql:host={$banco["host"]}:{$banco["porta"]};dbname={$banco["nome"]}", $banco["credencial"]["nome"], $banco["credencial"]["senha"]);
+            $pdo = new PDO("mysql:host={$banco["host"]}:{$banco["porta"]};dbname={$banco["nome"]}", $banco["credenciais"]["usuario"], $banco["credenciais"]["senha"]);
             return $pdo;
         } catch (Exception $e) {
             return false;
