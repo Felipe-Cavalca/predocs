@@ -37,4 +37,35 @@ class Arquivos
         //Fechamos o arquivo após escrever nele
         fclose($arquivo);
     }
+
+    /**
+     * Função para listar os arquivos de uma pasta
+     * 
+     * @param string $path - caminho da lista de pastas 
+     * @return arr - arry com os nomes dos arquivos/pastas de dentro do diretorio 
+     */
+    public function listar($path = '/')
+    {
+        $diretorio = dir($path);
+
+        $arquivos = [];
+        while ($arquivo = $diretorio->read()) {
+            $arquivos[] = $arquivo;
+        }
+        $diretorio->close();
+
+        return $arquivos;
+    }
+
+    /**
+     * Função para ler um arquivo json
+     * 
+     * @param string $caminho - caminho até o json
+     * @return arr - json decodificado
+     */
+    public function getJson($caminho)
+    {
+        $json = file_get_contents($caminho);
+        return json_decode($json);
+    }
 }
