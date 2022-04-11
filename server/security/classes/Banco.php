@@ -1,22 +1,22 @@
 <?php
 
+class Banco
+{
+
     /**
      * Efetua a conexão com o banco de dados
      *
      * @return pdo com a conexão com o banco
      */
-    function conexao(){
+    public function conexao()
+    {
+        $Config = new Config;
+        $banco = $Config->getConfigBanco();
 
-        global $_HostBanco;
-        global $_PortaBanco;
-        global $_NomeBanco;
-        global $_UsuarioBanco;
-        global $_SenhaBanco;
-
-        try{
-            $pdo = new PDO("mysql:host=$_HostBanco:$_PortaBanco;dbname=$_NomeBanco", $_UsuarioBanco, $_SenhaBanco);
+        try {
+            $pdo = new PDO("mysql:host={$banco["host"]}:{$banco["porta"]};dbname={$banco["nome"]}", $banco["credencial"]["nome"], $banco["credencial"]["senha"]);
             return $pdo;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -29,13 +29,14 @@
      * @param [type] $tabela nome da tabela
      * @return array
      */
-    function insert($dados = [], $tabela = ''){
-        try{
+    function insert($dados = [], $tabela = '')
+    {
+        try {
             //verifica se os dados ou a tabela estão vazios
-            if(empty($dados)){
+            if (empty($dados)) {
                 throw new Exception('Não ha dados para inserir');
             }
-            if(empty($tabela)){
+            if (empty($tabela)) {
                 throw new Exception('Nenhuma tabela definida para inserir os dados');
             }
 
@@ -49,10 +50,10 @@
             $Create = "INSERT INTO {$tabela} ({$campos}) VALUES ({$valores})";
 
             //faz a conexao
-            $pdo = conexao();
+            $pdo = $this->conexao();
 
             //verifica se a conexão foi feita
-            if(!$pdo){
+            if (!$pdo) {
                 throw new Exception('A conexão não foi estabelecida');
             }
 
@@ -60,15 +61,14 @@
             $sth = $pdo->prepare($Create);
 
             //faz o insert
-            if($sth->execute($dados)){
+            if ($sth->execute($dados)) {
                 return ['status' => true, 'id' => $pdo->lastInsertId()];
-            }else{
+            } else {
                 throw new Exception('O dado não foi inserido');
             }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return ['status' => false];
         }
-
     }
 
     /**
@@ -82,32 +82,32 @@
      * @param array $arr
      * @return array
      */
-    function select($arr= []){
-
-        try{
+    function select($arr = [])
+    {
+        try {
             $query = 'SELECT ';
 
-            if(isset($arr['campos'])){
-                foreach($arr['campos'] as $campo){
-                    $query.= '`'.$campo.'`, ';
+            if (isset($arr['campos'])) {
+                foreach ($arr['campos'] as $campo) {
+                    $query .= '`' . $campo . '`, ';
                 }
                 $query = rtrim($query, ', ');
-                $query.= ' ';
-            }else{
-                $query.= "* ";
+                $query .= ' ';
+            } else {
+                $query .= "* ";
             }
 
-            if(isset($arr['tabela'])){
-                $query.= "FROM `".$arr['tabela'].'` ';
-            }else{
+            if (isset($arr['tabela'])) {
+                $query .= "FROM `" . $arr['tabela'] . '` ';
+            } else {
                 throw new Exception('Nenhuma tabela definida para a seleção');
             }
 
-            if(isset($arr['igual'])){
-                $query.= "WHERE ";
+            if (isset($arr['igual'])) {
+                $query .= "WHERE ";
 
-                foreach($arr['igual'] as $campo => $valor){
-                    $query.= '`'.$campo.'` = "'.$valor. '" AND ';
+                foreach ($arr['igual'] as $campo => $valor) {
+                    $query .= '`' . $campo . '` = "' . $valor . '" AND ';
                 }
 
                 $query = rtrim($query, ' AND');
@@ -117,17 +117,17 @@
 
             $query .= ';';
 
-            $conn = conexao();
-            if(!$conn){
+            $conn = $this->conexao();
+            if (!$conn) {
                 throw new Exception('A conexão não foi estabelecida');
             }
 
             $execucao = $conn->prepare($query);
             $execucao->execute();
 
-            if(isset($arr['contar']) && $arr['contar']){
+            if (isset($arr['contar']) && $arr['contar']) {
                 $retorno = $execucao->rowCount();
-            }else{
+            } else {
                 $retorno = [];
                 foreach ($execucao as $res) {
                     $retorno[] = $res;
@@ -135,7 +135,7 @@
             }
 
             return ['status' => true, 'retorno' => $retorno];
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return ['status' => false];
         }
     }
@@ -148,10 +148,11 @@
      * status - scuesso na query ou não
      * retorno - retorno da query
      */
-    function query($query) {
-        try{
-            $conn = conexao();
-            if(!$conn){
+    function query($query)
+    {
+        try {
+            $conn = $this->conexao();
+            if (!$conn) {
                 throw new Exception('A conexão não foi estabelecida');
             }
             $execucao = $conn->prepare($query);
@@ -163,8 +164,8 @@
             }
 
             return ['status' => true, 'retorno' => $retorno];
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return ['status' => false];
         }
     }
-?>
+}
