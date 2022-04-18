@@ -16,9 +16,15 @@ class Config extends Arquivo
 	 */
 	public function __construct()
 	{
-		parent::__construct("core/config.json");
-
-		$this->config = $this->ler();
+		if (file_exists($this->getAmbiente())) {
+			parent::__construct($this->getAmbiente());
+			$this->config = $this->ler();
+		} else {
+			parent::__construct("ambientes/config.json");
+			$this->config = $this->ler();
+			parent::__construct($this->getAmbiente(), true);
+			$this->escrever($this->config);
+		}
 
 		if (!empty($this->config['app']['nome'])) {
 			$this->nomeApp = $this->config['app']['nome'];
@@ -36,8 +42,16 @@ class Config extends Arquivo
 	 */
 	public function getConfigBanco()
 	{
-		$retorno = $this->config['banco'][$this->ambiente];
+		$retorno = $this->config['banco'];
 		$retorno['stringConn'] = "mysql:host={$retorno["host"]}:{$retorno["porta"]};dbname={$retorno["nome"]}";
 		return $retorno;
+	}
+
+	/**
+	 * Função para pegar arquivo json do ambiente em que o servidor está rodando
+	 */
+	function getAmbiente()
+	{
+		return "ambientes/" . $_SERVER["HTTP_HOST"] . ".json";
 	}
 }
