@@ -1,18 +1,23 @@
 <?php
 
+//incluindo as classes
+include_once("core/Arquivo.php");
+include_once("core/Config.php");
+include_once("core/Banco.php");
+include_once("core/Funcoes.php");
 
-
-
-pr($_GET);
-
-
-/**
- * Função para printar algo na tela
- *
- * @param all $data
- * @return string
- */
-function pr($data)
-{
-	echo '<pre>' . print_r($data, true) . '</pre>';
+//valida se a url existe
+if (isset($_GET['_Pagina'])) {
+	$url = explode("/", $_GET['_Pagina']);
+} else {
+	$url[0] = null;
 }
+
+switch ($url[0]) {
+	case "api":
+		break;
+	case "framework":
+		break;
+	default:
+		break;
+};
