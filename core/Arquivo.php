@@ -21,16 +21,16 @@ class Arquivo
 			return false;
 		}
 
-		if($novo){
-			$arq = fopen($arquivo,'w');
-			if($arq == false){
+		if ($novo) {
+			$arq = fopen($arquivo, 'w');
+			if ($arq == false) {
 				return false;
-			}else{
+			} else {
 				fclose($arq);
 			}
 		}
 
-		if (file_exists($arquivo)){
+		if (file_exists($arquivo)) {
 			$this->path = $arquivo;
 			$arrayPath = explode(".", $this->path);
 			$this->ext = $arrayPath[count($arrayPath) - 1];
@@ -48,7 +48,7 @@ class Arquivo
 	 */
 	public function ler()
 	{
-		if(empty($this->path)){
+		if (empty($this->path)) {
 			return false;
 		}
 
@@ -73,9 +73,9 @@ class Arquivo
 	{
 		switch ($this->ext) {
 			case 'json':
-				if(is_array($conteudo)){
+				if (is_array($conteudo)) {
 					return $this->escreverJson($conteudo);
-				}else{
+				} else {
 					return false;
 				}
 				break;
@@ -96,9 +96,9 @@ class Arquivo
 	{
 		switch ($this->ext) {
 			case 'json':
-				if(is_array($conteudo)){
+				if (is_array($conteudo)) {
 					return $this->escreverJson(array_merge($this->ler(), $conteudo));
-				}else{
+				} else {
 					return false;
 				}
 				break;
@@ -164,9 +164,9 @@ class Arquivo
 	 */
 	function escreverJson(array $arr)
 	{
-		if (is_array($arr)){
+		if (is_array($arr)) {
 			return $this->escreverArquivo(json_encode($arr));
-		}else{
+		} else {
 			return false;
 		}
 	}
