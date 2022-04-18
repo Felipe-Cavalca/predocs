@@ -6,7 +6,7 @@
 class Arquivo
 {
 	private $path; //caminho até o arquivo (inclui o nome)
-	private $ext; //extenção do arquivo (pegada altomaticamente)
+	private $ext; //extenção do arquivo
 
 	/**
 	 * Função construtora do arquivo
@@ -17,12 +17,16 @@ class Arquivo
 	 */
 	public function __construct(string $arquivo, $novo = false)
 	{
+		//valida se o arquivo não é vazio
 		if (empty($arquivo)) {
 			return false;
 		}
 
+		//caso seja para criar um novo arquivo
 		if ($novo) {
+			//cria o arquivo
 			$arq = fopen($arquivo, 'w');
+			//verifica se foi criado
 			if ($arq == false) {
 				return false;
 			} else {
@@ -30,6 +34,7 @@ class Arquivo
 			}
 		}
 
+		//caso o arquivo exista salva o caminho e a extenção
 		if (file_exists($arquivo)) {
 			$this->path = $arquivo;
 			$arrayPath = explode(".", $this->path);
@@ -48,15 +53,17 @@ class Arquivo
 	 */
 	public function ler()
 	{
+		//verifica se o caminho está vazio
 		if (empty($this->path)) {
 			return false;
 		}
 
+		//caso não esteja valida a extenção
 		switch ($this->ext) {
-			case 'json':
+			case 'json': //caso json chama a função lerJson
 				return $this->lerJson();
 				break;
-			default:
+			default: //função para ler qualquer tipo de arquivo
 				return $this->lerArquivo();
 				break;
 		}
@@ -71,15 +78,16 @@ class Arquivo
 	 */
 	public function escrever($conteudo)
 	{
+		//valida a extenção do arquivo
 		switch ($this->ext) {
-			case 'json':
+			case 'json': //caso json valida se o conteudo é um array e chama a função escreverJson
 				if (is_array($conteudo)) {
 					return $this->escreverJson($conteudo);
 				} else {
 					return false;
 				}
 				break;
-			default:
+			default: //função para escrever em qualquer tipo de arquivo
 				return $this->escreverArquivo($conteudo);
 				break;
 		}
@@ -94,8 +102,9 @@ class Arquivo
 	 */
 	public function adicionar($conteudo)
 	{
+		//valida a extenção do arquivo
 		switch ($this->ext) {
-			case 'json':
+			case 'json': //caso json faz um merge do ler com o que foi enviado
 				if (is_array($conteudo)) {
 					return $this->escreverJson(array_merge($this->ler(), $conteudo));
 				} else {
