@@ -1,0 +1,20 @@
+{
+	"ambiente" : "local",
+	"app": {
+		"nome": "TESTE"
+	},
+	"banco": {
+		"local": {
+			"host": "localhost",
+			"porta": "3306",
+			"nome": "lis",
+			"credenciais": { "login": "root", "senha": "" }
+		},
+		"remoto": {
+			"host": "endereco.remoto",
+			"porta": "3307",
+			"nome": "BancoRemoto",
+			"credenciais": { "login": "root", "senha": "" }
+		}
+	}
+}
