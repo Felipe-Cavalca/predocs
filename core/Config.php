@@ -14,16 +14,17 @@ class Config extends Arquivo
 	 *
 	 * @return void
 	 */
-	public function __construct (){
+	public function __construct()
+	{
 		parent::__construct("core/config.json");
 
 		$this->config = $this->ler();
 
-		if(!empty($this->config['app']['nome'])){
+		if (!empty($this->config['app']['nome'])) {
 			$this->nomeApp = $this->config['app']['nome'];
 		}
 
-		if(!empty($this->config['ambiente'])){
+		if (!empty($this->config['ambiente'])) {
 			$this->ambiente = $this->config['ambiente'];
 		}
 	}
