@@ -192,7 +192,9 @@ class Arquivo
 	 */
 	function getMime()
 	{
-		switch ($this->path) {
+		switch ($this->ext) {
+			case "js":
+				return "application/javascript";
 			default:
 				return mime_content_type($this->path);
 				break;
