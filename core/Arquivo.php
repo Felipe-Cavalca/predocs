@@ -5,8 +5,10 @@
  */
 class Arquivo
 {
-	private $path; //caminho até o arquivo (inclui o nome)
-	private $ext; //extenção do arquivo
+	public $path; //caminho até o arquivo (inclui o nome)
+	public $ext; //extenção do arquivo
+	public $mime; //mimetype do arquivo
+
 
 	/**
 	 * Função construtora do arquivo
@@ -37,8 +39,11 @@ class Arquivo
 		//caso o arquivo exista salva o caminho e a extenção
 		if (file_exists($arquivo)) {
 			$this->path = $arquivo;
+
 			$arrayPath = explode(".", $this->path);
 			$this->ext = $arrayPath[count($arrayPath) - 1];
+
+			$this->mime = $this->getMime();
 			return true;
 		}
 
@@ -177,6 +182,20 @@ class Arquivo
 			return $this->escreverArquivo(json_encode($arr));
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * Retorna o mimetype do arquivo
+	 *
+	 * @return string - mimetype do arquivo
+	 */
+	function getMime()
+	{
+		switch ($this->path) {
+			default:
+				return mime_content_type($this->path);
+				break;
 		}
 	}
 }
