@@ -4,7 +4,7 @@ const dominio = "http://localhost/lis";
 const scriptsGlobais = ["/framework/jquery-3.6.0.js", "/framework/materialize/js/materialize.js", "/framework/vue.global.js", "/js/global/variaveis.js", "/js/global/funcoes.js", "/js/global/carregando.js"];
 
 // const stylesGlobais = [URLS.dominioFramework + "materialize/css/materialize.css", URLS.dominioAssets + "styles/carregando.css"];
-const stylesGlobais = ["/framework/materialize/css/materialize.css", "https://fonts.googleapis.com/icon?family=Material+Icons", "/css/global/carregando.css"];
+const stylesGlobais = ["/framework/materialize/css/materialize.css", "https://fonts.googleapis.com/icon?family=Material+Icons"];
 
 //funções ==================================================
 
@@ -67,6 +67,8 @@ function criarCarregando() {
 	var body = document.querySelector("body");
 	body.setAttribute("class", "scale-transition scale-out");
 	body.setAttribute("style", "display: none;");
+
+	incluiScript(["/css/global/carregando.css"], "css");
 }
 
 /**
