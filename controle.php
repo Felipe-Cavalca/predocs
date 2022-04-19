@@ -1,10 +1,10 @@
 <?php
 
 //incluindo as classes
-include_once("core/Arquivo.php");
-include_once("core/Config.php");
-include_once("core/Banco.php");
-include_once("core/Funcoes.php");
+include_once("security/core/Arquivo.php");
+include_once("security/core/Config.php");
+include_once("security/core/Banco.php");
+include_once("security/core/Funcoes.php");
 
 //valida se a url existe
 if (isset($_GET['_Pagina'])) {
@@ -49,7 +49,7 @@ switch ($url[0]) {
  */
 function renderiza($arquivo)
 {
-	$arquivo = new Arquivo($arquivo);
+	$arquivo = new Arquivo("security/".$arquivo);
 	header("Content-Type: " . $arquivo->mime);
 	echo $arquivo->ler();
 }
