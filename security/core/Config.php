@@ -20,7 +20,7 @@ class Config extends Arquivo
 			parent::__construct($this->getAmbiente());
 			$this->config = $this->ler();
 		} else {
-			parent::__construct("ambientes/config.json");
+			parent::__construct("security/ambientes/config.json");
 			$this->config = $this->ler();
 			parent::__construct($this->getAmbiente(), true);
 			$this->escrever($this->config);
@@ -52,6 +52,6 @@ class Config extends Arquivo
 	 */
 	function getAmbiente()
 	{
-		return "ambientes/" . $_SERVER["HTTP_HOST"] . ".json";
+		return "security/ambientes/" . $_SERVER["HTTP_HOST"] . ".json";
 	}
 }
