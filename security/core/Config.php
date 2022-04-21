@@ -26,13 +26,8 @@ class Config extends Arquivo
 			$this->escrever($this->config);
 		}
 
-		if (!empty($this->config['app']['nome'])) {
-			$this->nomeApp = $this->config['app']['nome'];
-		}
-
-		if (!empty($this->config['ambiente'])) {
-			$this->ambiente = $this->config['ambiente'];
-		}
+		$this->nomeApp = $this->config['app']['nome'];
+		$this->ambiente = $this->config['ambiente'];
 	}
 
 	/**
@@ -48,7 +43,8 @@ class Config extends Arquivo
 	}
 
 	/**
-	 * Função para pegar arquivo json do ambiente em que o servidor está rodando
+	 * Função para pegar o caminho do arquivo json do ambiente em que o servidor está rodando
+	 * @return string
 	 */
 	function getAmbiente()
 	{
