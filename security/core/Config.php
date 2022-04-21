@@ -27,7 +27,7 @@ class Config extends Arquivo
 		}
 
 		$this->nomeApp = $this->config['app']['nome'];
-		$this->ambiente = $this->config['ambiente'];
+		$this->ambiente = $_SERVER["HTTP_HOST"];
 	}
 
 	/**
