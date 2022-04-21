@@ -3,7 +3,7 @@
 /**
  * Classe destinada a manipulação de arquivo
  */
-class Arquivo extends Funcoes
+class Arquivo
 {
 	public $path; //caminho até o arquivo (inclui o nome)
 	public $ext; //extenção do arquivo
@@ -13,10 +13,10 @@ class Arquivo extends Funcoes
 	 * Função construtora do arquivo
 	 *
 	 * @param string - caminho até o arquivo
-	 * @param boolean - caso o parametro seja true, um novo arquivo será criado
-	 * @return boolean - valida se o arquivo existe
+	 * @param bool - caso o parametro seja true, um novo arquivo será criado
+	 * @return bool - valida se o arquivo existe
 	 */
-	public function __construct(string $arquivo, $novo = false)
+	public function __construct(string $arquivo, bool $novo = false)
 	{
 		//valida se o arquivo não é vazio
 		if (empty($arquivo)) {
@@ -38,8 +38,8 @@ class Arquivo extends Funcoes
 		//caso o arquivo exista salva o caminho e a extenção
 		if (file_exists($arquivo)) {
 			$this->path = $arquivo;
-			$this->ext = $this->getExt($this->path);
-			$this->mime = $this->getMimeType($this->path);
+			$this->ext = getExt($this->path);
+			$this->mime = getMimeType($this->path);
 			return true;
 		}
 
@@ -54,17 +54,11 @@ class Arquivo extends Funcoes
 	 */
 	public function ler()
 	{
-		//verifica se o caminho está vazio
-		if (empty($this->path)) {
-			return false;
-		}
-
-		//caso não esteja valida a extenção
 		switch ($this->ext) {
 			case 'json': //caso json chama a função lerJson
 				return $this->lerJson();
 				break;
-			default: //função para ler qualquer tipo de arquivo
+			default: //função para ler arquivo
 				return $this->lerArquivo();
 				break;
 		}
@@ -79,7 +73,6 @@ class Arquivo extends Funcoes
 	 */
 	public function escrever($conteudo)
 	{
-		//valida a extenção do arquivo
 		switch ($this->ext) {
 			case 'json': //caso json valida se o conteudo é um array e chama a função escreverJson
 				if (is_array($conteudo)) {
@@ -88,7 +81,7 @@ class Arquivo extends Funcoes
 					return false;
 				}
 				break;
-			default: //função para escrever em qualquer tipo de arquivo
+			default: //função para escrever arquivo
 				return $this->escreverArquivo($conteudo);
 				break;
 		}
@@ -103,7 +96,6 @@ class Arquivo extends Funcoes
 	 */
 	public function adicionar($conteudo)
 	{
-		//valida a extenção do arquivo
 		switch ($this->ext) {
 			case 'json': //caso json faz um merge do ler com o que foi enviado
 				if (is_array($conteudo)) {
@@ -119,19 +111,22 @@ class Arquivo extends Funcoes
 	}
 
 	/**
+	 * Função para ler e exibir o conteudo de um arquivo na tela
+	 */
+	public function renderiza()
+	{
+		header("Content-Type: " . getMimeType($this->path));
+		readfile($this->path);
+	}
+
+	/**
 	 * Função para ler o conteudo de um arquivo
 	 *
 	 * @return string - o conteudo do arquivo
 	 */
-	function lerArquivo()
+	private function lerArquivo()
 	{
-		// Cria o recurso (abrir o arquivo)
-		$handle = fopen($this->path, "r");
-		// Lê o arquivo
-		$conteudo = fread($handle, filesize($this->path));
-		// Fecha o arquivo
-		fclose($handle);
-		return $conteudo;
+		return file_get_contents($this->path);
 	}
 
 	/**
@@ -140,9 +135,8 @@ class Arquivo extends Funcoes
 	 * @param string - o conteudo que será escrito
 	 * @return boolean
 	 */
-	function escreverArquivo($conteudo)
+	function escreverArquivo(string $conteudo)
 	{
-		//criamos o arquivo
 		$arquivo = fopen($this->path, "w");
 		//verificamos se foi criado
 		if ($arquivo == false) {
@@ -150,7 +144,6 @@ class Arquivo extends Funcoes
 		} else {
 			//escrevemos no arquivo
 			fwrite($arquivo, $conteudo);
-			//Fechamos o arquivo após escrever nele
 			fclose($arquivo);
 		}
 		return true; //caso a função tenha sido executada com sucesso
@@ -163,7 +156,7 @@ class Arquivo extends Funcoes
 	 */
 	function lerJson()
 	{
-		return json_decode(file_get_contents($this->path), true);
+		return json_decode($this->lerArquivo($this->path), true);
 	}
 
 	/**

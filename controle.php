@@ -59,6 +59,5 @@ function retornar(string $caminho)
 	}
 
 	$arquivo = new Arquivo($caminho);
-	header("Content-Type: " . $arquivo->mime);
-	echo $arquivo->ler();
+	$arquivo->renderiza();
 }
