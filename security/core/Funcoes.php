@@ -31,4 +31,33 @@ class Funcoes
 
 		return $arquivos;
 	}
+
+	/**
+	 * Retorna o mimetype do arquivo
+	 *
+	 * @return string - mimetype do arquivo
+	 */
+	function getMimeType(string $arquivo)
+	{
+		switch ($this->getExt($arquivo)) {
+			case "js":
+				return "application/javascript";
+			case "css":
+				return "text/css";
+			default:
+				return mime_content_type($this->path);
+				break;
+		}
+	}
+
+	/**
+	 * Retorna a extenção do arquivo
+	 * @param string - caminho até o arquivo
+	 * @return string - extenção do arquivo
+	 */
+	function getExt(string $arquivo)
+	{
+		$arrayPath = explode(".", $arquivo);
+		return $arrayPath[count($arrayPath) - 1];
+	}
 }

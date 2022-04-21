@@ -3,12 +3,11 @@
 /**
  * Classe destinada a manipulação de arquivo
  */
-class Arquivo
+class Arquivo extends Funcoes
 {
 	public $path; //caminho até o arquivo (inclui o nome)
 	public $ext; //extenção do arquivo
 	public $mime; //mimetype do arquivo
-
 
 	/**
 	 * Função construtora do arquivo
@@ -39,11 +38,8 @@ class Arquivo
 		//caso o arquivo exista salva o caminho e a extenção
 		if (file_exists($arquivo)) {
 			$this->path = $arquivo;
-
-			$arrayPath = explode(".", $this->path);
-			$this->ext = $arrayPath[count($arrayPath) - 1];
-
-			$this->mime = $this->getMime();
+			$this->ext = $this->getExt($this->path);
+			$this->mime = $this->getMimeType($this->path);
 			return true;
 		}
 
@@ -182,24 +178,6 @@ class Arquivo
 			return $this->escreverArquivo(json_encode($arr));
 		} else {
 			return false;
-		}
-	}
-
-	/**
-	 * Retorna o mimetype do arquivo
-	 *
-	 * @return string - mimetype do arquivo
-	 */
-	function getMime()
-	{
-		switch ($this->ext) {
-			case "js":
-				return "application/javascript";
-			case "css":
-				return "text/css";
-			default:
-				return mime_content_type($this->path);
-				break;
 		}
 	}
 }
