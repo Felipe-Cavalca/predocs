@@ -1,8 +1,8 @@
-ErrorDocument 400 http://localhost/lis/error/nao-encontrado.html
-ErrorDocument 401 http://localhost/lis/error/autenticacao-requerida.html
-ErrorDocument 403 http://localhost/lis/error/acesso-negado.html
-ErrorDocument 404 http://localhost/lis/error/nao-encontrado.html
-ErrorDocument 500 http://localhost/lis/error/internal-server.html
+ErrorDocument 400 error/nao-encontrado.html
+ErrorDocument 401 error/autenticacao-requerida.html
+ErrorDocument 403 error/acesso-negado.html
+ErrorDocument 404 error/nao-encontrado.html
+ErrorDocument 500 error/internal-server.html
 
 ##forçar alteração de http para https
 #RewriteEngine On
@@ -13,6 +13,15 @@ ErrorDocument 500 http://localhost/lis/error/internal-server.html
 <FilesMatch ".(htm|html|css|js)$">
 AddDefaultCharset UTF-8
 </FilesMatch>
+
+# Mudando arquivo inicio do servidor
+DirectoryIndex controle.php
+
+# Reescreve a pagina para enviar para o arquivo de controle
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^(.*)$ controle.php?_Pagina=$1
 
 #Forçando cache do navegador
 <IfModule mod_expires.c>

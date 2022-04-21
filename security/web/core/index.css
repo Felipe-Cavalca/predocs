@@ -1,0 +1,9 @@
+html,
+body,
+carregando {
+	background-color: var(--background-color);
+}
+
+nav {
+	background-color: var(--background-color-nav) !important;
+}

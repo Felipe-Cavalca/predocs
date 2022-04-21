@@ -1,0 +1,14 @@
+{
+	"app": {
+		"nome": "Lis"
+	},
+	"banco": {
+		"host": "localhost",
+		"porta": "3306",
+		"nome": "lis",
+		"credenciais": {
+			"login": "root",
+			"senha": ""
+		}
+	}
+}
