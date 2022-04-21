@@ -49,7 +49,6 @@ try {
 function retornar(string $caminho)
 {
 	if (!file_exists($caminho)) {
-		$f = new Funcoes;
 		$arquivoErro = "error/not-found/nao-encontrado." . getExt($caminho);
 
 		if (file_exists($arquivoErro)) {
