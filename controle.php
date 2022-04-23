@@ -48,17 +48,16 @@ try {
  */
 function retornar(string $caminho)
 {
-	$arquivo = new Arquivo($caminho);
-
-	if ($arquivo == false) {
+	if (!file_exists($caminho)) {
 		$arquivoErro = "error/not-found/nao-encontrado." . getExt($caminho);
 		if (file_exists($arquivoErro)) {
 			$caminho = $arquivoErro;
 		} else {
 			$caminho = "error/not-found/nao-encontrado.html";
 		}
-		$arquivo = new Arquivo($caminho);
 	}
+
+	$arquivo = new Arquivo($caminho);
 
 	switch ($arquivo->ext) {
 		case "php":
