@@ -230,7 +230,7 @@ Lis.carregandoShow = function () {
 Lis.createComponent = function (component, element) {
 	var elemento = document.createElement(component);
 	document.querySelector(element).prepend(elemento);
-	elemento.innerHTML = Lis.get(validaUrl("/component/" + component + ".html"), false);
+	elemento.innerHTML = Lis.get(validaUrl("/components/" + component + ".html"), false);
 };
 
 /**

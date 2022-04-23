@@ -24,7 +24,7 @@ try {
 				break;
 			case "framework":
 			case "midia":
-			case "component":
+			case "components":
 			case "css":
 			case "js":
 				retornar("security/web/" . $_GET["_Pagina"]);
