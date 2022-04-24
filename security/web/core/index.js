@@ -1,10 +1,20 @@
 const dominio = "http://localhost/lis";
 
 //links a serem incluidos na pagina
-const scriptsGlobais = ["/framework/jquery-3.6.0.js", "/framework/materialize/js/materialize.js", "/framework/vue.global.js", "/js/global/variaveis.js", "/js/global/funcoes.js", "/js/global/carregando.js"];
+const scriptsGlobais = [
+	"/framework/jquery-3.6.0.js", //jquery version 3.6.0
+	"/framework/bootstrap-5.1.3-dist/js/bootstrap.js", //bootstrap version 5.1.3
+	"/framework/vue.global.js", //vue version 3
+	"/js/global/variaveis.js", //variaveis
+	"/js/global/funcoes.js", //funcoes
+	"/js/global/carregando.js", //carregando
+];
 
 // const stylesGlobais = [URLS.dominioFramework + "materialize/css/materialize.css", URLS.dominioAssets + "styles/carregando.css"];
-const stylesGlobais = ["/framework/materialize/css/materialize.css", "https://fonts.googleapis.com/icon?family=Material+Icons"];
+const stylesGlobais = [
+	"/framework/bootstrap-5.1.3-dist/css/bootstrap.css", //bootstrap version 5.1.3
+	"https://fonts.googleapis.com/icon?family=Material+Icons", // google icons
+];
 
 //funções ==================================================
 
