@@ -123,6 +123,8 @@ try {
 			incluiScript(stylesGlobais, "css");
 			incluiScript(scriptsGlobais, "js");
 
+			incluiScript(["/css/global/variaveisBootstrap.css"], "css"); //arquivo para substituir variaveis do bootstrap
+
 			//incluindo arquivos css do usuario
 			if (Lis.styles) {
 				incluiScript(Lis.styles, "css");
