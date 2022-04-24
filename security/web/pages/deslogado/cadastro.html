@@ -8,51 +8,37 @@
 	</head>
 
 	<body>
-		<div class="container" style="margin-top: 100px">
-			<div class="card">
-				<div class="row">
-					<form class="col s12" action="/deslogado/cadastro" method="POST" id="cadastro">
-						<div class="row">
-							<div class="input-field col s6">
-								<input name="nome" id="nome" type="text" class="validate" />
-								<label for="nome">Primeiro nome</label>
-							</div>
-							<div class="input-field col s6">
-								<input name="sobrenome" id="sobrenome" type="text" class="validate" />
-								<label for="sobrenome">Sobrenome</label>
-							</div>
+		<section id="app">
+			<div class="card" style="margin: 40px 20px 5px 20px">
+				<div class="card-header">
+					<h1><b>Cadastro</b></h1>
+				</div>
+				<div class="card-body">
+					<form action="/deslogado/cadastro" method="POST" id="cadastro">
+						<div class="input-group mb-3">
+							<span class="input-group-text">Nome e sobrenome</span>
+							<input name="nome" type="text" aria-label="Primeiro nome" class="form-control" />
+							<input name="sobrenome" type="text" aria-label="Sobrenome" class="form-control" />
 						</div>
-						<div class="row">
-							<div class="input-field col s12">
-								<input name="email" id="email" type="email" class="validate" required />
-								<label for="email">Email</label>
-								<span class="helper-text" data-error="Email invalido" data-success=""></span>
-							</div>
+						<div class="mb-3">
+							<label for="email" class="form-label">Email</label>
+							<input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" />
+							<div id="emailHelp" class="form-text">Nunca compartilharemos seu e-mail com mais ninguém.</div>
 						</div>
-						<div class="row">
-							<div class="input-field col s12">
-								<input name="senha" id="senha" type="password" class="validate" data-length="10" required />
-								<label for="senha">Senha</label>
-								<span class="helper-text" data-error="Formato de senha errado" data-success=""></span>
-							</div>
+						<div class="mb-3">
+							<label for="senha" class="form-label">Password</label>
+							<input name="senha" type="password" class="form-control" id="senha" />
 						</div>
-						<button class="btn waves-effect waves-light" type="submit">
-							Enviar
-							<i class="material-icons right">send</i>
-						</button>
-						<div style="margin-bottom: 50px"></div>
+						<button type="" class="btn btn-primary">Cadastrar</button>
 					</form>
 				</div>
 			</div>
-		</div>
+		</section>
 
 		<script type="text/javascript">
 			const Lis = {
 				init() {
 					Lis.form("#cadastro");
-					$(document).ready(function () {
-						$("input#senha").characterCounter();
-					});
 				},
 			};
 		</script>
