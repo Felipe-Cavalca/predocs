@@ -11,7 +11,6 @@ try {
 		"/js/global/carregando.js", //carregando
 	];
 
-	// const stylesGlobais = [URLS.dominioFramework + "materialize/css/materialize.css", URLS.dominioAssets + "styles/carregando.css"];
 	const stylesGlobais = [
 		"/framework/bootstrap-5.1.3-dist/css/bootstrap.css", //bootstrap version 5.1.3
 		"https://fonts.googleapis.com/icon?family=Material+Icons", // google icons
@@ -20,10 +19,11 @@ try {
 	//funções ==================================================
 
 	/**
-	 *
-	 * @param {array} urls - array das urls
-	 * @param {string} tipo - tipo de arquivo que será adicionado na tela
 	 * Adiciona as tags de script e link a tela
+	 *
+	 * @param {array} links - Array de urls que serão importadas
+	 * @param {string} tipo - tipo de arquivo que será adicionado na tela (css, js)
+	 * @return {void} - Função não retorna dados
 	 */
 	function incluiScript(links, tipo) {
 		switch (tipo) {
@@ -47,8 +47,9 @@ try {
 
 	/**
 	 * Função para pegar a url correta
-	 * @param {string} url string da url
-	 * @returns {string} - url a ser usada
+	 *
+	 * @param {string} url - recebe a url
+	 * @return {string} - url a ser usada
 	 */
 	function validaUrl(url) {
 		if (url.substr(0, 1) == "/") {
@@ -60,6 +61,8 @@ try {
 
 	/**
 	 * Função para criar o elemento "carregando" na tela
+	 *
+	 * @return {void} - Função não tem retorno
 	 */
 	function criarCarregando() {
 		//cria o elemento de carregando
@@ -84,6 +87,8 @@ try {
 
 	/**
 	 * Função para adicionar os metadados do arquivo
+	 *
+	 * @return {void} - Função não tem retorno
 	 */
 	function createMeta() {
 		//os elementos meta
@@ -107,6 +112,8 @@ try {
 
 	/**
 	 * Função chamada para iniciar o framework
+	 *
+	 * @return {void} - Função não tem retorno
 	 */
 	function init() {
 		criarCarregando();
@@ -167,8 +174,8 @@ try {
 
 	/**
 	 *
-	 * @param {string} url Url destino da solicitação
-	 * @param {boolean} assincrona função assincrona ? - padrão false
+	 * @param {string} url - Url destino da solicitação
+	 * @param {boolean} assincrona - função assincrona ? - padrão false
 	 */
 	Lis.get = function (url, assincrona = false) {
 		var xhttp = new XMLHttpRequest();
@@ -179,10 +186,10 @@ try {
 
 	/**
 	 *
-	 * @param {string} url link para a requisição post
-	 * @param {obj} dados dados a serem enviados para o servidor
-	 * @param {boolean} assincrona função assincrona ?
-	 * @returns resposta do post
+	 * @param {string} url -  link para a requisição post
+	 * @param {obj} dados -  dados a serem enviados para o servidor
+	 * @param {boolean} assincrona -  função assincrona ?
+	 * @return resposta do post
 	 */
 	Lis.post = async function (url, dados) {
 		const data = await fetch(url, {
@@ -201,6 +208,8 @@ try {
 
 	/**
 	 * Esconde a tela de carregando
+	 *
+	 * @return {void} - Função não tem retorno
 	 */
 	Lis.carregandoHide = function () {
 		const carregando = document.querySelector("carregando");
@@ -220,6 +229,8 @@ try {
 
 	/**
 	 * Exibe a tela de carregando
+	 *
+	 * @return {void} - Função não tem retorno
 	 */
 	Lis.carregandoShow = function () {
 		const carregando = document.querySelector("carregando");
@@ -241,6 +252,8 @@ try {
 	 *
 	 * @param {string} component Nome do component a ser colocado
 	 * @param {string} element local onde o elemento será criado
+	 *
+	 * @return {void} - Função não tem retorno
 	 */
 	Lis.createComponent = function (component, element) {
 		var elemento = document.createElement(component);
