@@ -173,6 +173,16 @@ try {
 	//incluindo funções na Lis ====================================
 
 	/**
+	 * Adicionando a função valida url na lis
+	 *
+	 * @param {string} url- url que será montada
+	 * @returns {string} - url a ser usada
+	 */
+	Lis.validaUrl = (url) => {
+		return validaUrl(url);
+	};
+
+	/**
 	 *
 	 * @param {string} url - Url destino da solicitação
 	 * @param {boolean} assincrona - função assincrona ? - padrão false

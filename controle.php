@@ -22,6 +22,9 @@ try {
 			case "coreCss":
 				retornar("security/web/core/index.css");
 				break;
+			case "varsApp":
+				getVarsApp();
+				break;
 			case "framework":
 			case "midia":
 			case "components":
@@ -67,4 +70,16 @@ function retornar(string $caminho)
 			$arquivo->renderiza();
 			break;
 	}
+}
+
+/**
+ * Função para escrever na tela o json de configurações para o front-end
+ * (função faz um echo)
+ *
+ * @return void
+ */
+function getVarsApp()
+{
+	$config = new Config();
+	echo json_encode($config->getConfigApp());
 }

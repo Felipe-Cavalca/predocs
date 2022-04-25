@@ -1,4 +1,2 @@
 //variaveis globais
-const VarsGlobal = {
-	nomeApp: "Lis",
-};
+var VarsGlobal = JSON.parse(Lis.get(Lis.validaUrl("/varsApp"), false));

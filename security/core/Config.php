@@ -50,4 +50,13 @@ class Config extends Arquivo
 	{
 		return "security/environment/" . $_SERVER["HTTP_HOST"] . ".json";
 	}
+
+	/**
+	 * Função para pegar as variaveis do app
+	 * @return array array de configurações a serem enviadas para o front-end
+	 */
+	function getConfigApp()
+	{
+		return $this->config["app"];
+	}
 }

@@ -1,6 +1,7 @@
 {
 	"app": {
-		"nome": "Lis"
+		"nome": "Lis",
+		"Version": "1.0.0"
 	},
 	"banco": {
 		"host": "localhost",
