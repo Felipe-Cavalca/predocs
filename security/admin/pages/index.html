@@ -20,6 +20,7 @@
 		<script src="../coreJs/"></script>
 		<script>
 			function installBD() {
+				$("#respostaInstallBD").html("Instalando ....");
 				var install = JSON.parse(Lis.get("server/banco/install"));
 				$("#respostaInstallBD").html(install.funcao.msg);
 			}
