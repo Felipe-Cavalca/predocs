@@ -2,7 +2,8 @@
 	"debug": false,
 	"app": {
 		"nome": "Lis",
-		"Version": "1.0.0"
+		"Version": "1.0.0",
+		"url" : "http://localhost"
 	},
 	"banco": {
 		"host": "localhost",

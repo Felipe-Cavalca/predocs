@@ -1,12 +1,14 @@
 try {
-	const dominio = "http://localhost/lis";
+	//define as variaveis globais
+	var VarsGlobal = {
+		url: 'http://localhost'
+	};
 
 	//links a serem incluidos na pagina
 	const scriptsGlobais = [
 		"/framework/jquery-3.6.0.js", //jquery version 3.6.0
 		"/framework/bootstrap-5.1.3-dist/js/bootstrap.js", //bootstrap version 5.1.3
 		"/framework/vue.global.js", //vue version 3
-		"/js/global/variaveis.js", //variaveis globais
 		"/js/global/funcoes.js", //funcoes
 		"/js/global/carregando.js", //carregando
 	];
@@ -53,7 +55,7 @@ try {
 	 */
 	function validaUrl(url) {
 		if (url.substr(0, 1) == "/") {
-			return dominio + url;
+			return VarsGlobal.url + url;
 		}
 
 		return url;
@@ -116,6 +118,9 @@ try {
 	 * @return {void} - Função não tem retorno
 	 */
 	function init() {
+		//seta as variavies globais
+		VarsGlobal = JSON.parse(Lis.get(Lis.validaUrl(document.querySelector("#coreJs").src.replaceAll("coreJs", "varsApp")), false));
+
 		criarCarregando();
 
 		incluiScript(["/css/global/variaveis.css", "/coreCss"], "css");
