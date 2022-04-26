@@ -176,7 +176,16 @@ class Banco extends Config
 
 			return ['status' => true, 'retorno' => $retorno];
 		} catch (Exception $e) {
-			return ['status' => false];
+			$retorno = [
+				"status" => false,
+				"msg" => "Houve um erro na base de dados"
+			];
+
+			if ($this->debug) {
+				$retorno['exception'] = $e;
+			}
+
+			return $retorno;
 		}
 	}
 }
