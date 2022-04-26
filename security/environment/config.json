@@ -1,4 +1,5 @@
 {
+	"debug": false,
 	"app": {
 		"nome": "Lis",
 		"Version": "1.0.0"
