@@ -19,6 +19,9 @@ try {
 			case "server":
 				retornar("security/server/index.php");
 				break;
+			case "lis":
+				controleAdmin($_GET['_Pagina']); //executa a parte de gerenciamento do framework
+				break;
 			case "coreJs":
 				retornar("security/web/core/index.js");
 				break;
@@ -85,4 +88,16 @@ function getVarsApp()
 {
 	$config = new Config();
 	echo json_encode($config->getConfigApp());
+}
+
+/**
+ * Função para importar o controle da parte administrativa
+ * @param string $url - a url pega pelo $_GET['_Pagina']
+ * @return void
+ */
+function controleAdmin($url)
+{
+	include_once("security/admin/controleAdmin.php"); //inclui o arquivo de controle do admin
+	urlAdmin($url);
+	return;
 }
