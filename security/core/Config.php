@@ -61,4 +61,13 @@ class Config extends Arquivo
 	{
 		return $this->config["app"];
 	}
+
+	/**
+	 * Retorna dados da parte administrativa do framework
+	 *
+	 * @return array array de configurações
+	 */
+	function getConfigAdmin(){
+		return $this->config["admin"];
+	}
 }
