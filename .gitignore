@@ -1,2 +1,4 @@
 .editorconfig
 .prettierrc
+/security/environment/localhost.json
+.vscode/*
