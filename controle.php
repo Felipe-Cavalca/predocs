@@ -1,5 +1,8 @@
 <?php
 
+//alterando local onde salva as sessões
+session_save_path("./security/session");
+
 //incluindo as classes
 include_once("security/core/Funcoes.php");
 include_once("security/core/Arquivo.php"); //arquivo estende a funcoes
