@@ -116,6 +116,7 @@ class Arquivo
 	public function renderiza()
 	{
 		header("Content-Type: " . getMimeType($this->path));
+		header("Cache-Control: " . $this->tempoCache());
 		readfile($this->path);
 	}
 
@@ -172,5 +173,30 @@ class Arquivo
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Função para pegar o tempo de cache do arquivo
+	 * @return string - cache a ser colocado no arquivo
+	 */
+	function tempoCache()
+	{
+		$config = new Config;
+		$cache = $config->getconfigCache();
+
+		if(!$cache["ativo"]){
+			return "no-cache";
+		}
+
+		//caso seja para não manter o cache
+		if (isset($cache["excluir"][$this->ext])) {
+			return "no-cache";
+		}
+
+		if (isset($cache["incluir"][$this->ext])) {
+			return "private, max-age=" . $cache['incluir'][$this->ext]*60*60 . ", stale-while-revalidate=".$cache["revalidar"];
+		}
+
+		return "private, max-age=" . $cache['default']*60*60 . ", stale-while-revalidate=".$cache["revalidar"];
 	}
 }

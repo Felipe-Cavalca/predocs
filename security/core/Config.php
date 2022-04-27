@@ -70,4 +70,13 @@ class Config extends Arquivo
 	function getConfigAdmin(){
 		return $this->config["admin"];
 	}
+
+	/**
+	 * Função para pegar as configurações de cache
+	 *
+	 * @return array - array com os dados de cache
+	 */
+	function getconfigCache(){
+		return $this->config["cache"];
+	}
 }
