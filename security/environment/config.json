@@ -3,7 +3,7 @@
 	"app": {
 		"nome": "Lis",
 		"Version": "1.0.0",
-		"url" : "http://localhost"
+		"url": "http://localhost/lis"
 	},
 	"banco": {
 		"host": "localhost",
