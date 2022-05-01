@@ -10,8 +10,37 @@ function urlAdmin(string $url)
 {
 	$url = explode("/", $url);
 
-	if(count($url) == 1) {
+	if (count($url) == 1) {
 		header('Location: ./lis/'); //redireciona o usuario para a url correta
+		return;
+	}
+
+	if ($url[1] == "login" && count($url) == 2) {
+		retornar("security/admin/controllers/deslogadoController.php");
+
+		switch (validarPostLogin()) {
+			case "logou":
+				session_start();
+				$_SESSION["logado"] = true;
+				echo json_encode(["stts" => true, "msg" => "Login Aceito"]);
+				break;
+			case "invalido":
+				echo json_encode(["stts" => false, "msg" => "Login ou senha invalidos"]);
+				break;
+			case "view":
+				retornar("security/admin/pages/login.html");
+				break;
+		}
+		return;
+	}
+
+	if (!validaLogin()) {
+		if (count($url) == 2) {
+			header("Location: login");
+		} else {
+			header("Location: ../");
+		}
+		return;
 	}
 
 	if (empty($url[1])) {
@@ -66,4 +95,20 @@ function validaControllerAdmin(array $url)
 			"msg" => "função não localizada"
 		]
 	];
+}
+
+/**
+ * Função para validar se o admin está logado ou não
+ *
+ * @return boolean - se está logado ou nn
+ */
+function validaLogin()
+{
+	session_start();
+
+	if (isset($_SESSION["logado"]) && $_SESSION["logado"]) {
+		return true;
+	}
+
+	return false;
 }
