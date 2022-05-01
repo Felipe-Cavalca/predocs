@@ -1,5 +1,0 @@
-#caminho para o arquivo .htpasswd da pasta includes
-AuthUserFile \xampp\htdocs\lis\includes\.htpasswd
-AuthType Basic
-AuthName "Acesso restrito"
-Require valid-user
