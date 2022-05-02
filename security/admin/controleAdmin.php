@@ -21,7 +21,7 @@ function urlAdmin(string $url)
 		switch (validarPostLogin()) {
 			case "logou":
 				session_start();
-				$_SESSION["logado"] = true;
+				$_SESSION["logadoAdminFramework"] = true;
 				echo json_encode(["stts" => true, "msg" => "Login Aceito"]);
 				break;
 			case "invalido":
@@ -106,7 +106,7 @@ function validaLogin()
 {
 	session_start();
 
-	if (isset($_SESSION["logado"]) && $_SESSION["logado"]) {
+	if (isset($_SESSION["logadoAdminFramework"]) && $_SESSION["logadoAdminFramework"]) {
 		return true;
 	}
 
