@@ -76,7 +76,16 @@ class Banco extends Config
 				throw new Exception("O dado não foi inserido");
 			}
 		} catch (Exception $e) {
-			return ["status" => false, "erro" => $e];
+			$retorno = [
+				"status" => false,
+				"msg" => "Houve um erro na base de dados"
+			];
+
+			if ($this->debug) {
+				$retorno['exception'] = $e;
+			}
+
+			return $retorno;
 		}
 	}
 
@@ -145,7 +154,16 @@ class Banco extends Config
 
 			return ["status" => true, "retorno" => $retorno];
 		} catch (Exception $e) {
-			return ["status" => false, "erro" => $e];
+			$retorno = [
+				"status" => false,
+				"msg" => "Houve um erro na base de dados"
+			];
+
+			if ($this->debug) {
+				$retorno['exception'] = $e;
+			}
+
+			return $retorno;
 		}
 	}
 
