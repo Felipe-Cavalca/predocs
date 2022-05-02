@@ -38,7 +38,15 @@
 		<script type="text/javascript">
 			const Lis = {
 				init() {
-					Lis.form("#cadastro");
+					Lis.form("#cadastro",
+						() => {
+							Lis.carregandoShow();
+						},
+						(resp) => {
+							Lis.carregandoHide();
+							console.log(resp);
+						}
+					);
 				},
 			};
 		</script>

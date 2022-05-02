@@ -279,20 +279,25 @@ try {
 	/**
 	 * Função a ser aplicada nos forms, para que consiga
 	 * @param {string} element seletor do elemento do form
+	 * @param {function} before Função a ser executada antes do envio
+	 * @param {function} after Função a ser executada apos o envio
 	 */
-	Lis.form = (element) => {
+	Lis.form = (element, before, after) => {
 		document.querySelector(element).addEventListener(
 			"submit",
 			async function (event) {
+				before();
 				event.preventDefault();
 				const data = new FormData(event.target);
 				const value = Object.fromEntries(data.entries());
 
 				var url = validaUrl("/server/" + document.querySelector("form").action.replace(location.origin, "").replace("/", ""));
+				var resp = {};
 
 				if (document.querySelector(element).method == "post") {
-					await Lis.post(url, value);
+					resp = JSON.parse(await Lis.post(url, value));
 				}
+				after(resp);
 			},
 			true
 		);
