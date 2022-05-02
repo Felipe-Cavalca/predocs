@@ -291,7 +291,7 @@ try {
 				const data = new FormData(event.target);
 				const value = Object.fromEntries(data.entries());
 
-				var url = validaUrl("/server/" + document.querySelector("form").action.replace(location.origin, "").replace("/", ""));
+				var url = validaUrl("/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
 				var resp = {};
 
 				if (document.querySelector(element).method == "post") {
