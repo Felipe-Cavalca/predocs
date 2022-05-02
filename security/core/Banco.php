@@ -126,8 +126,6 @@ class Banco extends Config
 
 			$query .= ";";
 
-			echo $query;
-
 			$conn = $this->conexao();
 			if (!$conn) {
 				throw new Exception("A conexão não foi estabelecida");
