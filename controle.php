@@ -8,6 +8,7 @@ include_once("security/core/Funcoes.php");
 include_once("security/core/Arquivo.php"); //arquivo estende a funcoes
 include_once("security/core/Config.php"); //config estende a arquivo
 include_once("security/core/Banco.php"); //banco estende a config
+include_once("security/core/FuncoesApp.php"); //funcoes da aplicação que está sendo desenvolvida
 
 //pega os dados do post
 $_POST = json_decode(file_get_contents("php://input"), true);
