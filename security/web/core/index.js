@@ -10,7 +10,6 @@ try {
 		"/framework/bootstrap-5.1.3-dist/js/bootstrap.js", //bootstrap version 5.1.3
 		"/framework/vue.global.js", //vue version 3
 		"/js/global/funcoes.js", //funcoes
-		"/js/global/carregando.js", //carregando
 	];
 
 	const stylesGlobais = [
