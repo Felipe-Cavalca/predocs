@@ -58,6 +58,12 @@ try {
  */
 function retornar(string $caminho)
 {
+
+	//caso o arquivo não exista, adiciona o .html
+	if(!file_exists($caminho)){
+		$caminho.=".html";
+	}
+
 	if (!file_exists($caminho)) {
 		$arquivoErro = "error/not-found/nao-encontrado." . getExt($caminho);
 		if (file_exists($arquivoErro)) {
