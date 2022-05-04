@@ -266,12 +266,20 @@ try {
 	 *
 	 * @param {string} component Nome do component a ser colocado
 	 * @param {string} element local onde o elemento será criado
+	 * @param {string} local - como será criado o elemento (append, prepend)
 	 *
 	 * @return {void} - Função não tem retorno
 	 */
-	Lis.createComponent = function (component, element) {
+	Lis.createComponent = function (component, element, local) {
 		var elemento = document.createElement(component);
-		document.querySelector(element).prepend(elemento);
+		switch(local){
+			case "append":
+				document.querySelector(element).append(elemento);
+				break;
+			case "prepend":
+			default:
+				document.querySelector(element).prepend(elemento);
+		}
 		elemento.innerHTML = Lis.get(validaUrl("/components/" + component + ".html"), false);
 	};
 
