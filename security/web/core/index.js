@@ -10,7 +10,6 @@ try {
 		"/framework/bootstrap-5.1.3-dist/js/bootstrap.js", //bootstrap version 5.1.3
 		"/framework/vue.global.js", //vue version 3
 		"/js/global/funcoes.js", //funcoes
-		"/js/global/carregando.js", //carregando
 	];
 
 	const stylesGlobais = [
@@ -68,16 +67,10 @@ try {
 	 */
 	function criarCarregando() {
 		//cria o elemento de carregando
-		var carregando = document.createElement("carregando");
-		carregando.setAttribute("class", "scale-transition scale-in");
-		document.querySelector("html").appendChild(carregando);
+		Lis.createComponent("carregando","html", "append");
 
-		//insere a imagem no mesmo
-		var img = document.createElement("img");
-		img.setAttribute("class", "materialboxed");
-		img.setAttribute("src", validaUrl("/midia/global/Carregando.gif"));
-		//coloca a imagem dentro do carregando
-		document.querySelector("carregando").appendChild(img);
+		var carregando = document.querySelector("carregando");
+		carregando.setAttribute("class", "scale-transition scale-in");
 
 		//some com o body
 		var body = document.querySelector("body");
@@ -267,12 +260,20 @@ try {
 	 *
 	 * @param {string} component Nome do component a ser colocado
 	 * @param {string} element local onde o elemento será criado
+	 * @param {string} local - como será criado o elemento (append, prepend)
 	 *
 	 * @return {void} - Função não tem retorno
 	 */
-	Lis.createComponent = function (component, element) {
+	Lis.createComponent = function (component, element, local) {
 		var elemento = document.createElement(component);
-		document.querySelector(element).prepend(elemento);
+		switch(local){
+			case "append":
+				document.querySelector(element).append(elemento);
+				break;
+			case "prepend":
+			default:
+				document.querySelector(element).prepend(elemento);
+		}
 		elemento.innerHTML = Lis.get(validaUrl("/components/" + component + ".html"), false);
 	};
 
