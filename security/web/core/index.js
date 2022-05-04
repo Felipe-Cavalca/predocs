@@ -66,18 +66,18 @@ try {
 	 * @return {void} - Função não tem retorno
 	 */
 	function criarCarregando() {
-		//cria o elemento de carregando
-		Lis.createComponent("carregando","html", "append");
-
-		var carregando = document.querySelector("carregando");
-		carregando.setAttribute("class", "scale-transition scale-in");
-
 		//some com o body
 		var body = document.querySelector("body");
 		body.setAttribute("class", "scale-transition scale-out");
 		body.setAttribute("style", "display: none;");
 
 		incluiScript(["/css/global/carregando.css"], "css");
+
+		//cria o elemento de carregando
+		Lis.createComponent("carregando","html", "append");
+
+		var carregando = document.querySelector("carregando");
+		carregando.setAttribute("class", "scale-transition scale-in");
 	}
 
 	/**
