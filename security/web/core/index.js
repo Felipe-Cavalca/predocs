@@ -67,16 +67,10 @@ try {
 	 */
 	function criarCarregando() {
 		//cria o elemento de carregando
-		var carregando = document.createElement("carregando");
-		carregando.setAttribute("class", "scale-transition scale-in");
-		document.querySelector("html").appendChild(carregando);
+		Lis.createComponent("carregando","html", "append");
 
-		//insere a imagem no mesmo
-		var img = document.createElement("img");
-		img.setAttribute("class", "materialboxed");
-		img.setAttribute("src", validaUrl("/midia/global/Carregando.gif"));
-		//coloca a imagem dentro do carregando
-		document.querySelector("carregando").appendChild(img);
+		var carregando = document.querySelector("carregando");
+		carregando.setAttribute("class", "scale-transition scale-in");
 
 		//some com o body
 		var body = document.querySelector("body");
