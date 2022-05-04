@@ -34,7 +34,7 @@ function urlAdmin(string $url)
 		return;
 	}
 
-	if (!validaLogin()) {
+	if (!validaLoginAdmin()) {
 		if (count($url) == 2) {
 			header("Location: login");
 		} else {
@@ -102,7 +102,7 @@ function validaControllerAdmin(array $url)
  *
  * @return boolean - se está logado ou nn
  */
-function validaLogin()
+function validaLoginAdmin()
 {
 	session_start();
 
