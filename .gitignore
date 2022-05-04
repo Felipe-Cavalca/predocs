@@ -2,4 +2,3 @@
 .prettierrc
 /security/environment/localhost.json
 .vscode/*
-/security/session/
