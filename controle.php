@@ -23,6 +23,9 @@ try {
 			case "lis":
 				controleAdmin($_GET['_Pagina']); //executa a parte de gerenciamento do framework
 				break;
+			case "storage":
+				storage($_GET['_Pagina']);
+				break;
 			case "coreJs":
 				retornar("security/web/core/index.js");
 				break;
@@ -60,8 +63,8 @@ function retornar(string $caminho)
 {
 
 	//caso o arquivo não exista, adiciona o .html
-	if(!file_exists($caminho)){
-		$caminho.=".html";
+	if (!file_exists($caminho)) {
+		$caminho .= ".html";
 	}
 
 	if (!file_exists($caminho)) {
@@ -106,5 +109,16 @@ function controleAdmin($url)
 {
 	retornar("security/admin/controleAdmin.php"); //inclui o arquivo de controle do admin
 	urlAdmin($url);
+	return;
+}
+
+/**
+ * Função para redirecionar o usuario para o controle de storage
+ * @param string $url - a url pega pelo $_GET['_Pagina']
+ * @return void
+ */
+function storage($url)
+{
+	retornar("security/storage/controleStorage.php");
 	return;
 }
