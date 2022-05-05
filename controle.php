@@ -104,7 +104,7 @@ function getVarsApp()
  */
 function controleAdmin($url)
 {
-	include_once("security/admin/controleAdmin.php"); //inclui o arquivo de controle do admin
+	retornar("security/admin/controleAdmin.php"); //inclui o arquivo de controle do admin
 	urlAdmin($url);
 	return;
 }
