@@ -115,9 +115,16 @@ class Arquivo
 	 */
 	public function renderiza()
 	{
-		header("Content-Type: " . getMimeType($this->path));
-		header("Cache-Control: " . $this->tempoCache());
-		readfile($this->path);
+		switch ($this->ext) {
+			case "php":
+				include($this->path);
+				break;
+			default:
+				header("Content-Type: " . getMimeType($this->path));
+				header("Cache-Control: " . $this->tempoCache());
+				readfile($this->path);
+				break;
+		}
 	}
 
 	/**

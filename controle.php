@@ -76,16 +76,11 @@ function retornar(string $caminho)
 		}
 	}
 
+	//instancia a classe arquivo
 	$arquivo = new Arquivo($caminho);
 
-	switch ($arquivo->ext) {
-		case "php":
-			include($arquivo->path);
-			break;
-		default:
-			$arquivo->renderiza();
-			break;
-	}
+	//renderiza o arquivo
+	$arquivo->renderiza();
 }
 
 /**
