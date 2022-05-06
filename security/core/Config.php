@@ -27,6 +27,18 @@ class Config extends Arquivo
 			$this->escrever($this->config);
 		}
 
+		//caso seja debug, valida se a url está respondendo
+		if ($this->config["debug"]) {
+			$ch = curl_init($this->config["app"]["url"]);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_exec($ch);
+			if (curl_error($ch)) {
+				echo curl_error($ch);
+			}
+			curl_close($ch);
+			die(); //mata a execução
+		}
+
 		$this->nomeApp = $this->config['app']['nome'];
 		$this->ambiente = $_SERVER["HTTP_HOST"];
 		$this->debug = $this->config['debug'];
@@ -67,7 +79,8 @@ class Config extends Arquivo
 	 *
 	 * @return array array de configurações
 	 */
-	function getConfigAdmin(){
+	function getConfigAdmin()
+	{
 		return $this->config["admin"];
 	}
 
@@ -76,7 +89,8 @@ class Config extends Arquivo
 	 *
 	 * @return array - array com os dados de cache
 	 */
-	function getconfigCache(){
+	function getconfigCache()
+	{
 		return $this->config["cache"];
 	}
 }
