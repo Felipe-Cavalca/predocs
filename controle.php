@@ -1,5 +1,8 @@
 <?php
 
+//valida se as pastas do framework que estão no gitignore existem
+dirFramework();
+
 //alterando local onde salva as sessões
 session_save_path("./security/session");
 
@@ -121,4 +124,19 @@ function storage($url)
 {
 	retornar("security/storage/controleStorage.php");
 	return;
+}
+
+/**
+ * Função para criar as pastas que são adicionadas no gitignore
+ */
+function dirFramework(){
+	//diretio de sessão
+	if(!is_dir("security/session/")){
+		mkdir("security/session/", 0777, true);
+	}
+
+	//diretorio de arquivos do storage
+	if(!is_dir("security/storage/files/")){
+		mkdir("security/storage/files/", 0777, true);
+	}
 }
