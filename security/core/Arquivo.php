@@ -57,10 +57,8 @@ class Arquivo
 		switch ($this->ext) {
 			case 'json': //caso json chama a função lerJson
 				return $this->lerJson();
-				break;
 			default: //função para ler arquivo
 				return $this->lerArquivo();
-				break;
 		}
 	}
 
@@ -80,10 +78,8 @@ class Arquivo
 				} else {
 					return false;
 				}
-				break;
 			default: //função para escrever arquivo
 				return $this->escreverArquivo($conteudo);
-				break;
 		}
 	}
 
@@ -103,10 +99,8 @@ class Arquivo
 				} else {
 					return false;
 				}
-				break;
 			default:
 				return $this->escreverArquivo($this->lerArquivo() . $conteudo);
-				break;
 		}
 	}
 
@@ -115,9 +109,16 @@ class Arquivo
 	 */
 	public function renderiza()
 	{
-		header("Content-Type: " . getMimeType($this->path));
-		header("Cache-Control: " . $this->tempoCache());
-		readfile($this->path);
+		switch ($this->ext) {
+			case "php":
+				include_once($this->path);
+				break;
+			default:
+				header("Content-Type: " . getMimeType($this->path));
+				header("Cache-Control: " . $this->tempoCache());
+				readfile($this->path);
+				break;
+		}
 	}
 
 	/**
@@ -184,19 +185,17 @@ class Arquivo
 		$config = new Config;
 		$cache = $config->getconfigCache();
 
-		if(!$cache["ativo"]){
+		//caso o cache esteja desativado, ou o arquivo estiver no excluir
+		if (!$cache["ativo"] || isset($cache["excluir"][$this->ext])) {
 			return "no-cache";
 		}
 
-		//caso seja para não manter o cache
-		if (isset($cache["excluir"][$this->ext])) {
-			return "no-cache";
-		}
-
+		//caso seja para incluir
 		if (isset($cache["incluir"][$this->ext])) {
-			return "private, max-age=" . $cache['incluir'][$this->ext]*60*60 . ", stale-while-revalidate=".$cache["revalidar"];
+			return "private, max-age=" . $cache['incluir'][$this->ext] * 60 * 60 . ", stale-while-revalidate=" . $cache["revalidar"];
 		}
 
-		return "private, max-age=" . $cache['default']*60*60 . ", stale-while-revalidate=".$cache["revalidar"];
+		//padrão
+		return "private, max-age=" . $cache['default'] * 60 * 60 . ", stale-while-revalidate=" . $cache["revalidar"];
 	}
 }

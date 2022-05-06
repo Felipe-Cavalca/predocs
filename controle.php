@@ -8,7 +8,7 @@ session_save_path("./security/session");
 
 //incluindo as classes
 include_once("security/core/Funcoes.php");
-include_once("security/core/Arquivo.php"); //arquivo estende a funcoes
+include_once("security/core/Arquivo.php"); //arquivo estende a funções
 include_once("security/core/Config.php"); //config estende a arquivo
 include_once("security/core/Banco.php"); //banco estende a config
 include_once("security/core/FuncoesApp.php"); //funcoes da aplicação que está sendo desenvolvida
@@ -19,76 +19,74 @@ $_POST = json_decode(file_get_contents("php://input"), true);
 try {
 	if (isset($_GET['_Pagina'])) {
 		switch (explode("/", $_GET['_Pagina'])[0]) {
-			case "api":
-			case "server":
-				retornar("security/server/index.php");
+			case "varsApp":
+				getVarsApp(); //paga as variaveis do app
 				break;
 			case "lis":
 				controleAdmin($_GET['_Pagina']); //executa a parte de gerenciamento do framework
 				break;
 			case "storage":
-				storage($_GET['_Pagina']);
+				storage(); //chama o controle do storage
+				break;
+			case "api":
+			case "server":
+				retornar("security/server/index.php"); //chama o index do server (backend)
 				break;
 			case "coreJs":
-				retornar("security/web/core/index.js");
+				retornar("security/web/core/index.js"); //retorna o arquivo do coreJs
 				break;
 			case "coreCss":
-				retornar("security/web/core/index.css");
-				break;
-			case "varsApp":
-				getVarsApp();
+				retornar("security/web/core/index.css"); //retorna o arquivo do coreCss
 				break;
 			case "framework":
 			case "midia":
 			case "components":
 			case "css":
 			case "js":
-				retornar("security/web/" . $_GET["_Pagina"]);
+				retornar("security/web/" . $_GET["_Pagina"]); //retorna paginas do web
 				break;
 			default:
-				retornar("security/web/pages/" . $_GET["_Pagina"]);
+				retornar("security/web/pages/" . $_GET["_Pagina"]); //retorna o arquivo dentro do pages
 				break;
 		};
 	} else {
-		retornar("security/web/pages/index.html");
+		retornar("security/web/pages/index.html"); //retorna o index da aplicação
 	}
 } catch (Exception $e) {
-	retornar("error/internal-server.html");
+	retornar("error/internal-server.html");	 //caso o sistema de alguma exception retona a pagina de erro do servidor
 }
 
 /**
- * Função para retornar o que foi solicitado
+ * Função para retornar o arquivo que foi solicitado ao usuario
  *
  * @param string - caminho do arquivo a ser renderizado
  * @return void
  */
 function retornar(string $caminho)
 {
-
-	//caso o arquivo não exista, adiciona o .html
+	//valida se o arquivo existe
 	if (!file_exists($caminho)) {
+		//caso o arquivo não exista, adiciona o .html para ver se é um arquivo.html
 		$caminho .= ".html";
 	}
 
+	//valida se o arquivo existe
 	if (!file_exists($caminho)) {
+		//caso o arquivo não exista, retorna a pagina de não encontrado de sua extenção
 		$arquivoErro = "error/not-found/nao-encontrado." . getExt($caminho);
 		if (file_exists($arquivoErro)) {
-			$caminho = $arquivoErro;
+			$caminho = $arquivoErro; //caso o arquivo de erro exista ele será renderizado
 		} else {
-			$caminho = "error/not-found/nao-encontrado.html";
+			$caminho = "error/not-found/nao-encontrado.html"; //caso não exista ele retorna o erro .html
 		}
 	}
 
+	//instancia a classe arquivo
 	$arquivo = new Arquivo($caminho);
 
-	switch ($arquivo->ext) {
-		case "php":
-			include($arquivo->path);
-			break;
-		default:
-			$arquivo->renderiza();
-			break;
-	}
+	//renderiza o arquivo
+	$arquivo->renderiza();
+	return;
 }
 
 /**
@@ -101,6 +99,7 @@ function getVarsApp()
 {
 	$config = new Config();
 	echo json_encode($config->getConfigApp());
+	return;
 }
 
 /**
@@ -108,21 +107,22 @@ function getVarsApp()
  * @param string $url - a url pega pelo $_GET['_Pagina']
  * @return void
  */
-function controleAdmin($url)
+function controleAdmin(string $url)
 {
-	retornar("security/admin/controleAdmin.php"); //inclui o arquivo de controle do admin
-	urlAdmin($url);
+	$arquivo = new Arquivo("security/admin/controleAdmin.php"); //inclui o arquivo de controle admin
+	$arquivo->renderiza(); //renderiza o arquivo
+	urlAdmin($url); //valida a url do admin
 	return;
 }
 
 /**
  * Função para redirecionar o usuario para o controle de storage
- * @param string $url - a url pega pelo $_GET['_Pagina']
  * @return void
  */
-function storage($url)
+function storage()
 {
-	retornar("security/storage/controleStorage.php");
+	$arquivo = new Arquivo("security/storage/controleStorage.php"); //inclui o controle de storage
+	$arquivo->renderiza(); //renderiza o arquivo
 	return;
 }
 

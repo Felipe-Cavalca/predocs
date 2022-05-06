@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Valida os dados do post de login da tela administrativa do framework
+ */
 function validarPostLogin()
 {
     if (isset($_POST)) {
