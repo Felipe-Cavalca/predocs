@@ -23,13 +23,13 @@ function urlAdmin(string $url)
 				session_start();
 				$_SESSION["logadoAdminFramework"] = true;
 				echo json_encode(["stts" => true, "msg" => "Login Aceito"]);
-				break;
+				return;
 			case "invalido":
 				echo json_encode(["stts" => false, "msg" => "Login ou senha invalidos"]);
-				break;
+				return;
 			case "view":
 				retornar("security/admin/pages/login.html");
-				break;
+				return;
 		}
 		return;
 	}
@@ -51,12 +51,11 @@ function urlAdmin(string $url)
 	switch ($url[1]) {
 		case "server":
 			echo json_encode(validaControllerAdmin($url));
-			break;
+			return;
 		default:
 			unset($url[0]);
-			$url = implode("/", $url);
-			retornar($url);
-			break;
+			retornar(implode("/", $url));
+			return;
 	}
 }
 
@@ -77,7 +76,7 @@ function validaControllerAdmin(array $url)
 		];
 	}
 
-	include_once $controller;
+	retornar($controller);
 
 	if (function_exists($url[3])) {
 		return [
