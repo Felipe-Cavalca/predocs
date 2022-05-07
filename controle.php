@@ -50,10 +50,14 @@ try {
 				break;
 		};
 	} else {
-		retornar("security/web/pages/index.html"); //retorna o index da aplicação
+		retornar("security/web/pages/index"); //retorna o index da aplicação
 	}
 } catch (Exception $e) {
-	retornar("error/internal-server.html");	 //caso o sistema de alguma exception retona a pagina de erro do servidor
+	retornar("PaginaErro.html"); //caso o sistema de alguma exception retona a pagina de erro do servidor
+	$config = new Config();
+	if($config->debug){
+		pr($e);
+	}
 }
 
 /**
@@ -72,13 +76,7 @@ function retornar(string $caminho)
 
 	//valida se o arquivo existe
 	if (!file_exists($caminho)) {
-		//caso o arquivo não exista, retorna a pagina de não encontrado de sua extenção
-		$arquivoErro = "error/not-found/nao-encontrado." . getExt($caminho);
-		if (file_exists($arquivoErro)) {
-			$caminho = $arquivoErro; //caso o arquivo de erro exista ele será renderizado
-		} else {
-			$caminho = "error/not-found/nao-encontrado.html"; //caso não exista ele retorna o erro .html
-		}
+		$caminho = "PaginaErro.html"; //caso não exista ele retorna a pagina de erro
 	}
 
 	//instancia a classe arquivo
