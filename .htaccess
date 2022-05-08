@@ -17,20 +17,5 @@ RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteRule ^(.*)$ controle.php?_Pagina=$1
 
-#Forçando cache do navegador
-<IfModule mod_expires.c>
-ExpiresActive On
-#imagens
-ExpiresByType image/jpg "access 1 year"
-ExpiresByType image/jpeg "access 1 year"
-ExpiresByType image/gif "access 1 year"
-ExpiresByType image/png "access 1 year"
-#css e js
-ExpiresByType text/css "access 1 month"
-ExpiresByType text/x-javascript "access 1 month"
-#parão
-ExpiresDefault "access 2 days"
-</IfModule>
-
 #bloqueando listagem de diretorios
 Options -Indexes
