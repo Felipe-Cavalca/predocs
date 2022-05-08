@@ -53,7 +53,7 @@ try {
 		retornar("security/web/pages/index"); //retorna o index da aplicação
 	}
 } catch (Exception $e) {
-	retornar("PaginaErro.html"); //caso o sistema de alguma exception retona a pagina de erro do servidor
+	retornar("error/index.html"); //caso o sistema de alguma exception retona a pagina de erro do servidor
 	$config = new Config();
 	if($config->debug){
 		pr($e);
@@ -76,7 +76,7 @@ function retornar(string $caminho)
 
 	//valida se o arquivo existe
 	if (!file_exists($caminho)) {
-		$caminho = "PaginaErro.html"; //caso não exista ele retorna a pagina de erro
+		$caminho = "error/index.html"; //caso não exista ele retorna a pagina de erro
 	}
 
 	//instancia a classe arquivo
