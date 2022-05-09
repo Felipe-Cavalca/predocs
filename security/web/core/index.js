@@ -292,18 +292,19 @@ try {
 		document.querySelector(element).addEventListener(
 			"submit",
 			async function (event) {
-				before();
-				event.preventDefault();
-				const data = new FormData(event.target);
-				const value = Object.fromEntries(data.entries());
+				if(await before()){
+					event.preventDefault();
+					const data = new FormData(event.target);
+					const value = Object.fromEntries(data.entries());
 
-				var url = validaUrl("/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
-				var resp = {};
+					var url = validaUrl("/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
+					var resp = {};
 
-				if (document.querySelector(element).method == "post") {
-					resp = JSON.parse(await Lis.post(url, value));
+					if (document.querySelector(element).method == "post") {
+						resp = JSON.parse(await Lis.post(url, value));
+					}
+					after(resp);
 				}
-				after(resp);
 			},
 			true
 		);
