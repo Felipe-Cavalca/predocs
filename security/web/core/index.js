@@ -292,8 +292,8 @@ try {
 		document.querySelector(element).addEventListener(
 			"submit",
 			async function (event) {
+				event.preventDefault();
 				if(await before()){
-					event.preventDefault();
 					const data = new FormData(event.target);
 					const value = Object.fromEntries(data.entries());
 
