@@ -293,7 +293,7 @@ try {
 			"submit",
 			async function (event) {
 				event.preventDefault();
-				if(await before()){
+				if(await before() != false){
 					const data = new FormData(event.target);
 					const value = Object.fromEntries(data.entries());
 
