@@ -269,7 +269,12 @@ try {
 	 * @return {void} - Função não tem retorno
 	 */
 	Lis.createComponent = function (component, element, local) {
-		var elemento = document.createElement(component);
+		if(component == "carregando"){ //elemento carregando recebe classes e ids para que de o efeito certo
+			var elemento = document.createElement(component);
+		}else{
+			var elemento = document.createElement("section");
+			elemento.setAttribute("class", "component-"+component);
+		}
 		switch(local){
 			case "append":
 				document.querySelector(element).append(elemento);
