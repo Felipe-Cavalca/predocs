@@ -3,6 +3,7 @@
 function cadastro($var = 'vazia'){
     return [
         'parametro' => $var,
-        'post' => $_POST
+        'post' => $_POST,
+        'arquivo' => $_FILES
     ];
 }

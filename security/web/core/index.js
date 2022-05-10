@@ -202,15 +202,14 @@ try {
 	 * @param {string} url -  link para a requisição post
 	 * @param {obj} dados -  dados a serem enviados para o servidor
 	 * @param {boolean} assincrona -  função assincrona ?
+	 * @param {obj} header - cabeçalho da requisição
 	 * @return resposta do post
 	 */
-	Lis.post = async function (url, dados) {
+	Lis.post = async function (url, dados, headers = {}) {
 		const data = await fetch(url, {
-			body: JSON.stringify(dados),
+			body: dados,
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: headers,
 			data: dados,
 		});
 
@@ -295,13 +294,10 @@ try {
 				event.preventDefault();
 				if(await before() != false){
 					const data = new FormData(event.target);
-					const value = Object.fromEntries(data.entries());
-
 					var url = validaUrl("/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
 					var resp = {};
-
 					if (document.querySelector(element).method == "post") {
-						resp = JSON.parse(await Lis.post(url, value));
+						resp = JSON.parse(await Lis.post(url, data));
 					}
 					after(resp);
 				}
