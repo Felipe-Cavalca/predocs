@@ -30,6 +30,14 @@ class Arquivo
 
 		//caso seja para criar um novo arquivo
 		if ($novo) {
+			//cria o diretorio caso não exista
+			$arrayArquivo = explode("/", $arquivo);
+			unset($arrayArquivo[count($arrayArquivo) - 1]);
+			$dir = implode("/", $arrayArquivo);
+			if(!is_dir($dir)){
+				mkdir($dir, 0777, true);
+			}
+
 			//cria o arquivo
 			$arq = fopen($arquivo, 'w');
 			//verifica se foi criado
