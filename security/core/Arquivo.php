@@ -14,10 +14,15 @@ class Arquivo
 	 *
 	 * @param string - caminho até o arquivo
 	 * @param bool - caso o parametro seja true, um novo arquivo será criado
+	 * @param bool - Indica se o arquivo está no storage ou não
 	 * @return bool - valida se o arquivo existe
 	 */
-	public function __construct(string $arquivo, bool $novo = false)
+	public function __construct(string $arquivo, bool $novo = false, bool $storage = true)
 	{
+		if($storage){
+			$arquivo = "security/storage/files/".$arquivo;
+		}
+
 		//valida se o arquivo não é vazio
 		if (empty($arquivo)) {
 			return false;

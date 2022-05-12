@@ -84,7 +84,7 @@ function retornar(string $caminho)
 	}
 
 	//instancia a classe arquivo
-	$arquivo = new Arquivo($caminho);
+	$arquivo = new Arquivo($caminho, false, false);
 
 	//renderiza o arquivo
 	$arquivo->renderiza();
@@ -111,7 +111,7 @@ function getVarsApp()
  */
 function controleAdmin(string $url)
 {
-	$arquivo = new Arquivo("security/admin/controleAdmin.php"); //inclui o arquivo de controle admin
+	$arquivo = new Arquivo("security/admin/controleAdmin.php", false, false); //inclui o arquivo de controle admin
 	$arquivo->renderiza(); //renderiza o arquivo
 	urlAdmin($url); //valida a url do admin
 	return;
@@ -123,7 +123,7 @@ function controleAdmin(string $url)
  */
 function storage()
 {
-	$arquivo = new Arquivo("security/storage/controleStorage.php"); //inclui o controle de storage
+	$arquivo = new Arquivo("security/storage/controleStorage.php", false, false); //inclui o controle de storage
 	$arquivo->renderiza(); //renderiza o arquivo
 	return;
 }

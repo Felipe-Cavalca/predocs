@@ -19,12 +19,12 @@ class Config extends Arquivo
 	public function __construct()
 	{
 		if (file_exists($this->getAmbiente())) {
-			parent::__construct($this->getAmbiente());
+			parent::__construct($this->getAmbiente(), false, false);
 			$this->config = $this->ler();
 		} else {
-			parent::__construct("security/environment/config.json");
+			parent::__construct("security/environment/config.json", false, false);
 			$this->config = $this->ler();
-			parent::__construct($this->getAmbiente(), true);
+			parent::__construct($this->getAmbiente(), true, false);
 			$this->escrever($this->config);
 		}
 
