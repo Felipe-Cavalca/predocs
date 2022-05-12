@@ -51,10 +51,10 @@ try {
 	}
 } catch (Exception $e) {
 	$config = new Config();
-	if($config->debug){
+	if ($config->debug) {
 		pr($e);
-	}else{
-		header("Location: error/"); // retorna o usuario para a pagina de erro
+	} else {
+		header("Location: " . $config->url . "error"); // retorna o usuario para a pagina de erro
 	}
 }
 
@@ -74,7 +74,12 @@ function retornar(string $caminho)
 
 	//valida se o arquivo existe
 	if (!file_exists($caminho)) {
-		header("Location: error/"); //redireciona o usuario para pagina de erro
+		$config = new Config();
+		if ($config->debug) {
+			pr("Caminhoa não existe");
+		} else {
+			header("Location: " . $config->url . "error"); // retorna o usuario para a pagina de erro
+		}
 		die();
 	}
 
@@ -126,14 +131,15 @@ function storage()
 /**
  * Função para criar as pastas que são adicionadas no gitignore
  */
-function dirFramework(){
+function dirFramework()
+{
 	//diretio de sessão
-	if(!is_dir("security/session/")){
+	if (!is_dir("security/session/")) {
 		mkdir("security/session/", 0777, true);
 	}
 
 	//diretorio de arquivos do storage
-	if(!is_dir("security/storage/files/")){
+	if (!is_dir("security/storage/files/")) {
 		mkdir("security/storage/files/", 0777, true);
 	}
 }
