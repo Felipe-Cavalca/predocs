@@ -7,6 +7,7 @@ class Config extends Arquivo
 	public $nomeApp = "Lis";
 	public $ambiente = "local";
 	public $debug = false;
+	public $url = "http://localhost";
 
 	private $config = [];
 
@@ -30,6 +31,7 @@ class Config extends Arquivo
 		$this->nomeApp = $this->config['app']['nome'];
 		$this->ambiente = $_SERVER["HTTP_HOST"];
 		$this->debug = $this->config['debug'];
+		$this->url = $this->config['app']['url'];
 	}
 
 	/**
