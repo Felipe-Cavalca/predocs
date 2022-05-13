@@ -36,10 +36,9 @@
             async function (event) {
                 event.preventDefault();
                 const data = new FormData(event.target);
-                const value = Object.fromEntries(data.entries());
 
                 var url = "login";
-                $retorno = JSON.parse(await Lis.post(url, value));
+                $retorno = JSON.parse(await Lis.post(url, data));
 
                 if ($retorno['stts'] == true) {
                     window.location.href = "./";

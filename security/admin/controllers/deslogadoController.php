@@ -5,7 +5,7 @@
  */
 function validarPostLogin()
 {
-    if (isset($_POST)) {
+    if (isset($_POST["login"]) && isset($_POST["senha"])) {
         $config = new Config;
         $credenciais = $config->getConfigAdmin()["credenciais"];
 
