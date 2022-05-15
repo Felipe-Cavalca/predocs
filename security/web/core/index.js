@@ -194,8 +194,8 @@ try {
 	 * @param {string} component Nome do component a ser colocado
 	 * @param {string} element local onde o elemento será criado
 	 * @param {string} local - como será criado o elemento (append, prepend)
-	 * @param {array} js - array de strings com os nomes dos js dos componentes
 	 * @param {array} css - array de strings com os nomes dos css dos componentes
+	 * @param {array} js - array de strings com os nomes dos js dos componentes
 	 *
 	 * @return {void} - Função não tem retorno
 	 */
