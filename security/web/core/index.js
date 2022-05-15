@@ -14,6 +14,7 @@ try {
 
 	const stylesGlobais = [
 		"/framework/bootstrap-5.1.3-dist/css/bootstrap.css", //bootstrap version 5.1.3
+		"/css/global/variaveisBootstrap.css", //arquivo para substituir variaveis do bootstrap
 		"https://fonts.googleapis.com/icon?family=Material+Icons", // google icons
 	];
 
@@ -61,31 +62,6 @@ try {
 	}
 
 	/**
-	 * Função para criar o elemento "carregando" na tela
-	 *
-	 * @return {void} - Função não tem retorno
-	 */
-	function criarCarregando() {
-		//some com o body
-		var body = document.querySelector("body");
-		body.setAttribute("class", "scale-transition scale-out");
-		body.setAttribute("style", "display: none;");
-
-		incluiScript(["/css/global/carregando.css"], "css");
-
-		//cria o elemento de carregando
-		Lis.createComponent("carregando","html", "append");
-
-		var carregando = document.querySelector("carregando");
-		carregando.setAttribute("class", "scale-transition scale-in");
-
-		//Caso o component tenha uma imagem, setar o caminho abaixo
-		var img = document.querySelector("carregando img");
-		var urlImg = VarsGlobal.url+"/midia/global/carregando.gif";
-		img.setAttribute("src", urlImg);
-	}
-
-	/**
 	 * Função para adicionar os metadados do arquivo
 	 *
 	 * @return {void} - Função não tem retorno
@@ -119,58 +95,53 @@ try {
 		//seta as variavies globais
 		VarsGlobal = JSON.parse(Lis.get(Lis.validaUrl(document.querySelector("#coreJs").src.replaceAll("coreJs", "varsApp")), false));
 
-		criarCarregando();
+		//cria o elemento de carregando
+		Lis.createComponent("carregando", "html", "append", ["/components/css/carregando.css"], ["/components/js/carregando.js"]);
 
-		incluiScript(["/css/global/variaveis.css", "/coreCss"], "css");
+		incluiScript(["/css/global/variaveis.css", "/coreCss"], "css"); //inclui o core css da aplicação
 
-		document.querySelector("carregando img").onload = function () {
-			if (document.querySelector("nav") == null && Lis.nav != false) {
-				Lis.createComponent("nav", "body");
-			}
+		if (document.querySelector("nav") == null && Lis.nav != false) {
+			Lis.createComponent("nav", "body");
+		}
 
-			createMeta();
+		createMeta();
 
-			incluiScript(stylesGlobais, "css");
-			incluiScript(scriptsGlobais, "js");
+		incluiScript(stylesGlobais, "css");
+		incluiScript(scriptsGlobais, "js");
 
-			incluiScript(["/css/global/variaveisBootstrap.css"], "css"); //arquivo para substituir variaveis do bootstrap
+		//incluindo arquivos css do usuario
+		if (Lis.styles) {
+			incluiScript(Lis.styles, "css");
+		}
+		//incluindo scripts dos usuarios
+		if (Lis.scripts) {
+			incluiScript(Lis.scripts, "js");
+		}
 
-			//incluindo arquivos css do usuario
-			if (Lis.styles) {
-				incluiScript(Lis.styles, "css");
-			}
-			//incluindo scripts dos usuarios
-			if (Lis.scripts) {
-				incluiScript(Lis.scripts, "js");
-			}
+		if (Lis) {
+			//aguarda o carregamento das paginas e executa o init
+			document.querySelector("body").onload = function () {
+				if (typeof Lis.init === "function") {
+					Lis.init();
+				}
 
-			if (Lis) {
-				//aguarda o carregamento das paginas e executa o init
-				document.querySelector("body").onload = function () {
-					if (typeof Lis.init === "function") {
-						Lis.init();
+				if (Lis.nav != false) {
+					//valida se o vue existe
+					if (typeof window.Vue !== "undefined") {
+						window.initVueDefault(document.querySelector("nav"));
 					}
+				}
 
-					if (Lis.nav != false) {
-						//valida se o vue existe
-						if (typeof window.Vue !== "undefined") {
-							window.initVueDefault(document.querySelector("nav"));
-						}
-					}
+				setTimeout(function () {
+					//apos o carregamento some a tela de carregamento
+					Lis.carregandoHide();
+				}, 300);
+			};
+		}
 
-					setTimeout(function () {
-						//apos o carregamento some a tela de carregamento
-						Lis.carregandoHide();
-					}, 300);
-				};
-			}
+		document.querySelector("html").onerror = function (erro) {
+			window.location.href = VarsGlobal["url"]+"/error";
 		};
-
-		// document.querySelector("body").onerror = function (erro) {
-		//     if (window.location.href != URLS.dominioErros + "700.html") {
-		//         window.location.href = URLS.dominioErros + "700.html";
-		//     }
-		// };
 	}
 
 	//incluindo funções na Lis ====================================
@@ -216,48 +187,6 @@ try {
 		var texto = await data.text();
 
 		return texto;
-	};
-
-	/**
-	 * Esconde a tela de carregando
-	 *
-	 * @return {void} - Função não tem retorno
-	 */
-	Lis.carregandoHide = function () {
-		const carregando = document.querySelector("carregando");
-		const pagina = document.querySelector("body");
-
-		carregando.classList.remove("scale-in");
-		carregando.classList.add("scale-out");
-		setTimeout(function () {
-			carregando.style.display = "none";
-			pagina.style.display = null;
-			setTimeout(function () {
-				pagina.classList.remove("scale-out");
-				pagina.classList.add("scale-in");
-			}, 200);
-		}, 500);
-	};
-
-	/**
-	 * Exibe a tela de carregando
-	 *
-	 * @return {void} - Função não tem retorno
-	 */
-	Lis.carregandoShow = function () {
-		const carregando = document.querySelector("carregando");
-		const pagina = document.querySelector("body");
-
-		pagina.classList.remove("scale-in");
-		pagina.classList.add("scale-out");
-		setTimeout(function () {
-			pagina.style.display = "none";
-			carregando.style.display = null;
-			setTimeout(function () {
-				carregando.classList.remove("scale-out");
-				carregando.classList.add("scale-in");
-			}, 200);
-		}, 500);
 	};
 
 	/**
