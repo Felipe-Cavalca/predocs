@@ -265,10 +265,12 @@ try {
 	 * @param {string} component Nome do component a ser colocado
 	 * @param {string} element local onde o elemento será criado
 	 * @param {string} local - como será criado o elemento (append, prepend)
+	 * @param {array} js - array de strings com os nomes dos js dos componentes
+	 * @param {array} css - array de strings com os nomes dos css dos componentes
 	 *
 	 * @return {void} - Função não tem retorno
 	 */
-	Lis.createComponent = function (component, element, local) {
+	Lis.createComponent = function (component, element, local, css = [], js = []) {
 		if(component == "carregando"){ //elemento carregando recebe classes e ids para que de o efeito certo
 			var elemento = document.createElement(component);
 		}else{
@@ -283,7 +285,10 @@ try {
 			default:
 				document.querySelector(element).prepend(elemento);
 		}
-		elemento.innerHTML = Lis.get(validaUrl("/components/" + component + ".html"), false);
+
+		elemento.innerHTML = Lis.get(validaUrl("/components/html/" + component + ".html"), false);
+		incluiScript(js, "js");
+		incluiScript(css, "css");
 	};
 
 	/**
