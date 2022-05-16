@@ -13,9 +13,21 @@ try {
 	];
 
 	const stylesGlobais = [
+		"/css/global/variaveis.css", //arquivo de variaveis css
+		"/coreCss", //arquivo do core css
 		"/framework/bootstrap-5.1.3-dist/css/bootstrap.css", //bootstrap version 5.1.3
 		"/css/global/variaveisBootstrap.css", //arquivo para substituir variaveis do bootstrap
 		"https://fonts.googleapis.com/icon?family=Material+Icons", // google icons
+	];
+
+	const componentsGlobal = [
+		{
+			component: "nav",
+			element: "body",
+			local: "prepend",
+			css: ["/components/css/nav.css"],
+			js: ["/components/js/nav.js"],
+		}
 	];
 
 	//funções ==================================================
@@ -27,14 +39,19 @@ try {
 	 * @param {string} tipo - tipo de arquivo que será adicionado na tela (css, js)
 	 * @return {void} - Função não retorna dados
 	 */
-	function incluiScript(links, tipo) {
+	async function incluiScript(links, tipo) {
 		switch (tipo) {
 			case "js":
-				links.forEach((url) => {
+				for (var i = 0; i < links.length; i++) {
 					var script = document.createElement("script");
-					script.setAttribute("src", validaUrl(url));
+					script.setAttribute("src", validaUrl(links[i]));
 					document.querySelector("body").appendChild(script);
-				});
+					await new Promise((res) => {
+						script.onload = () => {
+							res(0);
+						}
+					});
+				}
 				break;
 			case "css":
 				links.forEach((url) => {
@@ -91,23 +108,19 @@ try {
 	 *
 	 * @return {void} - Função não tem retorno
 	 */
-	function init() {
+	async function init() {
 		//seta as variavies globais
-		VarsGlobal = JSON.parse(Lis.get(Lis.validaUrl(document.querySelector("#coreJs").src.replaceAll("coreJs", "varsApp")), false));
+		VarsGlobal = await JSON.parse(Lis.get(Lis.validaUrl(document.querySelector("#coreJs").src.replaceAll("coreJs", "varsApp")), false));
 
-		//cria o elemento de carregando
-		Lis.createComponent("carregando", "html", "append", ["/components/css/carregando.css"], ["/components/js/carregando.js"]);
+		//cria o elemento de carregando //component sendo carregado antes para que se consiga exibir o carregamento
+		await Lis.createComponent("carregando", "html", "append", ["/components/css/carregando.css"], ["/components/js/carregando.js"]);
 
-		incluiScript(["/css/global/variaveis.css", "/coreCss"], "css"); //inclui o core css da aplicação
-
-		if (document.querySelector("nav") == null && Lis.nav != false) {
-			Lis.createComponent("nav", "body");
-		}
-
+		//cria os meta dados
 		createMeta();
 
+		//inclui os scripts e styles globais
 		incluiScript(stylesGlobais, "css");
-		incluiScript(scriptsGlobais, "js");
+		await incluiScript(scriptsGlobais, "js");
 
 		//incluindo arquivos css do usuario
 		if (Lis.styles) {
@@ -115,32 +128,26 @@ try {
 		}
 		//incluindo scripts dos usuarios
 		if (Lis.scripts) {
-			incluiScript(Lis.scripts, "js");
+			await incluiScript(Lis.scripts, "js");
 		}
+
+		//inclui os components na tela
+		componentsGlobal.forEach(async c => {
+			Lis.createComponent(c.component, c.element, c.local, c.css, c.js);
+		});
 
 		if (Lis) {
 			//aguarda o carregamento das paginas e executa o init
-			document.querySelector("body").onload = function () {
+			document.querySelector("body").onload = async function () {
 				if (typeof Lis.init === "function") {
-					Lis.init();
+					await Lis.init();
 				}
-
-				if (Lis.nav != false) {
-					//valida se o vue existe
-					if (typeof window.Vue !== "undefined") {
-						window.initVueDefault(document.querySelector("nav"));
-					}
-				}
-
-				setTimeout(function () {
-					//apos o carregamento some a tela de carregamento
-					Lis.carregandoHide();
-				}, 300);
+				Lis.carregandoHide();
 			};
 		}
 
 		document.querySelector("html").onerror = function (erro) {
-			window.location.href = VarsGlobal["url"]+"/error";
+			window.location.href = VarsGlobal["url"] + "/error";
 		};
 	}
 
@@ -200,13 +207,18 @@ try {
 	 * @return {void} - Função não tem retorno
 	 */
 	Lis.createComponent = function (component, element, local, css = [], js = []) {
-		if(component == "carregando"){ //elemento carregando recebe classes e ids para que de o efeito certo
-			var elemento = document.createElement(component);
-		}else{
-			var elemento = document.createElement("section");
-			elemento.setAttribute("class", "component-"+component);
+
+		if (Lis.Ncomponents && Lis.Ncomponents.includes(component)) {
+			return false;
 		}
-		switch(local){
+
+		if (component == "carregando") { //elemento carregando recebe classes e ids para que de o efeito certo
+			var elemento = document.createElement(component);
+		} else {
+			var elemento = document.createElement("section");
+			elemento.setAttribute("class", "component-" + component);
+		}
+		switch (local) {
 			case "append":
 				document.querySelector(element).append(elemento);
 				break;
@@ -218,6 +230,7 @@ try {
 		elemento.innerHTML = Lis.get(validaUrl("/components/html/" + component + ".html"), false);
 		incluiScript(js, "js");
 		incluiScript(css, "css");
+		return true;
 	};
 
 	/**
@@ -231,7 +244,7 @@ try {
 			"submit",
 			async function (event) {
 				event.preventDefault();
-				if(await before() != false){
+				if (await before() != false) {
 					const data = new FormData(event.target);
 					var url = validaUrl("/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
 					var resp = {};

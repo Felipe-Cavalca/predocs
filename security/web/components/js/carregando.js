@@ -3,8 +3,6 @@ var body = document.querySelector("body");
 body.setAttribute("class", "scale-transition scale-out");
 body.setAttribute("style", "display: none;");
 
-// incluiScript(["/css/global/carregando.css"], "css");
-
 var carregando = document.querySelector("carregando");
 carregando.setAttribute("class", "scale-transition scale-in");
 

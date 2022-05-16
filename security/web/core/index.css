@@ -1,9 +1,4 @@
 html,
-body,
-carregando {
+body{
 	background-color: var(--background-color);
-}
-
-nav {
-	background-color: var(--background-color-nav) !important;
 }
