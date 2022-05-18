@@ -28,33 +28,17 @@ if (isset($url[1]) && file_exists("security/server/controllers/" . $url[1] . "Co
 
 		//verifica se o retorno é uma função
 		if (is_array($retornoFuncao)) {
-			$_Retorno["funcao"] = $retornoFuncao;
+			$_Retorno = $retornoFuncao;
 		} else {
-			$_Retorno["funcao"]["retorno"] = $retornoFuncao;
-		}
-
-		//define a resposta padrão de sucesso
-		$_Retorno["servidor"] = [
-			"stts" => true,
-			"msg" => "Função executada com sucesso"
-		];
-
-		//verifica se foi passado um parametro
-		if (isset($url[3])) {
-			$_GET["param"] = $url[3];
-			unset($url);
+			$_Retorno["retorno"] = $retornoFuncao;
 		}
 	} else {
-		$_Retorno["servidor"] = [
-			"stts" => false,
-			"funcao" => "Função não localizada no controller"
-		];
+		//função não localizada no controller
+		http_response_code(501);
 	}
 } else {
-	$_Retorno["servidor"] = [
-		"status" => false,
-		"msg" => "Controller não encontrado"
-	];
+	//controller não localizado
+	http_response_code(501);
 }
 
 //retorna os valores

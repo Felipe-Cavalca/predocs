@@ -13,6 +13,14 @@ include_once("security/core/Config.php"); //config estende a arquivo
 include_once("security/core/Banco.php"); //banco estende a config
 include_once("security/core/FuncoesApp.php"); //funcoes da aplicação que está sendo desenvolvida
 
+//valida se os erros do php serão exibidos ou não
+$config = new Config();
+if ($config->debug) {
+	ini_set("display_errors", 1);
+} else {
+	ini_set("display_errors", 0);
+}
+
 try {
 	if (isset($_GET['_Pagina'])) {
 		switch (explode("/", $_GET['_Pagina'])[0]) {
@@ -50,7 +58,6 @@ try {
 		retornar("security/web/pages/index"); //retorna o index da aplicação
 	}
 } catch (Exception $e) {
-	$config = new Config();
 	if ($config->debug) {
 		pr($e);
 	} else {
