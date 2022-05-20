@@ -83,7 +83,7 @@ function retornar(string $caminho)
 	if (!file_exists($caminho)) {
 		$config = new Config();
 		if ($config->debug) {
-			pr("Caminhoa não existe");
+			pr("Caminho não existe");
 		} else {
 			header("Location: " . $config->url . "error"); // retorna o usuario para a pagina de erro
 		}
