@@ -94,7 +94,8 @@ class Banco extends Config
 	 * indices do array:
 	 * tabela - qual tabela será pesquisada
 	 * campos - os campos que são pesquisados
-	 * igual - pesquisa os iguais ['indice' => 'valor', .....]
+	 * igual array - pesquisa os iguais ['indice' => 'valor', .....]
+	 * igual string - coloca a string apos o where da query
 	 * contar - true para contar a quantidade de registros na tabela
 	 *
 	 * @param array $arr
@@ -124,11 +125,14 @@ class Banco extends Config
 			if (isset($arr["igual"])) {
 				$query .= "WHERE ";
 
-				foreach ($arr["igual"] as $campo => $valor) {
-					$query .= "`" . $campo . "` = '" . $valor . "' AND ";
+				if (is_array($arr["igual"])) {
+					foreach ($arr["igual"] as $campo => $valor) {
+						$query .= "`" . $campo . "` = '" . $valor . "' AND ";
+					}
+					$query = rtrim($query, " AND");
+				} else {
+					$query .= $arr["igual"];
 				}
-
-				$query = rtrim($query, " AND");
 			}
 
 			$query = rtrim($query, " ");
