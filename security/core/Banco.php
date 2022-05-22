@@ -2,7 +2,7 @@
 
 class Banco extends Config
 {
-	public $pdo;
+	public $conexao;
 
 	public function __construct()
 	{
@@ -16,11 +16,11 @@ class Banco extends Config
 	 */
 	function conexao()
 	{
-		if (empty($this->pdo)) {
+		if (empty($this->conexao)) {
 			$config = $this->getConfigBanco();
 
 			try {
-				$this->pdo = new PDO($config["stringConn"], $config["credenciais"]["login"], $config["credenciais"]["senha"]);
+				$this->conexao = new PDO($config["stringConn"], $config["credenciais"]["login"], $config["credenciais"]["senha"]);
 			} catch (Exception $e) {
 				$retorno = [
 					"status" => false,
@@ -34,7 +34,7 @@ class Banco extends Config
 				return $retorno;
 			}
 		} else {
-			return $this->pdo;
+			return $this->conexao;
 		}
 	}
 
