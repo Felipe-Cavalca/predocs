@@ -58,7 +58,7 @@ class Banco extends Config
 				throw new Exception("Nenhuma tabela definida para inserir os dados");
 			}
 
-			if($created){
+			if ($created) {
 				//cria os campos de criado e modificado
 				$dados["created"] = date("Y-m-d H:m:s");
 				$dados["modified"] = date("Y-m-d H:m:s");
@@ -194,15 +194,8 @@ class Banco extends Config
 			if (!$conn) {
 				throw new Exception('A conexão não foi estabelecida');
 			}
-			$execucao = $conn->prepare($query);
-			$execucao->execute();
-
-			$retorno = [];
-			foreach ($execucao as $res) {
-				$retorno[] = $res;
-			}
-
-			return ['status' => true, 'retorno' => $retorno];
+			$execucao = $conn->query($query);
+			return ['status' => true, 'retorno' => $execucao->fetchAll(PDO::FETCH_ASSOC)];
 		} catch (Exception $e) {
 			$retorno = [
 				"status" => false,
