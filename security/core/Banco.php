@@ -155,10 +155,10 @@ class Banco extends Config
 				throw new Exception("A conexão não foi estabelecida");
 			}
 
-			$execucao = $conn->prepare($query);
-			$execucao->execute();
+			$execucao = $conn->query($query);
 
 			if (isset($arr["contar"]) && $arr["contar"]) {
+				$execucao->execute();
 				$retorno = $execucao->rowCount();
 			} else {
 				$retorno = $execucao->fetchAll(PDO::FETCH_ASSOC);
