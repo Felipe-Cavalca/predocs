@@ -44,9 +44,10 @@ class Banco extends Config
 	 *
 	 * @param array $dados array associativo ['campo' => 'valor', 'campo2' => 'valor2', ...]
 	 * @param string $tabela nome da tabela
+	 * @param boolean $created - diz se a tabela contem os campos created e modified
 	 * @return array
 	 */
-	public function insert($dados = [], $tabela = '')
+	public function insert($dados = [], $tabela = '', $created = true)
 	{
 		try {
 			//verifica se os dados ou a tabela estão vazios
@@ -57,9 +58,11 @@ class Banco extends Config
 				throw new Exception("Nenhuma tabela definida para inserir os dados");
 			}
 
-			//cria os campos de criado e modificado
-			$dados["created"] = date("Y-m-d H:m:s");
-			$dados["modified"] = date("Y-m-d H:m:s");
+			if($created){
+				//cria os campos de criado e modificado
+				$dados["created"] = date("Y-m-d H:m:s");
+				$dados["modified"] = date("Y-m-d H:m:s");
+			}
 
 			//transfomra o array associativo em script sql
 			$campos = implode(", ", array_Keys($dados));
