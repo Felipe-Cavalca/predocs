@@ -33,9 +33,8 @@ class Banco extends Config
 
 				return $retorno;
 			}
-		} else {
-			return $this->conexao;
 		}
+		return $this->conexao;
 	}
 
 	/**
