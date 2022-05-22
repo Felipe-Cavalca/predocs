@@ -2,7 +2,7 @@
 
 class Banco extends Config
 {
-	private $pdo;
+	public $pdo;
 
 	public function __construct()
 	{
