@@ -16,14 +16,22 @@ class Banco extends Config
 	 */
 	function conexao()
 	{
-		if (empty($pdo)) {
+		if (empty($this->pdo)) {
 			$config = $this->getConfigBanco();
 
 			try {
-				$pdo = new PDO($config["stringConn"], $config["credenciais"]["login"], $config["credenciais"]["senha"]);
-				return $pdo;
+				$this->pdo = new PDO($config["stringConn"], $config["credenciais"]["login"], $config["credenciais"]["senha"]);
 			} catch (Exception $e) {
-				return false;
+				$retorno = [
+					"status" => false,
+					"msg" => "Houve um erro ao se conectar com a base de dados"
+				];
+
+				if ($this->debug) {
+					$retorno['exception'] = $e;
+				}
+
+				return $retorno;
 			}
 		} else {
 			return $this->pdo;
