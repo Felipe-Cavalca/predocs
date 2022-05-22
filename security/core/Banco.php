@@ -150,10 +150,7 @@ class Banco extends Config
 			if (isset($arr["contar"]) && $arr["contar"]) {
 				$retorno = $execucao->rowCount();
 			} else {
-				$retorno = [];
-				foreach ($execucao as $res) {
-					$retorno[] = $res;
-				}
+				$retorno = $execucao->fetchAll(PDO::FETCH_ASSOC);
 			}
 
 			return ["status" => true, "retorno" => $retorno];
