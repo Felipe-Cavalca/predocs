@@ -193,8 +193,16 @@ class Banco extends Config
 			if (!$conn) {
 				throw new Exception('A conexão não foi estabelecida');
 			}
-			$execucao = $conn->query($query);
-			return ['status' => true, 'retorno' => $execucao->fetchAll(PDO::FETCH_ASSOC)];
+
+			$execucao = $conn->prepare($query);
+			$execucao->execute();
+
+			$retorno = [];
+			foreach ($execucao as $res) {
+				$retorno[] = $res;
+			}
+
+			return ['status' => true, 'retorno' => $retorno];
 		} catch (Exception $e) {
 			$retorno = [
 				"status" => false,
