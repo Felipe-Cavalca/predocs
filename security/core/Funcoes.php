@@ -27,37 +27,3 @@ function listarArquivos(string $path = '/')
 	$diretorio->close();
 	return $arquivos;
 }
-
-/**
- * Retorna o mimetype do arquivo
- *
- * @param string - caminho até o arquivo
- * @return string - mimetype do arquivo
- */
-function getMimeType(string $arquivo)
-{
-	if (!empty($arquivo) && file_exists($arquivo)) {
-		switch (getExt($arquivo)) {
-			case "js":
-				return "application/javascript";
-			case "css":
-				return "text/css";
-			default:
-				return mime_content_type($arquivo);
-				break;
-		}
-	} else {
-		return "text/plain";
-	}
-}
-
-/**
- * Retorna a extenção do arquivo
- * @param string - caminho até o arquivo
- * @return string - extenção do arquivo
- */
-function getExt(string $arquivo)
-{
-	$arrayArquivo = explode(".", $arquivo);
-	return $arrayArquivo[count($arrayArquivo) - 1];
-}

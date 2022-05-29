@@ -51,8 +51,8 @@ class Arquivo
 		//caso o arquivo exista salva o caminho e a extenção
 		if (file_exists($arquivo)) {
 			$this->path = $arquivo;
-			$this->ext = getExt($this->path);
-			$this->mime = getMimeType($this->path);
+			$this->ext = $this->getExt();
+			$this->mime = $this->getMimeType();
 			return true;
 		}
 
@@ -127,7 +127,7 @@ class Arquivo
 				include_once($this->path);
 				break;
 			default:
-				header("Content-Type: " . getMimeType($this->path));
+				header("Content-Type: " . $this->getMimeType());
 				header("Cache-Control: " . $this->tempoCache());
 				readfile($this->path);
 				break;
@@ -210,5 +210,39 @@ class Arquivo
 
 		//padrão
 		return "private, max-age=" . $cache['default'] * 60 * 60 . ", stale-while-revalidate=" . $cache["revalidar"];
+	}
+
+	/**
+	 * Retorna o mimetype do arquivo
+	 *
+	 * @return string - mimetype do arquivo
+	 */
+	function getMimeType()
+	{
+		$arquivo = $this->path;
+		if (!empty($arquivo) && file_exists($arquivo)) {
+			switch ($this->getExt()) {
+				case "js":
+					return "application/javascript";
+				case "css":
+					return "text/css";
+				default:
+					return mime_content_type($arquivo);
+					break;
+			}
+		} else {
+			return "text/plain";
+		}
+	}
+
+	/**
+	 * Retorna a extenção do arquivo
+	 * @return string - extenção do arquivo
+	 */
+	function getExt()
+	{
+		$arquivo = $this->path;
+		$arrayArquivo = explode(".", $arquivo);
+		return $arrayArquivo[count($arrayArquivo) - 1];
 	}
 }
