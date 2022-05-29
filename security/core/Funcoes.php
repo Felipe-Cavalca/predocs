@@ -29,15 +29,17 @@ function listarArquivos(string $path = '/')
 }
 
 /**
+ * Função para validar se os campos existem
  * @param array $campos - indice dos campos dentro do $_POST
+ * @return array - statuts - mensagem
  */
-function validaCamposPost($campos = [])
+function issetPost($campos = [])
 {
 	foreach ($campos as $campo) {
 		if(!isset($_POST[$campo])){
 			return [
 				"status" => false,
-				"msg" => "Campo " . $campo . " não encontrado"
+				"msg" => "Campo '" . $campo . "' não encontrado"
 			];
 		}
 	}
