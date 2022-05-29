@@ -135,6 +135,15 @@ class Arquivo
 	}
 
 	/**
+	 * Função para apagar um arquivo
+	 * @return boolean - diz se o arquivo foi apagado ou não
+	 */
+	public function apagar()
+	{
+		return unlink($this->path);
+	}
+
+	/**
 	 * Função para ler o conteudo de um arquivo
 	 *
 	 * @return string - o conteudo do arquivo
