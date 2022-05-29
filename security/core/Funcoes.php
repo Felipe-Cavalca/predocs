@@ -58,14 +58,14 @@ function emptyPost($campos = []){
 	foreach ($campos as $campo){
 		if(empty($_POST[$campo])){
 			return [
-				"status" => false,
-				"msg" => "Campo '" . $campo . "' não pode ser vazio"
+				"status" => true,
+				"msg" => "Campo '" . $campo . "' está vazio"
 			];
 		}
 	}
 
 	return [
-		"status" => true,
+		"status" => false,
 		"msg" => "Todos os campos estão ok"
 	];
 }
