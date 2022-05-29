@@ -49,3 +49,23 @@ function issetPost($campos = [])
 		"msg" => "Todos os campos existem"
 	];
 }
+
+/**
+ * Função para validar se os campos não são vazios
+ * @param array $campos array com as strings a serem validadasimage.pngval
+ */
+function emptyPost($campos = []){
+	foreach ($campos as $campo){
+		if(empty($_POST[$campo])){
+			return [
+				"status" => false,
+				"msg" => "Campo '" . $campo . "' não pode ser vazio"
+			];
+		}
+	}
+
+	return [
+		"status" => true,
+		"msg" => "Todos os campos estão ok"
+	];
+}
