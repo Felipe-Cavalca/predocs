@@ -22,7 +22,7 @@ class Banco extends Config
 			try {
 				switch($config["tipo"]){
 					case "sqlite":
-						$this->conexao = new PDO("sqlite:security/banco.sqlite");
+						$this->conexao = new PDO("sqlite:security/".$config["nome"].".db");
 						break;
 					case "mysql":
 					default:

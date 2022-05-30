@@ -7,9 +7,9 @@
 	},
 	"banco": {
 		"tipo": "sqlite",
+		"nome": "lis",
 		"host": "localhost",
 		"porta": "3306",
-		"nome": "lis",
 		"credenciais": {
 			"login": "root",
 			"senha": ""

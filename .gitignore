@@ -1,6 +1,7 @@
 .editorconfig
 .prettierrc
 /security/environment/localhost.json
-.vscode/*
+.vscode
 security/storage/files/
 security/session/
+security/lis.db

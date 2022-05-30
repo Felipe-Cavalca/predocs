@@ -1,5 +1,5 @@
 create table if not exists `usuario` (
-	`id` int(11) NOT NULL UNIQUE AUTO_INCREMENT,
+	`id` int(11) NOT NULL UNIQUE,
 	`nome` varchar(255) NOT NULL,
 	`sobrenome` varchar(255),
 	`email` varchar(255) NOT NULL,
