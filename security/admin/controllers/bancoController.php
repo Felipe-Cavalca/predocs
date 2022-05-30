@@ -28,9 +28,8 @@ function install()
 		}
 	}
 
-	$retorno = [
+	return [
 		"status" => true,
 		"msg" => "Banco instalado com sucesso"
 	];
-	return $retorno;
 }
