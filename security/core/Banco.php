@@ -3,6 +3,7 @@
 class Banco extends Config
 {
 	public $conexao;
+	public $tipo;
 
 	public function __construct()
 	{
@@ -20,16 +21,16 @@ class Banco extends Config
 			$config = $this->getConfigBanco();
 
 			try {
-				switch($config["tipo"]){
+				$this->tipo = $config['tipo'];
+				switch ($this->tipo) {
 					case "sqlite":
-						$this->conexao = new PDO("sqlite:security/".$config["nome"].".db");
+						$this->conexao = new PDO($config["stringConn"]);
 						break;
 					case "mysql":
 					default:
-					$this->conexao = new PDO($config["stringConn"], $config["credenciais"]["login"], $config["credenciais"]["senha"]);
-					break;
+						$this->conexao = new PDO($config["stringConn"], $config["credenciais"]["login"], $config["credenciais"]["senha"]);
+						break;
 				}
-
 			} catch (Exception $e) {
 				$retorno = [
 					"status" => false,
@@ -201,6 +202,11 @@ class Banco extends Config
 			$conn = $this->conexao();
 			if (!$conn) {
 				throw new Exception('A conexão não foi estabelecida');
+			}
+
+			if ($this->tipo == "sqlite") {
+				$query = str_replace("AUTO_INCREMENT", "", $query);
+				$query = str_replace("enum", "varchar", $query);
 			}
 
 			$execucao = $conn->prepare($query);
