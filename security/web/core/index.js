@@ -258,6 +258,23 @@ try {
 		);
 	};
 
+	/**
+	 * Função para adicionar valores ao select
+	 * @param {string} element - seletor até o select
+	 * @param {array} array - array de objetos contendo o value e o texto
+	*/
+	Lis.montaSelect = (element, array) => {
+		array.forEach(opt => {
+			let option = document.createElement('option');
+			option.setAttribute('value', opt.value ?? opt.text);
+			option.innerHTML = opt.text;
+			document.querySelector(element).appendChild(option);
+		});
+
+	};
+
+
+
 	//iniciando a pagina ===========================================
 	init();
 } catch (e) {
