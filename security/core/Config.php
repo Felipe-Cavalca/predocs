@@ -41,15 +41,16 @@ class Config extends Arquivo
 	 */
 	public function getConfigBanco()
 	{
-		$config = $this->config['banco'];
-		$retorno["tipo"] = $config['tipo'];
+		$config = $this->config["banco"];
+		$retorno["tipo"] = $config["tipo"];
+		$retorno["nome"] = $config["nome"]
 		switch ($config["tipo"]) {
 			case "sqlite":
-				$retorno['stringConn'] = "sqlite:security/" . $config["nome"] . ".db";
+				$retorno["stringConn"] = "sqlite:security/" . $config["nome"] . ".db";
 				break;
 			case "mysql":
 				$retorno["credenciais"] = $config["mysql"]["credenciais"];
-				$retorno['stringConn'] = "mysql:host={$config["mysql"]["host"]}:{$config["mysql"]["porta"]};dbname={$config["nome"]}";
+				$retorno["stringConn"] = "mysql:host={$config["mysql"]["host"]}:{$config["mysql"]["porta"]};dbname={$config["nome"]}";
 				break;
 		}
 		return $retorno;
