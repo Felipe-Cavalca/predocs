@@ -43,7 +43,7 @@ class Config extends Arquivo
 	{
 		$config = $this->config["banco"];
 		$retorno["tipo"] = $config["tipo"];
-		$retorno["nome"] = $config["nome"]
+		$retorno["nome"] = $config["nome"];
 		switch ($config["tipo"]) {
 			case "sqlite":
 				$retorno["stringConn"] = "sqlite:security/" . $config["nome"] . ".db";
