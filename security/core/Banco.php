@@ -20,7 +20,16 @@ class Banco extends Config
 			$config = $this->getConfigBanco();
 
 			try {
-				$this->conexao = new PDO($config["stringConn"], $config["credenciais"]["login"], $config["credenciais"]["senha"]);
+				switch($config["tipo"]){
+					case "sqlite":
+						$this->conexao = new PDO("sqlite:security/banco.sqlite");
+						break;
+					case "mysql":
+					default:
+					$this->conexao = new PDO($config["stringConn"], $config["credenciais"]["login"], $config["credenciais"]["senha"]);
+					break;
+				}
+
 			} catch (Exception $e) {
 				$retorno = [
 					"status" => false,

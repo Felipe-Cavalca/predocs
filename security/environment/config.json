@@ -6,6 +6,7 @@
 		"url": "http://localhost/lis"
 	},
 	"banco": {
+		"tipo": "sqlite",
 		"host": "localhost",
 		"porta": "3306",
 		"nome": "lis",
