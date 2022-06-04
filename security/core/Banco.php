@@ -196,7 +196,7 @@ class Banco extends Config
 	 * status - scuesso na query ou não
 	 * retorno - retorno da query
 	 */
-	function query($query)
+	function query($query, $select = null)
 	{
 		try {
 			$conn = $this->conexao();
@@ -209,12 +209,22 @@ class Banco extends Config
 				$query = str_replace("enum", "varchar", $query);
 			}
 
-			$execucao = $conn->prepare($query);
-			$execucao->execute();
-
-			$retorno = [];
-			foreach ($execucao as $res) {
-				$retorno[] = $res;
+			//caso a função seja um select ela retira os indices numericos e mantem somente o nome da coluna
+			if ($select) {
+				$execucao = $conn->query($query);
+				if (isset($arr["contar"]) && $arr["contar"]) {
+					$execucao->execute();
+					$retorno = $execucao->rowCount();
+				} else {
+					$retorno = $execucao->fetchAll(PDO::FETCH_ASSOC);
+				}
+			} else {
+				$execucao = $conn->prepare($query);
+				$execucao->execute();
+				$retorno = [];
+				foreach ($execucao as $res) {
+					$retorno[] = $res;
+				}
 			}
 
 			return ['status' => true, 'retorno' => $retorno];
