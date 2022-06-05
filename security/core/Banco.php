@@ -186,6 +186,13 @@ class Banco extends Config
 					"retorno" => $this->conexao->lastInsertId()
 				];
 				break;
+			case "CREATE":
+			default:
+				return [
+					"status" => true,
+					"retorno" => $this->conexao->query($query)
+				];
+				break;
 		}
 		return [
 			"status" => false
