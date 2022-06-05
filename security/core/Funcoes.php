@@ -31,12 +31,12 @@ function listarArquivos(string $path = '/')
 /**
  * Função para validar se os campos existem
  * @param array $campos - indice dos campos dentro do $_POST
- * @return array - statuts - mensagem
+ * @return ["status" => boolean, "msg" => string]
  */
 function issetPost($campos = [])
 {
 	foreach ($campos as $campo) {
-		if(!isset($_POST[$campo])){
+		if (!isset($_POST[$campo])) {
 			return [
 				"status" => false,
 				"msg" => "Campo '" . $campo . "' não encontrado"
@@ -53,10 +53,12 @@ function issetPost($campos = [])
 /**
  * Função para validar se os campos não são vazios
  * @param array $campos array com as strings a serem validadasimage.pngval
+ * @return ["status" => boolean, "msg" => string]
  */
-function emptyPost($campos = []){
-	foreach ($campos as $campo){
-		if(empty($_POST[$campo])){
+function emptyPost($campos = [])
+{
+	foreach ($campos as $campo) {
+		if (empty($_POST[$campo])) {
 			return [
 				"status" => true,
 				"msg" => "Campo '" . $campo . "' está vazio"
