@@ -2,44 +2,30 @@
 
 header("Content-Type: application/json");
 
-//divide o valor passado pela url apartir da "/" para que se consiga o controller e a função a ser chamada
 $url = explode("/", $_GET["_Pagina"]);
+$_GET["controller"] = isset($url[1]) ? $url[1] : null;
+$_GET["function"] = isset($url[2]) ? $url[2] : null;
+$_GET["param"] = isset($url[3]) ? $url[3] : null;
+unset($url);
 
-//vefifica se foi passado o controller
-if (isset($url[1]) && file_exists("security/server/controllers/" . $url[1] . "Controller.php")) {
-	$_GET["controller"] = $url[1]; //atribui o nome do controller
+$file = "security/server/controllers/" . $_GET["controller"] . "Controller.php";
 
-	//inclui o arquivo
-	include "security/server/controllers/" . $_GET["controller"] . "Controller.php";
+if (file_exists($file)) {
+	include_once($file);
 
-	//verifica se foi passada a função
-	if (isset($url[2]) && function_exists($url[2])) {
-		$_GET["funcao"] = $url[2];
-
-		//caso exista o parametro para ser enviado a função
-		if (isset($url[3])) {
-			$_GET["parametro"] = $url[3];
-			$retornoFuncao = $_GET["funcao"]($_GET["parametro"]);
-		} else {
-			$retornoFuncao = $_GET["funcao"]();
+	if (class_exists($_GET["controller"])) {
+		$obj = new $_GET["controller"]();
+		if (method_exists($obj, $_GET["function"])) {
+			$returnFunction = call_user_func([$obj, $_GET["function"]], $_GET["param"]);
 		}
-
-		unset($url); //apaga a url apos usar
-
-		//verifica se o retorno é uma função
-		if (is_array($retornoFuncao)) {
-			$_Retorno = $retornoFuncao;
-		} else {
-			$_Retorno["retorno"] = $retornoFuncao;
-		}
-	} else {
-		//função não localizada no controller
-		http_response_code(501);
+	} else if (function_exists($_GET["function"])) {
+		$returnFunction = call_user_func($_GET["function"], $_GET["param"]);
 	}
-} else {
-	//controller não localizado
-	http_response_code(501);
 }
 
-//retorna os valores
-echo json_encode($_Retorno);
+if (isset($returnFunction)) {
+	echo json_encode(is_array($returnFunction) ? $returnFunction : ["retorno" => $returnFunction]);
+} else {
+	http_response_code(404);
+	echo json_encode(["status" => false, "msg" => "A função solicitada não foi encontrada"]);
+}
