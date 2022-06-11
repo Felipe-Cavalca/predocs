@@ -16,7 +16,7 @@ function install()
 			continue;
 		}
 
-		$arquivo = new Arquivo($pasta . $sql, false, false);
+		$arquivo = new Arquivo($pasta . $sql);
 
 		if ($banco->query($arquivo->ler())['status']) {
 			continue;

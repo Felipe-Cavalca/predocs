@@ -3,9 +3,6 @@
 //classe de config extende a classe arquivo para que consiga ler os arquivos de configuração
 class Config extends Arquivo
 {
-	//config do app
-	public $nomeApp = "Lis";
-	public $ambiente = "local";
 	public $debug = false;
 	public $url = "http://localhost";
 
@@ -18,18 +15,20 @@ class Config extends Arquivo
 	 */
 	public function __construct()
 	{
-		if (file_exists($this->getAmbiente())) {
-			parent::__construct($this->getAmbiente(), false, false);
+		if (file_exists($this->getAmbienteFile())) {
+			parent::__construct($this->getAmbienteFile());
 			$this->config = $this->ler();
 		} else {
-			parent::__construct("security/environment/config.json", false, false);
-			$this->config = $this->ler();
-			parent::__construct($this->getAmbiente(), true, false);
-			$this->escrever($this->config);
+			$arquivoConfig = new Arquivo("security/environment/config.json");
+			$this->config = $arquivoConfig->ler();
+
+			$arquivo = new Arquivo($this->getAmbienteFile(), true);
+			$arquivo->escrever($this->config);
 		}
 
-		$this->nomeApp = $this->config['app']['nome'];
-		$this->ambiente = $_SERVER["HTTP_HOST"];
+		$cacheConfigApp = new Arquivo("security/cache/configApp.json", !file_exists("security/cache/configApp.json"));
+		$cacheConfigApp->escrever($this->getConfigApp());
+
 		$this->debug = $this->config['debug'];
 		$this->url = $this->config['app']['url'];
 	}
@@ -41,16 +40,15 @@ class Config extends Arquivo
 	 */
 	public function getConfigBanco()
 	{
-		$config = $this->config["banco"];
-		$retorno["tipo"] = $config["tipo"];
-		$retorno["nome"] = $config["nome"];
-		switch ($config["tipo"]) {
+		$retorno["tipo"] = $this->config["banco"]["tipo"];
+		$retorno["nome"] = $this->config["banco"]["nome"];
+		switch ($this->config["banco"]["tipo"]) {
 			case "sqlite":
-				$retorno["stringConn"] = "sqlite:security/" . $config["nome"] . ".db";
+				$retorno["stringConn"] = "sqlite:security/{$this->config["banco"]["nome"]}.db";
 				break;
 			case "mysql":
-				$retorno["credenciais"] = $config["mysql"]["credenciais"];
-				$retorno["stringConn"] = "mysql:host={$config["mysql"]["host"]}:{$config["mysql"]["porta"]};dbname={$config["nome"]}";
+				$retorno["credenciais"] = $this->config["banco"]["mysql"]["credenciais"];
+				$retorno["stringConn"] = "mysql:host={$this->config["banco"]["mysql"]["host"]}:{$this->config["banco"]["mysql"]["porta"]};dbname={$this->config["banco"]["nome"]}";
 				break;
 		}
 		return $retorno;
@@ -60,7 +58,7 @@ class Config extends Arquivo
 	 * Função para pegar o caminho do arquivo json do ambiente em que o servidor está rodando
 	 * @return string
 	 */
-	function getAmbiente()
+	function getAmbienteFile()
 	{
 		return "security/environment/" . $_SERVER["HTTP_HOST"] . ".json";
 	}

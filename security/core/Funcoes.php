@@ -71,3 +71,11 @@ function emptyPost($campos = [])
 		"msg" => "Todos os campos estão ok"
 	];
 }
+
+/**
+ * Valida se uma pasta existe, caso não exista cria a mesma
+ */
+function criaPasta($path, $permission = 0777)
+{
+	if (!is_dir($path)) mkdir($path, $permission, true);
+}

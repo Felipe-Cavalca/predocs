@@ -1,7 +1,9 @@
+security/storage/files/
+security/lis.db
+security/alphadocs.db
+security/cache/
+security/environment/localhost.json
+
 .editorconfig
 .prettierrc
-/security/environment/localhost.json
 .vscode
-security/storage/files/
-security/session/
-security/lis.db
