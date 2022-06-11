@@ -15,7 +15,7 @@ function getUrl($url)
 {
 	switch (explode("/", $url)[0]) {
 		case "varsApp":
-			return "security/cache/configApp.json";
+			return "security/config/app.json";
 		case "lis":
 			return "security/admin/controleAdmin.php";
 		case "storage":
