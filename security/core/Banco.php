@@ -27,6 +27,8 @@ class Banco extends Config
 						break;
 					case "sqlite":
 					default:
+						$caminhoArquivo = explode(":", $config["stringConn"])[1];
+						$arquivo = new Arquivo($caminhoArquivo, !file_exists($caminhoArquivo));
 						$this->conexao = new PDO($config["stringConn"]);
 						break;
 				}
@@ -206,7 +208,8 @@ class Banco extends Config
 	 */
 	function sqlite(string $query)
 	{
-		$query = str_replace("AUTO_INCREMENT", "", $query);
+		$query = str_replace("AUTO_INCREMENT", "AUTOINCREMENT", $query);
+		$query = str_replace("int(11)", "INTEGER", $query);
 		return $query;
 	}
 }

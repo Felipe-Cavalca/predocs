@@ -25,11 +25,15 @@ class Config extends Arquivo
 	 */
 	function fileConfig($arquivo = "")
 	{
-		$arquivo = "security/config/{$arquivo}.json";
-		return (file_exists($arquivo) ? $arquivo : "");
+		$file = "security/environment/{$_SERVER["HTTP_HOST"]}/{$arquivo}.json";
+		if (file_exists($file)) {
+			return $file;
+		}
 
-		// return "security/cache/{$_SERVER["HTTP_HOST"]}.json";
-		// return "security/environment/" . $_SERVER["HTTP_HOST"] . ".json";
+		$origin = new Arquivo("security/config/{$arquivo}.json", false);
+		$new = new Arquivo($file, true);
+		$new->escrever($origin->ler());
+		return $file;
 	}
 
 	/**
