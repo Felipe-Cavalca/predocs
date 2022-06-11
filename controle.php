@@ -48,7 +48,7 @@ function getUrl($url)
 			} else if (file_exists($caminho) && !is_dir($caminho)) {
 				return $caminho;
 			}
-			if(file_exists($url)){
+			if (file_exists($url)) {
 				return $url;
 			}
 	}
@@ -61,13 +61,13 @@ function getUrl($url)
  */
 function configPHP()
 {
-	criaPasta("./security/cache");
-	criaPasta("./security/storage/files");
-	criaPasta("./security/cache/session");
-
-	session_save_path("./security/cache/session");
-
 	$config = new Config();
+
+	criaPasta("./security/storage/files");
+	criaPasta("{$config->getPathEnvironment()}/cache/session");
+
+	session_save_path("{$config->getPathEnvironment()}/cache/session");
+
 	if ($config->debug) {
 		ini_set("display_errors", 1);
 	} else {

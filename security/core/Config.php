@@ -25,7 +25,7 @@ class Config extends Arquivo
 	 */
 	function fileConfig($arquivo = "")
 	{
-		$file = "security/environment/{$_SERVER["HTTP_HOST"]}/{$arquivo}.json";
+		$file = "{$this->getPathEnvironment()}/config/{$arquivo}.json";
 		if (file_exists($file)) {
 			return $file;
 		}
@@ -70,12 +70,13 @@ class Config extends Arquivo
 		$retorno["tipo"] = $config["tipo"];
 		$retorno["nome"] = $config["nome"];
 		switch ($config["tipo"]) {
-			case "sqlite":
-				$retorno["stringConn"] = "sqlite:security/database/{$config["nome"]}.db";
-				break;
 			case "mysql":
 				$retorno["credenciais"] = $config["mysql"]["credenciais"];
 				$retorno["stringConn"] = "mysql:host={$config["mysql"]["host"]}:{$config["mysql"]["porta"]};dbname={$config["nome"]}";
+				break;
+			case "sqlite":
+			default:
+				$retorno["stringConn"] = "sqlite:{$this->getPathEnvironment()}/database/{$config["nome"]}.db";
 				break;
 		}
 		return $retorno;
@@ -101,5 +102,18 @@ class Config extends Arquivo
 	{
 		$this->path = $this->fileConfig("config");
 		return $this->ler();
+	}
+
+	/**
+	 * Função para pegar o caminho até a pasta de ambiente
+	 * function for the get path environment
+	 * @return string
+	 */
+	function getPathEnvironment()
+	{
+		$name = $_SERVER["HTTP_HOST"];
+		// $name = "Teste";
+		$path = "./security/data/{$name}";
+		return $path;
 	}
 }

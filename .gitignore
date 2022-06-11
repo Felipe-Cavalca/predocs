@@ -1,7 +1,5 @@
 security/storage/files
-security/cache/
-security/database/*
-security/environment/localhost/*
+security/environment/*
 
 .editorconfig
 .prettierrc
