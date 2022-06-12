@@ -8,6 +8,7 @@ include_once("security/core/Storage.php");
 include_once("security/core/FuncoesApp.php"); //funcoes da aplicação que está sendo desenvolvida
 
 configPHP();
+$_POST = post();
 
 $arquivo = new Arquivo(getUrl($_GET['_Pagina'] ?? "index"));
 $arquivo->renderiza();
@@ -16,7 +17,8 @@ function getUrl($url)
 {
 	switch (explode("/", $url)[0]) {
 		case "varsApp":
-			return "security/config/app.json";
+			$config = new Config();
+			return "{$config->getPathEnvironment()}/config/app.json";
 		case "lis":
 			return "security/admin/controleAdmin.php";
 		case "storage":
@@ -74,4 +76,13 @@ function configPHP()
 	} else {
 		ini_set("display_errors", 0);
 	}
+}
+
+/**
+ * Função para validar se os dados estão vindo via json ou form-encode
+ */
+function post()
+{
+	$json = json_decode(file_get_contents('php://input'), true);
+	return (is_array($json) ? $json : $_POST);
 }
