@@ -15,6 +15,6 @@ class Storage extends Arquivo
         }
 
         $config = new Config();
-        parent::__construct("{$config->getPathEnvironment()}/storage/{$arquivo}");
+        parent::__construct("{$config->getPathEnvironment()}/storage/{$arquivo}", $novo);
     }
 }
