@@ -4,6 +4,7 @@ include_once("security/core/Funcoes.php");
 include_once("security/core/Arquivo.php");
 include_once("security/core/Config.php");
 include_once("security/core/Banco.php");
+include_once("security/core/Storage.php");
 include_once("security/core/FuncoesApp.php"); //funcoes da aplicação que está sendo desenvolvida
 
 configPHP();
