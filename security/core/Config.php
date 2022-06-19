@@ -15,61 +15,25 @@ class Config extends Arquivo
 	 */
 	public function __construct()
 	{
-		if (file_exists($this->getAmbienteFile())) {
-			parent::__construct($this->getAmbienteFile());
-			$this->config = $this->ler();
-		} else {
-			$arquivoConfig = new Arquivo("security/environment/config.json");
-			$this->config = $arquivoConfig->ler();
-
-			$arquivo = new Arquivo($this->getAmbienteFile(), true);
-			$arquivo->escrever($this->config);
-		}
-
-		$cacheConfigApp = new Arquivo("security/cache/configApp.json", !file_exists("security/cache/configApp.json"));
-		$cacheConfigApp->escrever($this->getConfigApp());
-
-		$this->debug = $this->config['debug'];
-		$this->url = $this->config['app']['url'];
-	}
-
-	/**
-	 * Configurar variaveis do banco
-	 *
-	 * @return array - dados do banco
-	 */
-	public function getConfigBanco()
-	{
-		$retorno["tipo"] = $this->config["banco"]["tipo"];
-		$retorno["nome"] = $this->config["banco"]["nome"];
-		switch ($this->config["banco"]["tipo"]) {
-			case "sqlite":
-				$retorno["stringConn"] = "sqlite:security/{$this->config["banco"]["nome"]}.db";
-				break;
-			case "mysql":
-				$retorno["credenciais"] = $this->config["banco"]["mysql"]["credenciais"];
-				$retorno["stringConn"] = "mysql:host={$this->config["banco"]["mysql"]["host"]}:{$this->config["banco"]["mysql"]["porta"]};dbname={$this->config["banco"]["nome"]}";
-				break;
-		}
-		return $retorno;
+		$this->debug = $this->getConfig()["debug"];
+		$this->url = $this->getConfigApp()["url"];
 	}
 
 	/**
 	 * Função para pegar o caminho do arquivo json do ambiente em que o servidor está rodando
 	 * @return string
 	 */
-	function getAmbienteFile()
+	function fileConfig($arquivo = "")
 	{
-		return "security/environment/" . $_SERVER["HTTP_HOST"] . ".json";
-	}
+		$file = "{$this->getPathEnvironment()}/config/{$arquivo}.json";
+		if (file_exists($file)) {
+			return $file;
+		}
 
-	/**
-	 * Função para pegar as variaveis do app
-	 * @return array array de configurações a serem enviadas para o front-end
-	 */
-	function getConfigApp()
-	{
-		return $this->config["app"];
+		$origin = new Arquivo("security/config/{$arquivo}.json", false);
+		$new = new Arquivo($file, true);
+		$new->escrever($origin->ler());
+		return $file;
 	}
 
 	/**
@@ -79,7 +43,43 @@ class Config extends Arquivo
 	 */
 	function getConfigAdmin()
 	{
-		return $this->config["admin"];
+		$this->path = $this->fileConfig("admin");
+		return $this->ler();
+	}
+
+	/**
+	 * Função para pegar as variaveis do app
+	 * @return array array de configurações a serem enviadas para o front-end
+	 */
+	function getConfigApp()
+	{
+		$this->path = $this->fileConfig("app");
+		return $this->ler();
+	}
+
+	/**
+	 * Configurar variaveis do banco
+	 *
+	 * @return array - dados do banco
+	 */
+	public function getConfigBanco()
+	{
+		$this->path = $this->fileConfig("banco");
+		$config = $this->ler();
+
+		$retorno["tipo"] = $config["tipo"];
+		$retorno["nome"] = $config["nome"];
+		switch ($config["tipo"]) {
+			case "mysql":
+				$retorno["credenciais"] = $config["mysql"]["credenciais"];
+				$retorno["stringConn"] = "mysql:host={$config["mysql"]["host"]}:{$config["mysql"]["porta"]};dbname={$config["nome"]}";
+				break;
+			case "sqlite":
+			default:
+				$retorno["stringConn"] = "sqlite:{$this->getPathEnvironment()}/database/{$config["nome"]}.db";
+				break;
+		}
+		return $retorno;
 	}
 
 	/**
@@ -87,8 +87,33 @@ class Config extends Arquivo
 	 *
 	 * @return array - array com os dados de cache
 	 */
-	function getconfigCache()
+	function getConfigCache()
 	{
-		return $this->config["cache"];
+		$this->path = $this->fileConfig("cache");
+		return $this->ler();
+	}
+
+	/**
+	 * Função para pegar as configurações
+	 *
+	 * @return array - array com os dados de cache
+	 */
+	function getConfig()
+	{
+		$this->path = $this->fileConfig("config");
+		return $this->ler();
+	}
+
+	/**
+	 * Função para pegar o caminho até a pasta de ambiente
+	 * function for the get path environment
+	 * @return string
+	 */
+	function getPathEnvironment()
+	{
+		$name = $_SERVER["HTTP_HOST"];
+		// $name = "Teste";
+		$path = "./security/data/{$name}";
+		return $path;
 	}
 }

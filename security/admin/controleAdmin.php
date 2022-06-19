@@ -1,5 +1,7 @@
 <?php
 
+urlAdmin($_GET['_Pagina']);
+
 /**
  * Faz a tratativa das urls do admin
  *
@@ -16,7 +18,8 @@ function urlAdmin(string $url)
 	}
 
 	if ($url[1] == "login" && count($url) == 2) {
-		retornar("security/admin/controllers/deslogadoController.php");
+		$arquivo = new Arquivo("security/admin/controllers/deslogadoController.php");
+		$arquivo->renderiza();
 
 		switch (validarPostLogin()) {
 			case "logou":
@@ -28,7 +31,8 @@ function urlAdmin(string $url)
 				echo json_encode(["stts" => false, "msg" => "Login ou senha invalidos"]);
 				return;
 			case "view":
-				retornar("security/admin/pages/login.html");
+				$arquivo->path = "security/admin/pages/login.html";
+				$arquivo->renderiza();
 				return;
 		}
 		return;
@@ -44,7 +48,8 @@ function urlAdmin(string $url)
 	}
 
 	if (empty($url[1])) {
-		retornar("security/admin/pages/index.html");
+		$arquivo = new Arquivo("security/admin/pages/index.html");
+		$arquivo->renderiza();
 		return;
 	}
 
@@ -54,7 +59,8 @@ function urlAdmin(string $url)
 			return;
 		default:
 			unset($url[0]);
-			retornar(implode("/", $url));
+			$arquivo = new Arquivo(implode("/", $url));
+			$arquivo->renderiza();
 			return;
 	}
 }
@@ -76,7 +82,8 @@ function validaControllerAdmin(array $url)
 		];
 	}
 
-	retornar($controller);
+	$arquivo = new Arquivo($controller);
+	$arquivo->renderiza();
 
 	if (function_exists($url[3])) {
 		return [

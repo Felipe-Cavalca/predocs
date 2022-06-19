@@ -27,6 +27,8 @@ class Banco extends Config
 						break;
 					case "sqlite":
 					default:
+						$caminhoArquivo = explode(":", $config["stringConn"])[1];
+						$arquivo = new Arquivo($caminhoArquivo, !file_exists($caminhoArquivo));
 						$this->conexao = new PDO($config["stringConn"]);
 						break;
 				}
@@ -76,7 +78,7 @@ class Banco extends Config
 		$valores = "'" . implode("', '", $dados) . "'";
 		$query = "INSERT INTO {$tabela} ({$campos}) VALUES ({$valores})";
 
-		return $this->query($query, "insert");
+		return $this->query($query);
 	}
 
 	/**
@@ -151,6 +153,48 @@ class Banco extends Config
 		return $this->query($query);
 	}
 
+	public function update($tabela, $dados, $where, $created = true)
+	{
+		if (empty($dados)) {
+			return [
+				"status" => false,
+				"msg" => "Não ha dados para atualizar"
+			];
+		}
+		if (empty($tabela)) {
+			return [
+				"status" => false,
+				"msg" => "Nenhuma tabela definida para atualizar"
+			];
+		}
+
+		if ($created) {
+			$dados["modified"] = date("Y-m-d H:m:s");
+		}
+
+		$dadosWhere = "";
+
+		if (is_array($where)) {
+			foreach ($where as $key => $val) {
+				$dadosWhere .= "`{$key}` = '{$val}' AND ";
+			}
+			$dadosWhere = rtrim($dadosWhere, "AND ");
+		} else if (is_string($where)) {
+			$dadosWhere .= $where;
+		}
+
+		$camposValores = "";
+		//seta a string dos dados
+		foreach ($dados as $key => $value) {
+			$camposValores .= "`{$key}` = '{$value}', ";
+		}
+		$camposValores = rtrim($camposValores, ", ");
+
+		$query = "UPDATE {$tabela} SET {$camposValores} WHERE {$dadosWhere}";
+
+		return $this->query($query);
+	}
+
 	/**
 	 * executa uma query sql
 	 *
@@ -187,6 +231,7 @@ class Banco extends Config
 				];
 				break;
 			case "CREATE":
+			case "UPDATE":
 			default:
 				return [
 					"status" => true,
@@ -206,7 +251,8 @@ class Banco extends Config
 	 */
 	function sqlite(string $query)
 	{
-		$query = str_replace("AUTO_INCREMENT", "", $query);
+		$query = str_replace("AUTO_INCREMENT", "AUTOINCREMENT", $query);
+		$query = str_replace("int(11)", "INTEGER", $query);
 		return $query;
 	}
 }

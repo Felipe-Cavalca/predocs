@@ -4,9 +4,11 @@ include_once("security/core/Funcoes.php");
 include_once("security/core/Arquivo.php");
 include_once("security/core/Config.php");
 include_once("security/core/Banco.php");
+include_once("security/core/Storage.php");
 include_once("security/core/FuncoesApp.php"); //funcoes da aplicação que está sendo desenvolvida
 
 configPHP();
+$_POST = post();
 
 $arquivo = new Arquivo(getUrl($_GET['_Pagina'] ?? "index"));
 $arquivo->renderiza();
@@ -15,7 +17,8 @@ function getUrl($url)
 {
 	switch (explode("/", $url)[0]) {
 		case "varsApp":
-			return "security/cache/configApp.json";
+			$config = new Config();
+			return "{$config->getPathEnvironment()}/config/app.json";
 		case "lis":
 			return "security/admin/controleAdmin.php";
 		case "storage":
@@ -48,7 +51,7 @@ function getUrl($url)
 			} else if (file_exists($caminho) && !is_dir($caminho)) {
 				return $caminho;
 			}
-			if(file_exists($url)){
+			if (file_exists($url)) {
 				return $url;
 			}
 	}
@@ -61,16 +64,27 @@ function getUrl($url)
  */
 function configPHP()
 {
-	criaPasta("./security/cache");
-	criaPasta("./security/storage/files");
-	criaPasta("./security/cache/session");
-
-	session_save_path("./security/cache/session");
-
 	$config = new Config();
+
+	criaPasta("./security/storage/files");
+	criaPasta("{$config->getPathEnvironment()}/cache/session");
+
+	session_save_path("{$config->getPathEnvironment()}/cache/session");
+
+	ini_set("memory_limit", "5G");
+
 	if ($config->debug) {
 		ini_set("display_errors", 1);
 	} else {
 		ini_set("display_errors", 0);
 	}
+}
+
+/**
+ * Função para validar se os dados estão vindo via json ou form-encode
+ */
+function post()
+{
+	$json = json_decode(file_get_contents('php://input'), true);
+	return (is_array($json) ? $json : $_POST);
 }

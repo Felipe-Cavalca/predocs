@@ -1,8 +1,5 @@
-security/storage/files/
-security/lis.db
-security/alphadocs.db
-security/cache/
-security/environment/localhost.json
+security/storage/files/*
+security/data/*
 
 .editorconfig
 .prettierrc
