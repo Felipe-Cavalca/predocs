@@ -133,18 +133,7 @@ class Banco extends Config
 		}
 
 		if (isset($arr["igual"]) || isset($arr["where"])) {
-			$query .= "WHERE ";
-		}
-
-		if (isset($arr["igual"])) {
-			foreach ($arr["igual"] as $campo => $valor) {
-				$query .= $campo . " = '" . $valor . "' AND ";
-			}
-			$query = rtrim($query, " AND");
-		}
-
-		if (isset($arr["where"])) {
-			$query .= $arr["where"];
+			$query .= "WHERE " . (isset($arr["igual"]) ? $this->where($arr["igual"]) : "") . ($arr["where"] ?? "");
 		}
 
 		$query = rtrim($query, " ");
@@ -153,6 +142,13 @@ class Banco extends Config
 		return $this->query($query);
 	}
 
+	/**
+	 * Função para atualizar os dados
+	 * @param string $tabela
+	 * @param array $dados - array associativo ["campo" => "valor", "campo" => "valor"]
+	 * @param array|string $where - dados where
+	 * @param boolean $campo created
+	 */
 	public function update($tabela, $dados, $where, $created = true)
 	{
 		if (empty($dados)) {
@@ -172,16 +168,7 @@ class Banco extends Config
 			$dados["modified"] = date("Y-m-d H:m:s");
 		}
 
-		$dadosWhere = "";
-
-		if (is_array($where)) {
-			foreach ($where as $key => $val) {
-				$dadosWhere .= "`{$key}` = '{$val}' AND ";
-			}
-			$dadosWhere = rtrim($dadosWhere, "AND ");
-		} else if (is_string($where)) {
-			$dadosWhere .= $where;
-		}
+		$dadosWhere = $this->where($where);
 
 		$camposValores = "";
 		//seta a string dos dados
@@ -193,6 +180,10 @@ class Banco extends Config
 		$query = "UPDATE {$tabela} SET {$camposValores} WHERE {$dadosWhere}";
 
 		return $this->query($query);
+	}
+
+	public function delete($tabela, $where){
+		return $this->query("DELETE FROM {$tabela} WHERE {$this->where($where)}");
 	}
 
 	/**
@@ -232,6 +223,7 @@ class Banco extends Config
 				break;
 			case "CREATE":
 			case "UPDATE":
+			case "DELETE":
 			default:
 				return [
 					"status" => true,
@@ -254,5 +246,30 @@ class Banco extends Config
 		$query = str_replace("AUTO_INCREMENT", "AUTOINCREMENT", $query);
 		$query = str_replace("int(11)", "INTEGER", $query);
 		return $query;
+	}
+
+	/**
+	 * Função para montar a query where
+	 * @param string|array $where - dados do where
+	 * @return string query where
+	 */
+	private function where($where)
+	{
+		$dadosWhere = "";
+
+		if (is_array($where)) {
+			foreach ($where as $key => $val) {
+				if (is_integer($val) || is_bool($val)) {
+					$dadosWhere .= "{$key} = {$val} AND ";
+				} else {
+					$dadosWhere .= "{$key} = '{$val}' AND ";
+				}
+			}
+			$dadosWhere = rtrim($dadosWhere, "AND ");
+		} else if (is_string($where)) {
+			$dadosWhere .= $where . " ";
+		}
+
+		return $dadosWhere;
 	}
 }
