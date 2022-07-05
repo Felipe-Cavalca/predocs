@@ -152,10 +152,10 @@ try {
     //incluindo funções na Lis ====================================
 
     /**
-     * Adicionando a função valida url na lis
+     * Funçãom para retornar a url completa do sistema
      *
      * @param {string} url- url que será montada
-     * @returns {string} - url a ser usada
+     * @returns {string} - url mon
      */
     Lis.validaUrl = (url) => {
         return validaUrl(url);
