@@ -3,13 +3,13 @@
  * @param {domElement} e elemento dom
  */
 function initVueDefault(e) {
-	const pagina = {
-		data() {
-			return {
-				VarsGlobal: VarsGlobal,
-			};
-		},
-	};
+    const pagina = {
+        data() {
+            return {
+                VarsGlobal: VarsGlobal,
+            };
+        },
+    };
 
-	Vue.createApp(pagina).mount(e);
+    Vue.createApp(pagina).mount(e);
 }
