@@ -174,10 +174,9 @@ try {
     };
 
     /**
-     *
-     * @param {string} url -  link para a requisição post
-     * @param {obj} dados -  dados a serem enviados para o servidor
-     * @param {boolean} assincrona -  função assincrona ?
+     * Função para realizar um get
+     * @param {string} url - link para a requisição post
+     * @param {obj} dados - dados a serem enviados para o servidor
      * @param {obj} header - cabeçalho da requisição
      * @return resposta do post
      */
