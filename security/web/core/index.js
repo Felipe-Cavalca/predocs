@@ -264,7 +264,7 @@ try {
     Lis.montaSelect = (element, array) => {
         array.forEach(opt => {
             let option = document.createElement('option');
-            option.setAttribute('value', opt.value ? ? opt.text);
+            option.setAttribute('value', opt.value ? opt.value : opt.text);
             option.innerHTML = opt.text;
             document.querySelector(element).appendChild(option);
         });
