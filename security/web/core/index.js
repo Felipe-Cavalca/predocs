@@ -146,6 +146,8 @@ try {
     Lis.getUrl = (url) => {
         if (url.substr(0, 1) == "/") {
             return VarsGlobal.url + url;
+        } else {
+            return url;
         }
     };
 
