@@ -112,9 +112,22 @@ function validaLoginAdmin()
 {
 	session_start();
 
+	validaAuth();
+
 	if (isset($_SESSION["logadoAdminFramework"]) && $_SESSION["logadoAdminFramework"]) {
 		return true;
 	}
 
 	return false;
+}
+
+function validaAuth(){
+	if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+		$config = new Config;
+		$credenciais = $config->getConfigAdmin()["credenciais"];
+
+		if ($_SERVER['PHP_AUTH_USER'] == $credenciais["login"] && $_SERVER['PHP_AUTH_PW'] == $credenciais["senha"]) {
+			$_SESSION["logadoAdminFramework"] = true;
+		}
+	}
 }
