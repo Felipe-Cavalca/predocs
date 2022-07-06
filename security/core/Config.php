@@ -113,7 +113,7 @@ class Config extends Arquivo
 	{
 		$name = $_SERVER["HTTP_HOST"];
 		// $name = "Teste";
-		$path = "./security/data/{$name}";
+		$path = "./data/{$name}";
 		return $path;
 	}
 }
