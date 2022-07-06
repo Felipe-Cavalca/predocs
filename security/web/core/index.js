@@ -162,6 +162,7 @@ try {
     };
 
     /**
+     * Função para fazer um requisição GET
      *
      * @param {string} url - Url destino da solicitação
      * @param {boolean} assincrona - função assincrona ? - padrão false
