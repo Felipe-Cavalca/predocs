@@ -42,7 +42,7 @@ try {
             case "js":
                 for (var i = 0; i < links.length; i++) {
                     var script = document.createElement("script");
-                    script.setAttribute("src", validaUrl(links[i]));
+                    script.setAttribute("src", Lis.getUrl(links[i]));
                     document.querySelector("body").appendChild(script);
                     await new Promise((res) => {
                         script.onload = () => {
@@ -55,25 +55,11 @@ try {
                 links.forEach((url) => {
                     var style = document.createElement("link");
                     style.setAttribute("rel", "stylesheet");
-                    style.setAttribute("href", validaUrl(url));
+                    style.setAttribute("href", Lis.getUrl(url));
                     document.querySelector("head").appendChild(style);
                 });
                 break;
         }
-    }
-
-    /**
-     * Função para pegar a url correta
-     *
-     * @param {string} url - recebe a url
-     * @return {string} - url a ser usada
-     */
-    function validaUrl(url) {
-        if (url.substr(0, 1) == "/") {
-            return VarsGlobal.url + url;
-        }
-
-        return url;
     }
 
     /**
@@ -108,7 +94,7 @@ try {
      */
     async function init() {
         //seta as variavies globais
-        VarsGlobal = await JSON.parse(Lis.get(Lis.validaUrl(document.querySelector("#coreJs").src.replaceAll("coreJs", "varsApp")), false));
+        VarsGlobal = await JSON.parse(Lis.get(document.querySelector("#coreJs").src.replaceAll("coreJs", "varsApp"), false));
 
         //cria o elemento de carregando //component sendo carregado antes para que se consiga exibir o carregamento
         await Lis.createComponent("carregando", "html", "append", ["/components/css/carregando.css"], ["/components/js/carregando.js"]);
@@ -145,7 +131,7 @@ try {
         }
 
         document.querySelector("html").onerror = function(erro) {
-            window.location.href = VarsGlobal["url"] + "/error";
+            window.location.href = Lis.getUrl("/error");
         };
     }
 
@@ -155,10 +141,12 @@ try {
      * Funçãom para retornar a url completa do sistema
      *
      * @param {string} url- url que será montada
-     * @returns {string} - url mon
+     * @returns {string} - url montada
      */
-    Lis.validaUrl = (url) => {
-        return validaUrl(url);
+    Lis.getUrl = (url) => {
+        if (url.substr(0, 1) == "/") {
+            return VarsGlobal.url + url;
+        }
     };
 
     /**
@@ -169,7 +157,7 @@ try {
      */
     Lis.get = function(url, assincrona = false) {
         var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", url, assincrona);
+        xhttp.open("GET", Lis.getUrl(url), assincrona);
         xhttp.send();
         return xhttp.responseText;
     };
@@ -182,7 +170,7 @@ try {
      * @return resposta do post
      */
     Lis.post = async function(url, dados, headers = {}) {
-        const data = await fetch(url, {
+        const data = await fetch(Lis.getUrl(url), {
             body: dados,
             method: "POST",
             headers: headers,
@@ -225,7 +213,7 @@ try {
                 document.querySelector(element).prepend(elemento);
         }
 
-        elemento.innerHTML = Lis.get(validaUrl("/components/html/" + component + ".html"), false);
+        elemento.innerHTML = Lis.get("/components/html/" + component + ".html", false);
         incluiScript(js, "js");
         incluiScript(css, "css");
         return true;
@@ -244,7 +232,7 @@ try {
                 event.preventDefault();
                 if (await before() != false) {
                     const data = new FormData(event.target);
-                    var url = validaUrl("/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
+                    var url = Lis.getUrl("/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
                     var resp = {};
                     if (document.querySelector(element).method == "post") {
                         resp = JSON.parse(await Lis.post(url, data));
