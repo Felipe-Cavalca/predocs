@@ -69,6 +69,7 @@ class Config extends Arquivo
 
 		$retorno["tipo"] = $config["tipo"];
 		$retorno["nome"] = $config["nome"];
+		$retorno["instalado"] = $config["instalado"];
 		switch ($config["tipo"]) {
 			case "mysql":
 				$retorno["credenciais"] = $config["mysql"]["credenciais"];
