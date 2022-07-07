@@ -83,6 +83,16 @@ class Config extends Arquivo
 	}
 
 	/**
+	 * Salvar variaveis no banco
+	 *
+	 * @param array $config - configurações a serem salvas
+	 */
+	public function setConfigBanco($configs){
+		$this->path = $this->fileConfig("banco");
+		$this->escrever($configs);
+	}
+
+	/**
 	 * Função para pegar as configurações de cache
 	 *
 	 * @return array - array com os dados de cache

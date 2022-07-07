@@ -1,4 +1,5 @@
 {
+    "instalado": false,
     "tipo": "sqlite",
     "nome": "lis",
     "sqlite": {},
