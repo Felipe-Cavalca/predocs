@@ -33,6 +33,16 @@ class Arquivo
 		$this->path = $arquivo;
 	}
 
+	public function upload($arquivo, $destino)
+	{
+		return $this->mover($arquivo, $destino);
+	}
+
+	public function mover($origem, $destino)
+	{
+		return move_uploaded_file($origem, $destino);
+	}
+
 	/**
 	 * Função para pegar o conteudo de um arquivo
 	 *
