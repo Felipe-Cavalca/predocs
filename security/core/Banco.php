@@ -91,6 +91,7 @@ class Banco extends Config
 	 * @param array join - joins da tabela ["join1","join2","join3","join4".....]
 	 * @param array igual - campos que serão pesquisados ["campo" => "valor", "campo2" => "valor", "campo3" => "valor", ...]
 	 * @param string where - String que será adicionada apos o where
+	 * @param string order - String que será adicionada a pos o order
 	 * @param boolean contar - se serão listados apenas a quantidade de registros
 	 * @return array ["status" => boolean, "retorno" => array]
 	 */
@@ -134,6 +135,10 @@ class Banco extends Config
 
 		if (isset($arr["igual"]) || isset($arr["where"])) {
 			$query .= "WHERE " . (isset($arr["igual"]) ? $this->where($arr["igual"]) : "") . ($arr["where"] ?? "");
+		}
+
+		if(isset($arr["order"])){
+			$query .= " ORDER BY {$arr["order"]}";
 		}
 
 		$query = rtrim($query, " ");
