@@ -1,5 +1,5 @@
 security/storage/files/*
-data/*
+web/data/*
 
 .editorconfig
 .prettierrc
