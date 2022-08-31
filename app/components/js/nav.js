@@ -1,0 +1,1 @@
+initVueDefault("nav");

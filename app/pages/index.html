@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login</title>
+	</head>
+
+	<body>
+		<section id="app">
+			<div class="card" style="margin: 40px 20px 5px 20px">
+				<div class="card-header">
+					<h1><b>INDEX</b></h1>
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">{{VarsGlobal['nome']}}</h5>
+					<p class="card-text">Um framework para desenvolvimento web</p>
+					<a href="deslogado/cadastro.html" class="btn btn-primary">Cadastro</a>
+					<br /><br />
+					<a href="#" class="btn btn-primary">Login</a>
+				</div>
+			</div>
+		</section>
+
+		<script type="text/javascript">
+			const Lis = {
+				init() {
+					initVueDefault("#app");
+				},
+				Ncomponents: [
+					"nav"
+				]
+			};
+		</script>
+		<script id="coreJs" src="../core/index.js"></script>
+	</body>
+</html>
