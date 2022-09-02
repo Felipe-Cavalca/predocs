@@ -1,7 +1,8 @@
 try {
     //define as variaveis globais
     var VarsGlobal = {
-        url: 'http://localhost'
+        nome: "Lis",
+        server: 'http://localhost/lis'
     };
 
     //links a serem incluidos na pagina
@@ -14,7 +15,7 @@ try {
 
     const stylesGlobais = [
         "/css/global/variaveis.css", //arquivo de variaveis css
-        "/coreCss", //arquivo do core css
+        "/core/index.css", //arquivo do core css
         "/framework/bootstrap-5.1.3-dist/css/bootstrap.css", //bootstrap version 5.1.3
         "/css/global/variaveisBootstrap.css", //arquivo para substituir variaveis do bootstrap
         "https://fonts.googleapis.com/icon?family=Material+Icons", // google icons
@@ -93,8 +94,6 @@ try {
      * @return {void} - Função não tem retorno
      */
     async function init() {
-        //seta as variavies globais
-        VarsGlobal = await JSON.parse(Lis.get(document.querySelector("#coreJs").src.replaceAll("coreJs", "varsApp"), false));
 
         //cria o elemento de carregando //component sendo carregado antes para que se consiga exibir o carregamento
         await Lis.createComponent("carregando", "html", "append", ["/components/css/carregando.css"], ["/components/js/carregando.js"]);
@@ -122,7 +121,7 @@ try {
 
         if (Lis) {
             //aguarda o carregamento das paginas e executa o init
-            document.querySelector("body").onload = async function() {
+            document.querySelector("body").onload = async function () {
                 if (typeof Lis.init === "function") {
                     await Lis.init();
                 }
@@ -130,7 +129,7 @@ try {
             };
         }
 
-        document.querySelector("html").onerror = function(erro) {
+        document.querySelector("html").onerror = function (erro) {
             window.location.href = Lis.getUrl("/error");
         };
     }
@@ -145,7 +144,7 @@ try {
      */
     Lis.getUrl = (url) => {
         if (url.substr(0, 1) == "/") {
-            return VarsGlobal.url + url;
+            return document.querySelector("#coreJs").src.replaceAll("/core/index.js", "") + url;
         } else {
             return url;
         }
@@ -157,7 +156,7 @@ try {
      * @param {string} url - Url destino da solicitação
      * @param {boolean} assincrona - função assincrona ? - padrão false
      */
-    Lis.get = function(url, assincrona = false) {
+    Lis.get = function (url, assincrona = false) {
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", Lis.getUrl(url), assincrona);
         xhttp.send();
@@ -171,7 +170,7 @@ try {
      * @param {obj} header - cabeçalho da requisição
      * @return resposta do post
      */
-    Lis.post = async function(url, dados, headers = {}) {
+    Lis.post = async function (url, dados, headers = {}) {
         const data = await fetch(Lis.getUrl(url), {
             body: dados,
             method: "POST",
@@ -194,7 +193,7 @@ try {
      *
      * @return {void} - Função não tem retorno
      */
-    Lis.createComponent = function(component, element, local, css = [], js = []) {
+    Lis.createComponent = function (component, element, local, css = [], js = []) {
 
         if (Lis.Ncomponents && Lis.Ncomponents.includes(component)) {
             return false;
@@ -230,11 +229,11 @@ try {
     Lis.form = (element, before, after) => {
         document.querySelector(element).addEventListener(
             "submit",
-            async function(event) {
+            async function (event) {
                 event.preventDefault();
                 if (await before() != false) {
                     const data = new FormData(event.target);
-                    var url = Lis.getUrl("/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
+                    var url = Lis.getUrl(VarsGlobal.server + "/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
                     var resp = {};
                     if (document.querySelector(element).method == "post") {
                         resp = JSON.parse(await Lis.post(url, data));
