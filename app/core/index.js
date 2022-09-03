@@ -88,6 +88,15 @@ try {
         html.setAttribute("lang", "pt-br");
     }
 
+    function PWA(){
+        var link = document.createElement("link");
+        link.setAttribute("rel", "manifest");
+        link.setAttribute("href", Lis.getUrl("/core/manifest.json"));
+        document.querySelector("head").prepend(link);
+
+        incluiScript(["/core/swAdd.js"], "js");
+    }
+
     /**
      * Função chamada para iniciar o framework
      *
@@ -97,6 +106,9 @@ try {
 
         //cria o elemento de carregando //component sendo carregado antes para que se consiga exibir o carregamento
         await Lis.createComponent("carregando", "html", "append", ["/components/css/carregando.css"], ["/components/js/carregando.js"]);
+
+        //Adiciona os Scripts para o pwa
+        PWA();
 
         //cria os meta dados
         createMeta();
@@ -259,8 +271,6 @@ try {
         });
 
     };
-
-
 
     //iniciando a pagina ===========================================
     init();
