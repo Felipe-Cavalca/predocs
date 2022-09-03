@@ -1,18 +1,18 @@
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register(Lis.getUrl("/sw.js"))
         .then(function () {
-            console.log("service worker registered");
+            // service worker criado
         })
         .catch(function () {
-            console.warn("service worker failed");
+            // erro ao gerar o service worker
         });
 
     // Inicialize o deferredPrompt para posteriormente mostrar o prompt de instalação do navegador.
     var deferredPrompt;
 
-    window.addEventListener('beforeinstallprompt', (e) => {
+    window.addEventListener("beforeinstallprompt", (e) => {
         // Impede que o mini-infobar apareça em mobile
-        e.preventDefault();
+        // e.preventDefault();
         // Guarda evento para que possa ser disparado depois.
         deferredPrompt = e;
         // Opcionalmente, enviar eventos de analytics que promo de instalação PWA foi mostrado.
