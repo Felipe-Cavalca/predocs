@@ -88,7 +88,7 @@ try {
         html.setAttribute("lang", "pt-br");
     }
 
-    function PWA(){
+    function PWA() {
         var link = document.createElement("link");
         link.setAttribute("rel", "manifest");
         link.setAttribute("href", Lis.getUrl("/core/manifest.json"));
