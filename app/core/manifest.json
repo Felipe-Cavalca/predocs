@@ -1,7 +1,7 @@
 {
     "name": "Framework Lis",
     "short_name": "Lis",
-    "start_url": "http://localhost/lis/app/pages/index.html",
+    "start_url": "https://lis.meu-servidor.ga/app/pages/index.html",
     "display": "minimal-ui",
     "description": "Um framework para desenvolvimento web",
     "lang": "pt-br",
@@ -25,10 +25,10 @@
     ],
     "screenshots": [
         {
-            "src": "https://www.pwabuilder.com/assets/screenshots/screen1.png",
+            "src": "https://leads2b.com/blog/wp-content/uploads/2022/01/blog_bullseye-framework_.png",
             "sizes": "2880x1800",
             "type": "image/png",
-            "description": "A screenshot of the home page"
+            "description": "Uma print aleatoria"
         }
     ],
     "related_applications": [],
