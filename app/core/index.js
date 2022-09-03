@@ -88,6 +88,10 @@ try {
         html.setAttribute("lang", "pt-br");
     }
 
+    /**
+     * Função para transformar a pagina web em pagina PWA
+     * @return {void}
+     */
     function PWA() {
         var link = document.createElement("link");
         link.setAttribute("rel", "manifest");
