@@ -1,33 +1,33 @@
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register(Lis.getUrl("/sw.js"))
-        .then(function () {
-            console.log("service worker registered");
-        })
-        .catch(function () {
-            console.warn("service worker failed");
-        });
+        .then(function () { })
+        .catch(function () { });
 
     // Inicialize o deferredPrompt para posteriormente mostrar o prompt de instalação do navegador.
     var deferredPrompt;
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-        // Impede que o mini-infobar apareça em mobile
-        e.preventDefault();
+    window.addEventListener("beforeinstallprompt", (e) => {
         // Guarda evento para que possa ser disparado depois.
         deferredPrompt = e;
-        // Opcionalmente, enviar eventos de analytics que promo de instalação PWA foi mostrado.
-        console.log(`'beforeinstallprompt' event was fired.`);
+    });
 
-        btnInstall = document.querySelector(".BtnInstallPWA");
-        if (btnInstall) {
-            btnInstall.addEventListener('click', async () => {
-                console.log("click");
-                // Mostra prompt de instalação
-                deferredPrompt.prompt();
-                // Usamos o prompt e não podemos usar de novo; jogue fora
+    function installApp() {
+        var elem = document.getElementById("msg");
+        elem.innerHTML = "Foi";
+
+        // Show the prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice
+            .then((choiceResult) => {
+                // if (choiceResult.outcome === 'accepted') {
+                    // console.log('PWA setup accepted');
+                    // hide our user interface that shows our A2HS button
+                // } else {
+                    // console.log('PWA setup rejected');
+                // }
                 deferredPrompt = null;
             });
-        }
-    });
+    }
 
 }
