@@ -95,7 +95,7 @@ try {
     function PWA() {
         var link = document.createElement("link");
         link.setAttribute("rel", "manifest");
-        link.setAttribute("href", Lis.getUrl("/core/manifest.json"));
+        link.setAttribute("href", "data:json;base64," + btoa(Lis.get("/core/config.json")));
         document.querySelector("head").prepend(link);
 
         if ("serviceWorker" in navigator) {
