@@ -98,7 +98,42 @@ try {
         link.setAttribute("href", Lis.getUrl("/core/manifest.json"));
         document.querySelector("head").prepend(link);
 
-        incluiScript(["/core/swAdd.js"], "js");
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register(Lis.getUrl("/sw.js"));
+            var deferredPrompt; // Inicialize o deferredPrompt para posteriormente mostrar o prompt de instalação do navegador.
+            window.addEventListener("beforeinstallprompt", e => {
+                deferredPrompt = e;
+                if (localStorage.getItem("exibeMsgInstall") == null || localStorage.getItem("exibeMsgInstall") == "true") {
+                    document.querySelector("html").addEventListener("click", chamaInstallApp);
+                }
+            });
+        }
+
+        /**
+         * Função para exibir a tela de instação do app
+         * OBS: Essa função só pode ser executada através de um gesto do usuario
+         * @return {void}
+        */
+        Lis.installApp = () => {
+            deferredPrompt.prompt();
+            // Aguarda a resposta do usuario
+            deferredPrompt.userChoice.then(escolha => {
+                if (escolha.outcome === 'accepted') {
+                    // Usuário aceitou instalar o app
+                } else {
+                    // Usuário recusou instalar
+                }
+
+                //zera as variaveis após exibição do botão para instalar
+                document.querySelector("html").removeEventListener("click", chamaInstallApp);
+                localStorage.setItem("exibeMsgInstall", false);
+                deferredPrompt = null;
+            });
+        }
+
+        function chamaInstallApp() {
+            Lis.installApp();
+        }
     }
 
     /**
