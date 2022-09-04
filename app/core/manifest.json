@@ -1,14 +1,13 @@
 {
     "name": "Framework Lis",
-    "short_name": "Lis",
-    "start_url": "https://lis.meu-servidor.ga/app/pages/index.html",
-    "display": "minimal-ui",
     "description": "Um framework para desenvolvimento web",
+    "short_name": "Lis",
     "lang": "pt-br",
-    "dir": "auto",
+    "start_url": "http://localhost/lis/app/pages/index.html",
+    "display": "minimal-ui",
+    "orientation": "any",
     "theme_color": "#c4c4c4",
     "background_color": "#b3adad",
-    "orientation": "any",
     "icons": [
         {
             "src": "https://st2.depositphotos.com/3102403/6270/v/450/depositphotos_62706797-stock-illustration-document-flat-circle-icon-with.jpg",
@@ -35,9 +34,8 @@
     "prefer_related_applications": false,
     "shortcuts": [
         {
-            "name": "The name you would like to be displayed for your shortcut",
-            "url": "The url you would like to open when the user chooses this shortcut. This must be a URL local to your PWA. For example: If my start_url is /, this URL must be something like /shortcut",
-            "description": "A description of the functionality of this shortcut"
+            "name": "Inicio",
+            "url": "http://localhost/lis/app/pages/index.html"
         }
     ],
     "features": [
