@@ -131,6 +131,9 @@ try {
             });
         }
 
+        /**
+         * Função para abrir a tela de instação do app fornecida pelo navegador
+         */
         function chamaInstallApp() {
             Lis.installApp();
         }
