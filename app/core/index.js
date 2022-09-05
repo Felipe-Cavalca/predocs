@@ -1,10 +1,4 @@
 try {
-    //define as variaveis globais
-    var VarsGlobal = {
-        nome: "Lis",
-        server: 'http://localhost/lis'
-    };
-
     //links a serem incluidos na pagina
     const scriptsGlobais = [
         "/framework/jquery-3.6.0.js", //jquery version 3.6.0
@@ -95,7 +89,7 @@ try {
     function PWA() {
         var link = document.createElement("link");
         link.setAttribute("rel", "manifest");
-        link.setAttribute("href", "data:json;base64," + btoa(Lis.get("/core/config.json")));
+        link.setAttribute("href", "data:json;base64," + btoa(Lis.getConfig("manifest")));
         document.querySelector("head").prepend(link);
 
         if ("serviceWorker" in navigator) {
@@ -192,6 +186,34 @@ try {
     //incluindo funções na Lis ====================================
 
     /**
+     * Função para pegar um objeto de configurações
+     * @param {string} tipo - Tipo de config que deseja receber
+     * app - Configurações do app
+     * servidor - Url do servidor
+     * manifest - arquivo de manifesto para o app
+     * @return {json, string} - Json com os dados
+     */
+    Lis.getConfig = (tipo) => {
+        switch (tipo) {
+            case "app":
+                return JSON.parse(Lis.get("/config/app.json"));
+            case "servidor":
+                return JSON.parse(Lis.get("/config/app.json")).server;
+            case "manifest":
+                let manifest = JSON.parse(Lis.get("/model/manifest.json"));
+                let config = JSON.parse(Lis.get("/config/app.json"));
+                let imagens = JSON.parse(Lis.get("/config/imagens.json"));
+                manifest.name = config.nome;
+                manifest.short_name = config.nome_cuto;
+                manifest.description = config.descricao;
+                manifest.display = config.display;
+                manifest.icons = imagens.icons;
+                manifest.screenshots = imagens.icons;
+                return JSON.stringify(manifest);
+        }
+    }
+
+    /**
      * Funçãom para retornar a url completa do sistema
      *
      * @param {string} url- url que será montada
@@ -199,7 +221,11 @@ try {
      */
     Lis.getUrl = (url) => {
         if (url.substr(0, 1) == "/") {
-            return document.querySelector("#coreJs").src.replaceAll("/core/index.js", "") + url;
+            if (url.substr(0, 7) == "/server") {
+                return Lis.getConfig("servidor") + url;
+            } else {
+                return document.querySelector("#coreJs").src.replaceAll("/core/index.js", "") + url;
+            }
         } else {
             return url;
         }
@@ -288,7 +314,7 @@ try {
                 event.preventDefault();
                 if (await before() != false) {
                     const data = new FormData(event.target);
-                    var url = Lis.getUrl(VarsGlobal.server + "/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
+                    var url = Lis.getUrl(Lis.getConfig("server") + "/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
                     var resp = {};
                     if (document.querySelector(element).method == "post") {
                         resp = JSON.parse(await Lis.post(url, data));
