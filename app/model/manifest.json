@@ -3,7 +3,7 @@
     "description": "Um framework para desenvolvimento web",
     "short_name": "Lis",
     "lang": "pt-br",
-    "start_url": "https://lis.meu-servidor.ga/app/pages/index.html",
+    "start_url": "https://lis.meu-servidor.ga/app/pages/",
     "display": "standalone",
     "orientation": "any",
     "theme_color": "#c4c4c4",
@@ -35,7 +35,7 @@
     "shortcuts": [
         {
             "name": "Inicio",
-            "url": "https://lis.meu-servidor.ga/app/pages/index.html"
+            "url": "https://lis.meu-servidor.ga/app/pages/"
         }
     ],
     "features": [
