@@ -207,6 +207,8 @@ try {
                 manifest.short_name = config.nome_cuto;
                 manifest.description = config.descricao;
                 manifest.display = config.display;
+                manifest.start_url = config.server;
+                manifest.shortcuts[0].url = config.server;
                 manifest.icons = imagens.icons;
                 manifest.screenshots = imagens.icons;
                 return JSON.stringify(manifest);
