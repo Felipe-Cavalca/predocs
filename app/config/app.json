@@ -3,5 +3,5 @@
     "nome_curto": "Lis",
     "descricao": "Um framework para desenvolvimento web",
     "display": "minimal-ui",
-    "server": "http://localhost/lis/server/"
+    "server": "https://lis.meu-servidor.ga/app/pages/"
 }
