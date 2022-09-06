@@ -126,8 +126,7 @@ try {
         }
 
         /**
-         * Função a ser adicionada em evento de click no html
-         * @return {void}
+         * Função para abrir a tela de instação do app fornecida pelo navegador
          */
         function chamaInstallApp() {
             Lis.installApp();
