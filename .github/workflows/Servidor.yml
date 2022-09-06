@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - Servidor-v2
+      - Servidor
 name: Deploy website on push
 
 jobs:
