@@ -2,6 +2,6 @@
     "nome": "Framework Lis",
     "nome_curto": "Lis",
     "descricao": "Um framework para desenvolvimento web",
-    "display": "minimal-ui",
+    "display": "fullscreen",
     "server": "https://lis.meu-servidor.ga/app/pages/index.html"
 }
