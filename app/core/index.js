@@ -89,8 +89,7 @@ try {
     function PWA() {
         var link = document.createElement("link");
         link.setAttribute("rel", "manifest");
-        link.setAttribute("href", Lis.getUrl("/model/manifest.json"));
-        // link.setAttribute("href", "data:json;base64," + btoa(Lis.getConfig("manifest")));
+        link.setAttribute("href", Lis.getUrl("/config/manifest.json"));
         document.querySelector("head").prepend(link);
 
         if ("serviceWorker" in navigator) {
@@ -190,7 +189,6 @@ try {
      * @param {string} tipo - Tipo de config que deseja receber
      * app - Configurações do app
      * servidor - Url do servidor
-     * manifest - arquivo de manifesto para o app
      * @return {json, string} - Json com os dados
      */
     Lis.getConfig = (tipo) => {
@@ -199,19 +197,6 @@ try {
                 return JSON.parse(Lis.get("/config/app.json"));
             case "servidor":
                 return JSON.parse(Lis.get("/config/app.json")).server;
-            case "manifest":
-                let manifest = JSON.parse(Lis.get("/model/manifest.json"));
-                let config = JSON.parse(Lis.get("/config/app.json"));
-                let imagens = JSON.parse(Lis.get("/config/imagens.json"));
-                manifest.name = config.nome;
-                manifest.short_name = config.nome_cuto;
-                manifest.description = config.descricao;
-                manifest.display = config.display;
-                manifest.start_url = config.server;
-                manifest.shortcuts[0].url = config.server;
-                manifest.icons = imagens.icons;
-                manifest.screenshots = imagens.icons;
-                return JSON.stringify(manifest);
         }
     }
 
