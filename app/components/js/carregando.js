@@ -8,7 +8,7 @@ carregando.setAttribute("class", "scale-transition scale-in");
 
 //Caso o component tenha uma imagem, setar o caminho abaixo
 var img = document.querySelector("carregando img");
-var urlImg = Lis.getUrl("/midia/global/carregando.gif");
+var urlImg = Lis.getUrl("/midia/global/gif_carregando.gif");
 img.setAttribute("src", urlImg);
 
 /**

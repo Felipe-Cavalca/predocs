@@ -1,13 +1,20 @@
 {
     "name": "Framework Lis",
-    "description": "Um framework para desenvolvimento web",
     "short_name": "Lis",
-    "lang": "pt-br",
-    "start_url": "https://lis.meu-servidor.ga/app/pages/",
+    "description": "Um framework para desenvolvimento web",
+    "start_url": "http://localhost/lis/app/pages/",
+
     "display": "standalone",
-    "orientation": "any",
     "theme_color": "#c4c4c4",
     "background_color": "#b3adad",
+
+    "shortcuts": [
+        {
+            "name": "Inicio",
+            "url": "http://localhost/lis/app/pages/"
+        }
+    ],
+
     "icons": [
         {
             "src": "https://st2.depositphotos.com/3102403/6270/v/450/depositphotos_62706797-stock-illustration-document-flat-circle-icon-with.jpg",
@@ -30,18 +37,15 @@
             "description": "Uma print aleatoria"
         }
     ],
-    "related_applications": [],
-    "prefer_related_applications": false,
-    "shortcuts": [
-        {
-            "name": "Inicio",
-            "url": "https://lis.meu-servidor.ga/app/pages/"
-        }
-    ],
+
+    "lang": "pt-br",
+    "orientation": "any",
     "features": [
         "Cross Platform",
         "low-latency inking",
         "fast",
         "useful AI"
-    ]
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false
 }
