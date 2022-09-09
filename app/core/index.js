@@ -213,7 +213,7 @@ try {
     };
 
     /**
-     * Função para realizar um get
+     * Função para realizar uma requisição POST
      * @param {string} url - link para a requisição post
      * @param {obj} dados - dados a serem enviados para o servidor
      * @param {boolean} json - indica se os dados são json ou FormData
