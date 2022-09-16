@@ -190,7 +190,7 @@ try {
     Lis.getUrl = (url) => {
         if (url.substr(0, 1) == "/") {
             if (url.substr(0, 7) == "/server") {
-                return Lis.getConfig("servidor") + url.replace("/", "");
+                return Lis.getConfig("servidor") + url.replace("/server/", "");
             } else {
                 return document.querySelector("#coreJs").src.replaceAll("/core/index.js", "") + url;
             }
