@@ -72,7 +72,7 @@ try {
 
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register(Lis.getUrl("/sw.js"));
-            let deferredPrompt; // Inicialize o deferredPrompt para posteriormente mostrar o prompt de instalação do navegador.
+            var deferredPrompt; // Inicialize o deferredPrompt para posteriormente mostrar o prompt de instalação do navegador.
             window.addEventListener("beforeinstallprompt", e => {
                 deferredPrompt = e;
                 if (localStorage.getItem("exibeMsgInstall") == null || localStorage.getItem("exibeMsgInstall") == "true") {
