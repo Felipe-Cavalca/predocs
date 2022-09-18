@@ -161,7 +161,7 @@ class Banco extends Config
 	 * @param boolean $campo created
 	 * @return array ["status" => boolean, "msg" => "string"]
 	 */
-	public function update(string $tabela, array $dados, string|array $where)
+	public function update(string $tabela, array $dados, $where)
 	{
 		if (empty($dados)) {
 			return [
@@ -208,7 +208,7 @@ class Banco extends Config
 	 * @param array|string $where - condições da query
 	 * @return array ["status" => "boolean", ]
 	 */
-	public function delete(string $tabela, string|array $where)
+	public function delete(string $tabela, $where)
 	{
 		return $this->query("DELETE FROM {$tabela} WHERE {$this->where($where)}");
 	}
@@ -287,7 +287,7 @@ class Banco extends Config
 	 * @param string|array $where - dados do where
 	 * @return string query where
 	 */
-	private function where(string|array $where)
+	private function where($where)
 	{
 		$dadosWhere = "";
 
