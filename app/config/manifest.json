@@ -2,7 +2,7 @@
     "name": "Framework Lis",
     "short_name": "Lis",
     "description": "Um framework para desenvolvimento web",
-    "start_url": "https://lis.meu-servidor.ga/app/pages/",
+    "start_url": "http://localhost/lis/app/pages/",
 
     "display": "standalone",
     "theme_color": "#c4c4c4",
@@ -11,7 +11,7 @@
     "shortcuts": [
         {
             "name": "Inicio",
-            "url": "https://lis.meu-servidor.ga/app/pages/"
+            "url": "http://localhost/lis/app/pages/"
         }
     ],
 
