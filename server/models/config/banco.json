@@ -1,0 +1,14 @@
+{
+    "instalado": false,
+    "tipo": "mysql",
+    "nome": "lis",
+    "sqlite": {},
+    "mysql": {
+        "host": "localhost",
+        "porta": "3306",
+        "credenciais": {
+            "login": "root",
+            "senha": ""
+        }
+    }
+}

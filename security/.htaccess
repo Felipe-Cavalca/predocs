@@ -1,4 +1,0 @@
-#bloquear arquivos
-order allow,deny
-deny from all
-satisfy all
