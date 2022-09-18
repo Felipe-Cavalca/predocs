@@ -1,28 +1,4 @@
 try {
-    //links a serem incluidos na pagina
-    const scriptsGlobais = [
-        "/framework/jquery-3.6.0.js", //jquery version 3.6.0
-        "/framework/bootstrap-5.1.3-dist/js/bootstrap.js", //bootstrap version 5.1.3
-        "/framework/vue.global.js", //vue version 3
-        "/js/global/funcoes.js", //funcoes
-    ];
-
-    const stylesGlobais = [
-        "/css/global/variaveis.css", //arquivo de variaveis css
-        "/core/index.css", //arquivo do core css
-        "/framework/bootstrap-5.1.3-dist/css/bootstrap.css", //bootstrap version 5.1.3
-        "/css/global/variaveisBootstrap.css", //arquivo para substituir variaveis do bootstrap
-        "https://fonts.googleapis.com/icon?family=Material+Icons", // google icons
-    ];
-
-    const componentsGlobal = [{
-        component: "nav",
-        element: "body",
-        local: "prepend",
-        css: ["/components/css/nav.css"],
-        js: ["/components/js/nav.js"],
-    }];
-
     //funções ==================================================
 
     /**
@@ -36,10 +12,11 @@ try {
         switch (tipo) {
             case "js":
                 for (var i = 0; i < links.length; i++) {
-                    var script = document.createElement("script");
+                    const script = document.createElement("script");
                     script.setAttribute("src", Lis.getUrl(links[i]));
                     document.querySelector("body").appendChild(script);
-                    await new Promise((res) => {
+                    //Aguarda o carregamento do script
+                    await new Promise(res => {
                         script.onload = () => {
                             res(0);
                         }
@@ -48,7 +25,7 @@ try {
                 break;
             case "css":
                 links.forEach((url) => {
-                    var style = document.createElement("link");
+                    const style = document.createElement("link");
                     style.setAttribute("rel", "stylesheet");
                     style.setAttribute("href", Lis.getUrl(url));
                     document.querySelector("head").appendChild(style);
@@ -58,39 +35,40 @@ try {
     }
 
     /**
-     * Função para adicionar os metadados do arquivo
+     * Função para adicionar os metadados ao arquivo
      *
-     * @return {void} - Função não tem retorno
+     * @return {void} - Função não retorna dados
      */
     function createMeta() {
-        //os elementos meta
-        var meta = document.createElement("meta");
+        let meta;
+
+        meta = document.createElement("meta");
         meta.setAttribute("name", "viewport");
         meta.setAttribute("content", "width=device-width, initial-scale=1.0");
         document.querySelector("head").prepend(meta);
 
-        var meta = document.createElement("meta");
+        meta = document.createElement("meta");
         meta.setAttribute("http-equiv", "X-UA-Compatible");
         meta.setAttribute("content", "IE=edge");
         document.querySelector("head").prepend(meta);
 
-        var meta = document.createElement("meta");
+        meta = document.createElement("meta");
         meta.setAttribute("charset", "utf-8");
         document.querySelector("head").prepend(meta);
 
-        var html = document.querySelector("html");
+        const html = document.querySelector("html");
         html.setAttribute("lang", "pt-br");
     }
 
     /**
-     * Função para transformar a pagina web em pagina PWA
+     * Função para adicionar o PWA a pagina
      * @return {void}
      */
     function PWA() {
-        var link = document.createElement("link");
+        const link = document.createElement("link");
         link.setAttribute("rel", "manifest");
         link.setAttribute("href", Lis.getUrl("/config/manifest.json"));
-        document.querySelector("head").prepend(link);
+        document.querySelector("head").prepend(link); // Adiciona o elemento com o link do manifest a tela
 
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register(Lis.getUrl("/sw.js"));
@@ -126,7 +104,8 @@ try {
         }
 
         /**
-         * Função para abrir a tela de instação do app fornecida pelo navegador
+         * Função a que será adicionada ao evento de click
+         * @return {void}
          */
         function chamaInstallApp() {
             Lis.installApp();
@@ -149,27 +128,29 @@ try {
         //cria os meta dados
         createMeta();
 
-        //inclui os scripts e styles globais
-        incluiScript(stylesGlobais, "css");
-        await incluiScript(scriptsGlobais, "js");
+        const includes = JSON.parse(Lis.get("/config/includes.json"));
 
-        //incluindo arquivos css do usuario
+        //inclui os scripts e styles globais
+        incluiScript(includes.stylesGlobais, "css");
+        await incluiScript(includes.scriptsGlobais, "js");
+
+        //incluindo arquivos css de cada pagina
         if (Lis.styles) {
             incluiScript(Lis.styles, "css");
         }
-        //incluindo scripts dos usuarios
+        //incluindo scripts js de cada pagina
         if (Lis.scripts) {
             await incluiScript(Lis.scripts, "js");
         }
 
         //inclui os components na tela
-        componentsGlobal.forEach(async c => {
+        includes.componentsGlobal.forEach(async c => {
             Lis.createComponent(c.component, c.element, c.local, c.css, c.js);
         });
 
         if (Lis) {
             //aguarda o carregamento das paginas e executa o init
-            document.querySelector("body").onload = async function () {
+            document.querySelector("body").onload = async () => {
                 if (typeof Lis.init === "function") {
                     await Lis.init();
                 }
@@ -177,7 +158,7 @@ try {
             };
         }
 
-        document.querySelector("html").onerror = function (erro) {
+        document.querySelector("html").onerror = (erro) => {
             window.location.href = Lis.getUrl("/error");
         };
     }
@@ -189,7 +170,7 @@ try {
      * @param {string} tipo - Tipo de config que deseja receber
      * app - Configurações do app
      * servidor - Url do servidor
-     * @return {json, string} - Json com os dados
+     * @return {json, string} - Json com os dados ou uma string
      */
     Lis.getConfig = (tipo) => {
         switch (tipo) {
@@ -201,7 +182,7 @@ try {
     }
 
     /**
-     * Funçãom para retornar a url completa do sistema
+     * Função para retornar a url completa do sistema
      *
      * @param {string} url- url que será montada
      * @returns {string} - url montada
@@ -209,7 +190,7 @@ try {
     Lis.getUrl = (url) => {
         if (url.substr(0, 1) == "/") {
             if (url.substr(0, 7) == "/server") {
-                return Lis.getConfig("servidor") + url;
+                return Lis.getConfig("servidor") + url.replace("/server/", "");
             } else {
                 return document.querySelector("#coreJs").src.replaceAll("/core/index.js", "") + url;
             }
@@ -224,31 +205,26 @@ try {
      * @param {string} url - Url destino da solicitação
      * @param {boolean} assincrona - função assincrona ? - padrão false
      */
-    Lis.get = function (url, assincrona = false) {
-        var xhttp = new XMLHttpRequest();
+    Lis.get = (url, assincrona = false) => {
+        const xhttp = new XMLHttpRequest();
         xhttp.open("GET", Lis.getUrl(url), assincrona);
         xhttp.send();
         return xhttp.responseText;
     };
 
     /**
-     * Função para realizar um get
+     * Função para realizar uma requisição POST
      * @param {string} url - link para a requisição post
      * @param {obj} dados - dados a serem enviados para o servidor
-     * @param {obj} header - cabeçalho da requisição
-     * @return resposta do post
+     * @param {boolean} json - indica se os dados são json ou FormData
+     * @param {boolean} assincrona - Função assincrona ?
+     * @return {string} resposta do post
      */
-    Lis.post = async function (url, dados, headers = {}) {
-        const data = await fetch(Lis.getUrl(url), {
-            body: dados,
-            method: "POST",
-            headers: headers,
-            data: dados,
-        });
-
-        var texto = await data.text();
-
-        return texto;
+    Lis.post = (url, dados, json = true, assincrona = false) => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.open("POST", Lis.getUrl(url), assincrona);
+        xhttp.send(json ? JSON.stringify(dados) : dados);
+        return xhttp.responseText;
     };
 
     /**
@@ -261,7 +237,7 @@ try {
      *
      * @return {void} - Função não tem retorno
      */
-    Lis.createComponent = function (component, element, local, css = [], js = []) {
+    Lis.createComponent = (component, element, local, css = [], js = []) => {
 
         if (Lis.Ncomponents && Lis.Ncomponents.includes(component)) {
             return false;
@@ -282,14 +258,14 @@ try {
                 document.querySelector(element).prepend(elemento);
         }
 
-        elemento.innerHTML = Lis.get("/components/html/" + component + ".html", false);
+        elemento.innerHTML = Lis.get("/components/html/" + component + ".html");
         incluiScript(js, "js");
         incluiScript(css, "css");
         return true;
     };
 
     /**
-     * Função a ser aplicada nos forms, para que consiga
+     * Função a ser aplicada nos forms, para que consiga realizar o envio de dados
      * @param {string} element seletor do elemento do form
      * @param {function} before Função a ser executada antes do envio
      * @param {function} after Função a ser executada apos o envio
@@ -297,14 +273,12 @@ try {
     Lis.form = (element, before, after) => {
         document.querySelector(element).addEventListener(
             "submit",
-            async function (event) {
+            (event) => {
                 event.preventDefault();
-                if (await before() != false) {
+                if (before() != false) {
                     const data = new FormData(event.target);
-                    var url = Lis.getUrl(Lis.getConfig("server") + "/server/" + document.querySelector(element).action.replace(location.origin, "").replace("/", ""));
-                    var resp = {};
                     if (document.querySelector(element).method == "post") {
-                        resp = JSON.parse(await Lis.post(url, data));
+                        resp = JSON.parse(Lis.post("/server" + document.querySelector(element).action.replace(location.origin, ""), data, false));
                     }
                     after(resp);
                 }
@@ -325,7 +299,6 @@ try {
             option.innerHTML = opt.text;
             document.querySelector(element).appendChild(option);
         });
-
     };
 
     //iniciando a pagina ===========================================
