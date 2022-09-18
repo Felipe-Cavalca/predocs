@@ -1,0 +1,3 @@
+<?php
+
+/** ARQUIVO PARA FUNÇÕES DA APLICAÇÃO */
