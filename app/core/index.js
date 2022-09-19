@@ -58,6 +58,17 @@ try {
 
         const html = document.querySelector("html");
         html.setAttribute("lang", "pt-br");
+
+        // necessario para o funcionamento em sistemas IOS
+        const link = document.createElement("link");
+        link.setAttribute("rel", "apple-touch-icon");
+        link.setAttribute("href", Lis.getConfig("iconApp"));
+        document.querySelector("head").prepend(link);
+
+        meta = document.createElement("meta");
+        meta.setAttribute("name", "theme-color");
+        meta.setAttribute("content", Lis.getConfig("corApp"));
+        document.querySelector("head").prepend(meta);
     }
 
     /**
@@ -178,6 +189,10 @@ try {
                 return JSON.parse(Lis.get("/config/app.json"));
             case "servidor":
                 return JSON.parse(Lis.get("/config/app.json")).server;
+            case "iconApp":
+                return JSON.parse(Lis.get("/config/manifest.json"))["icons"][0]["src"];
+            case "corApp":
+                return JSON.parse(Lis.get("/config/manifest.json"))["theme_color"];
         }
     }
 
