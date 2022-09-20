@@ -83,12 +83,22 @@ class autorun
      */
     function deleteBanco()
     {
-        foreach ($this->banco->query("show tables")["retorno"] as $tabela) {
-            if (!$this->banco->query("DROP TABLE {$tabela};")["retorno"]) {
+        if ($this->banco->tipo == "mysql") {
+            foreach ($this->banco->query("show tables")["retorno"] as $tabela) {
+                if (!$this->banco->query("DROP TABLE {$tabela};")["retorno"]) {
+                    new Log("Erro ao excluir a base de dados");
+                    return ["status" => false, "msg" => "Erro ao excluir a base de dados"];
+                }
+            }
+        } else {
+            $arquivo = new Arquivo(explode(":", $this->config->getConfigBanco()["stringConn"])[1]);
+            if (!$arquivo->apagar()) {
                 new Log("Erro ao excluir a base de dados");
                 return ["status" => false, "msg" => "Erro ao excluir a base de dados"];
             }
         }
+
+        $this->config->setConfigBanco(["instalado" => false]);
         return ["status" => true, "msg" => "base de dados excluida com sucesso"];
     }
 
