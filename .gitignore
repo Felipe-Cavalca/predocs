@@ -1,5 +1,4 @@
-security/storage/files/*
-web/data/*
+server/data/*
 
 .editorconfig
 .prettierrc

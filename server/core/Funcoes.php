@@ -88,8 +88,8 @@ function configPHP()
 {
 	header("Access-Control-Allow-Origin: *");
 	header("Access-Control-Allow-Headers: *");
-	// header("Content-Type: application/json");
-	header("Content-Type: text/plain"); //para teste
+	header("Content-Type: application/json");
+	// header("Content-Type: text/plain"); //para teste
 
 	$config = new Config();
 
