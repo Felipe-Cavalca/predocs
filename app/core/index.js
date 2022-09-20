@@ -59,6 +59,12 @@ try {
         const html = document.querySelector("html");
         html.setAttribute("lang", "pt-br");
 
+        var link = document.createElement("link");
+        link.setAttribute("rel", "shortcut icon");
+        link.setAttribute("href", Lis.getUrl("/midia/global/favicon.ico"));
+        link.setAttribute("type", "image/x-icon");
+        document.querySelector("head").prepend(link);
+
         // necessario para o funcionamento em sistemas IOS
         const link = document.createElement("link");
         link.setAttribute("rel", "apple-touch-icon");
