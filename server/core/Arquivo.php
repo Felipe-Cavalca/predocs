@@ -124,7 +124,7 @@ class Arquivo
 	 * @param string|array Array para arquivos json, string para outros tipos de arquivos
 	 * @return bool
 	 */
-	public function escrever($conteudo)
+	public function escrever(string|array $conteudo)
 	{
 		switch ($this->getExt()) {
 			case 'json':
@@ -140,7 +140,7 @@ class Arquivo
 	 * @param string|array - Array para arquivos json, string para outros tipos de arquivos
 	 * @return bool
 	 */
-	public function adicionar($conteudo)
+	public function adicionar(string|array $conteudo)
 	{
 		switch ($this->getExt()) {
 			case 'json':

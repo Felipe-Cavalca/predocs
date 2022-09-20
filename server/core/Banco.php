@@ -287,7 +287,7 @@ class Banco extends Config
 	 * @param string|array $where - dados do where
 	 * @return string query where
 	 */
-	private function where($where)
+	private function where(string|array $where)
 	{
 		$dadosWhere = "";
 
