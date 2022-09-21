@@ -149,18 +149,18 @@ function incluiController(string $nomeController)
 	$config = new Config;
 	$controller = new Arquivo("{$config->getCaminho("controller")}/{$nomeController}Controller.php");
 
-	switch ($nomeController){
+	switch ($nomeController) {
 		case "autorun":
 			$controller = new Arquivo("{$config->getCaminho("functions")}/autorun.php");
 		default:
-		if ($controller->existe()) {
-			$controller->renderiza();
-			if (class_exists($nomeController)) {
-				return new $nomeController();
+			if ($controller->existe()) {
+				$controller->renderiza();
+				if (class_exists($nomeController)) {
+					return new $nomeController();
+				}
+				return true;
+			} else {
+				return false;
 			}
-			return true;
-		} else {
-			return false;
-		}
 	}
 }
