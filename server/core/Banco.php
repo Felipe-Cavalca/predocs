@@ -69,11 +69,12 @@ class Banco extends Config
 
 		//cria campos que são prenchidos altomaticamente pelo framework
 		$campos = $this->query("DESC {$tabela}");
-		foreach ($campos as $campo) {
-			switch ($campo["Field"]) {
+		foreach ($campos["retorno"] as $campo) {
+			$nome = isset($campo["Field"]) ? $campo["Field"] : $campo["name"];
+			switch ($nome) {
 				case "criado":
 				case "modificado":
-					$dados[$campo["Field"]] = date("Y-m-d H:m:s");
+					$dados[$nome] = date("Y-m-d H:m:s");
 					break;
 			}
 		}
@@ -254,6 +255,14 @@ class Banco extends Config
 					"retorno" => $retorno
 				];
 				break;
+			case "DESC":
+			case "PRAGMA":
+				$execucao = $this->conexao->query($query);
+				return [
+					"status" => true,
+					"retorno" => $execucao->fetchAll(PDO::FETCH_ASSOC)
+				];
+				break;
 			case "CREATE":
 			case "UPDATE":
 			case "DELETE":
@@ -279,6 +288,11 @@ class Banco extends Config
 	{
 		$query = str_replace("AUTO_INCREMENT", "AUTOINCREMENT", $query);
 		$query = str_replace("int(11)", "INTEGER", $query);
+		switch (strtoupper(explode(" ", $query)[0])) {
+			case "DESC":
+				$query = str_replace("DESC ", "PRAGMA table_info(", $query) . ");";
+				break;
+		}
 		return $query;
 	}
 
