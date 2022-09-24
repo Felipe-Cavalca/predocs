@@ -42,6 +42,8 @@ function init()
 			$Funcoes->naoEncontrado();
 			return 0;
 		}
+	} else if ($controller == null) {
+		return 0;
 	} else if (method_exists($controller, $_GET["function"])) {
 		$returnFunction = call_user_func([$controller, $_GET["function"]], $_GET["param"]);
 	}

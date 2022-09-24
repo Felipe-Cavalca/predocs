@@ -143,11 +143,20 @@ class funcoes
 	}
 
 	/**
+	 * Chamado para paginas em que o usuario não tem permissão para acessar
+	 */
+	function semAutorizacao()
+	{
+		http_response_code(401);
+		echo json_encode(["status" => false, "msg" => "Acesso negado"]);
+	}
+
+	/**
 	 * inclui um controller
 	 * caso haja uma classe, retorna o mesmo
 	 * caso não haja - true e inclui o arquivo
 	 * @param string $nome - nome do controller
-	 * @return obj|boolean
+	 * @return obj|boolean|null
 	 */
 	function incluiController(string $nomeController)
 	{
@@ -161,9 +170,16 @@ class funcoes
 				if ($controller->existe()) {
 					$controller->renderiza();
 					if (class_exists($nomeController)) {
-						return new $nomeController();
+						$obj = new $nomeController();
+						if (method_exists($obj, "__autorizado") && $obj->__autorizado() === false) {
+							$this->semAutorizacao();
+							return null;
+						} else {
+							return $obj;
+						}
+					} else {
+						return true;
 					}
-					return true;
 				} else {
 					return false;
 				}
