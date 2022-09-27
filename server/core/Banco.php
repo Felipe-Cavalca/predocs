@@ -181,7 +181,6 @@ class Banco extends Config
 		$campos = $this->query("DESC {$tabela}");
 		foreach ($campos as $campo) {
 			switch ($campo["Field"]) {
-				case "criado":
 				case "modificado":
 					$dados[$campo["Field"]] = date("Y-m-d H:m:s");
 					break;
