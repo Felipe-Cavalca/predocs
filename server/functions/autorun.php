@@ -109,8 +109,9 @@ class autorun
      */
     function executaSqlPasta($pasta)
     {
+        $funcoes = new funcoes();
 
-        foreach (listarArquivos($pasta) as $sql) {
+        foreach ($funcoes->listarArquivos($pasta) as $sql) {
 
             $script = new Arquivo($pasta . $sql);
 
