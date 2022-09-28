@@ -9,10 +9,10 @@ include_once("./core/Storage.php");
 include_once("./core/Log.php");
 include_once("./core/FuncoesApp.php"); //funcoes da aplicação que está sendo desenvolvida
 
-$Funcoes = new funcoes();
+$_Funcoes = new funcoes();
 
 //inicia o framework e escreve sua saida
-$retorno = $Funcoes->init() ?? "erro ao recuperar saida da função";
+$retorno = $_Funcoes->init() ?? "erro ao recuperar saida da função";
 
 switch (gettype($retorno)) {
 	case "array":
