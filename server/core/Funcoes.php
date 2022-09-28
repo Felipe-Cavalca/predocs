@@ -11,7 +11,7 @@ class funcoes
 	 * @param mixed $data
 	 * @return string
 	 */
-	function pr(mixed $data)
+	public function pr(mixed $data)
 	{
 		echo '<pre>' . print_r($data, true) . '</pre>';
 	}
@@ -19,12 +19,12 @@ class funcoes
 	/**
 	 * Função para listar os arquivos de uma pasta
 	 *
-	 * @param string $path - caminho da lista de pastas
+	 * @param string $pasta - caminho da lista de pastas
 	 * @return array - array com os nomes dos arquivos/pastas de dentro do diretorio
 	 */
-	function listarArquivos(string $path = '/')
+	public function listarArquivos(string $pasta = '/')
 	{
-		$diretorio = dir($path);
+		$diretorio = dir($pasta);
 		$arquivos = [];
 		while ($arquivo = $diretorio->read()) {
 			$arquivos[] = $arquivo;
@@ -34,53 +34,47 @@ class funcoes
 	}
 
 	/**
-	 * Função para validar se os campos existem
-	 * @param array $campos - indice dos campos dentro do $_POST
-	 * @return ["status" => boolean, "msg" => string]
+	 * Valida se campos existem em um array
+	 * @param array $indices - nome dos campos a serem verificados
+	 * @param array $array - array a ser verificado
+	 * @return array ["status" => boolean, "msg" => string]
 	 */
-	function issetPost(array $campos = [])
+	public function isset(array $indices = [], array $array = [])
 	{
-		foreach ($campos as $campo) {
-			if (!isset($_POST[$campo])) {
-				return [
-					"status" => false,
-					"msg" => "Campo '{$campo}' não encontrado"
-				];
+		if (empty($array)) $array = $_POST;
+		foreach ($indices as $indice) {
+			if (!isset($array[$indice])) {
+				return ["status" => false, "msg" => "indice '{$indice}' não encontrado"];
 			}
 		}
-
-		return [
-			"status" => true,
-			"msg" => "Todos os campos existem"
-		];
+		return ["status" => true, "msg" => "Todos os indices existem"];
 	}
 
 	/**
-	 * Função para validar se os campos não são vazios
-	 * @param array $campos array com as strings a serem validadasimage.pngval
+	 * Valida se indices de um array não estão vazios
+	 * @param array $indices - nome dos indices a serem verificados
+	 * @param array $array - array a ser verificado
 	 * @return ["status" => boolean, "msg" => string]
 	 */
-	function emptyPost(array $campos = [])
+	public function emptyPost(array $indices = [], array $array = [])
 	{
-		foreach ($campos as $campo) {
-			if (empty($_POST[$campo])) {
-				return [
-					"status" => true,
-					"msg" => "Campo '{$campo}' está vazio"
-				];
+		if (empty($array)) $array = $_POST;
+		foreach ($indices as $indice) {
+			if (empty($array[$indice])) {
+				return ["status" => true, "msg" => "Campo '{$indice}' está vazio"];
 			}
 		}
 
-		return [
-			"status" => false,
-			"msg" => "Todos os campos estão ok"
-		];
+		return ["status" => false, "msg" => "Todos os campos estão ok"];
 	}
 
 	/**
 	 * Valida se uma pasta existe, caso não exista cria a mesma
+	 * @param string $caminho - caminho até a pasta
+	 * @param int $permission - permissão da pasta
+	 * @return bool
 	 */
-	function criaPasta(string $path, int $permission = 0777)
+	public function criaPasta(string $path, int $permission = 0777)
 	{
 		if (!is_dir($path)) return mkdir($path, $permission, true);
 	}
@@ -89,7 +83,7 @@ class funcoes
 	 * Função para setar as config do php
 	 * @return void
 	 */
-	function configPHP()
+	public function configPHP()
 	{
 		header("Access-Control-Allow-Origin: *");
 		header("Access-Control-Allow-Headers: *");
@@ -112,7 +106,7 @@ class funcoes
 	 * Função para validar se os dados estão vindo via json ou form-encode
 	 * @return void
 	 */
-	function post()
+	public function post()
 	{
 		$json = json_decode(file_get_contents('php://input'), true);
 		$_POST = (is_array($json) ? $json : $_POST);
@@ -122,7 +116,7 @@ class funcoes
 	 * Função para organizar os dados do get
 	 * @return void
 	 */
-	function get()
+	public function get()
 	{
 		$retorno = [];
 		$url = explode("/", isset($_GET["_Pagina"]) ? $_GET["_Pagina"] : "");
@@ -136,7 +130,7 @@ class funcoes
 	 * Retorna para quem está fazendo a solicitação o erro 404
 	 * @return void
 	 */
-	function naoEncontrado()
+	public function naoEncontrado()
 	{
 		http_response_code(404);
 		echo json_encode(["status" => false, "msg" => "A função solicitada não foi encontrada"]);
@@ -144,8 +138,9 @@ class funcoes
 
 	/**
 	 * Chamado para paginas em que o usuario não tem permissão para acessar
+	 * @return void
 	 */
-	function semAutorizacao()
+	public function semAutorizacao()
 	{
 		http_response_code(401);
 		echo json_encode(["status" => false, "msg" => "Acesso negado"]);
@@ -158,7 +153,7 @@ class funcoes
 	 * @param string $nome - nome do controller
 	 * @return obj|boolean|null
 	 */
-	function incluiController(string $nomeController)
+	public function incluiController(string $nomeController)
 	{
 		$config = new Config;
 		$controller = new Arquivo("{$config->getCaminho("controller")}/{$nomeController}Controller.php");
