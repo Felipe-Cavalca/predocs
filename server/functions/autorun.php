@@ -47,6 +47,16 @@ class autorun
                 ];
             }
 
+            if ($configBanco["tipo"] == "mysql") {
+                if (!$this->executaSqlPasta("{$this->config->getCaminho("sql")}/triggers/")) {
+                    new Log("erro ao adicionar triggers na base de dados");
+                    return [
+                        "status" => false,
+                        "msg" => "erro ao adicionar triggers na base de dados"
+                    ];
+                }
+            }
+
             $this->config->setConfigBanco(["instalado" => true]);
         }
 
