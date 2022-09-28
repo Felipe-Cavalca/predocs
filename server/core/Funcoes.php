@@ -215,7 +215,7 @@ class funcoes
 		$controller->renderiza();
 		if (!class_exists($nomeController)) return 200;
 		$obj = new $nomeController();
-		if (method_exists($obj, "__autorizado") && $obj->__autorizado() === false) return 401;
+		if (method_exists($obj, "__autorizado") && $obj->__autorizado($_GET["function"]) === false) return 401;
 		return $obj;
 	}
 }
