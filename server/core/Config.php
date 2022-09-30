@@ -123,6 +123,7 @@ class Config extends Arquivo
 				return "./data/database";
 			case "sql":
 			case "functions":
+			case "includes":
 			default:
 				return "./{$tipo}";
 		}
