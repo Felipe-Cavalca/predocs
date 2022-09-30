@@ -2,158 +2,189 @@
 
 /**
  * Classe destinada a manipulação de arquivo
+ * @version 1
+ * @access public
+ * @param string $arquivo - caminho até o arquivo
+ * @param bool $novo
  */
 class Arquivo
 {
-	public $path; //caminho até o arquivo (inclui o nome)
-	public $existe; //Diz se um arquivo existe ou não
+	/**
+	 * Caminho até o arquivo.
+	 * @access private
+	 * @type string
+	 */
+	private $path; //caminho até o arquivo (inclui o nome)
 
 	/**
 	 * Função construtora do arquivo
 	 *
-	 * @param string - caminho até o arquivo
-	 * @param bool - caso o parametro seja true, um novo arquivo será criado.
+	 * @version 1
+	 * @access public
+	 * @param string $arquivo caminho até o arquivo
+	 * @param bool $novo
+	 * @return void
 	 */
 	public function __construct(string $arquivo, bool $novo = false)
 	{
 		$this->path = $arquivo;
-
-		if ($novo) {
-			$this->criar();
-		}
+		if ($novo) $this->criar();
+		return;
 	}
 
 	/**
 	 * Função para validadar se o arquivo existe
-	 * @return bool - diz se o arquivo existe ou não
+	 * @version 1
+	 * @access public
+	 * @return bool
 	 */
-	public function existe()
+	public function existe(): bool
 	{
-		return file_exists($this->path);
+		return file_exists(filename: $this->path);
 	}
 
 	/**
 	 * Função para criar o arquivo caso não exista
-	 * @return int|bool - sucesso ou erro ao criar o arquivo
-	 * Arquivo criado - int (numero de bytes do arquivo)
-	 * Erro - bool - false - erro ao criar
+	 * @version 1
+	 * @access public
+	 * @return int|bool
+	 * int - Arquivo criado
+	 * bool - erro ao criar arquivo
 	 */
-	public function criar()
+	public function criar(): int|bool
 	{
-		if ($this->existe()) {
-			return $this->tamanho();
-		}
+		if ($this->existe()) return $this->tamanho();
 		$this->criaPasta();
-		return file_put_contents($this->path, "");
+		return file_put_contents(filename: $this->path, data: "");
 	}
 
 	/**
 	 * Função retorna o tamanho do arquivo em bytes
-	 * @return int - tamanho do arquivo em bytes
+	 * @version 1
+	 * @access public
+	 * @return int
+	 * tamanho do arquivo em bytes
 	 */
-	public function tamanho()
+	public function tamanho(): int
 	{
-		if ($this->existe()) {
-			return filesize($this->path);
-		}
+		if ($this->existe()) return filesize(filename: $this->path);
 		return 0;
 	}
 
 	/**
 	 * Função para realizar o upload de um arquivo
-	 *
-	 * @param string $arquivo - arquivo original que será enviado
-	 * @return bool - Caso o arquivo tenha sigo feito o upload
+	 * @version 1
+	 * @access public
+	 * @param string $arquivo arquivo original quer será enviador
+	 * @return bool
 	 */
-	public function upload(string $arquivo)
+	public function upload(string $arquivo): bool
 	{
 		$atual = $this->path;
 		$this->path = $arquivo;
 		$this->criaPasta();
-		move_uploaded_file($arquivo, $atual);
-		$this->path = $atual;
-	}
-
-	/**
-	 * @param string $destino - destino do arquivo
-	 * @return bool - retorno caso o arquivo foi movido ou não
-	 */
-	public function mover(string $destino)
-	{
-		$atual = $this->path;
-		$this->path = $destino;
-		$this->criaPasta();
-		if (rename($atual, $destino)) {
-			return true;
-		} else {
+		if (move_uploaded_file(from: $arquivo, to: $atual)) {
 			$this->path = $atual;
+			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * @param string $destino - Destino do arquivo
+	 * Mover arquivo de pasta
+	 * @version 1
+	 * @access public
+	 * @param string $destino destino do arquivo
+	 * @return bool
 	 */
-	public function copiar(string $destino)
+	public function mover(string $destino): bool
+	{
+		$atual = $this->path;
+		$this->path = $destino;
+		$this->criaPasta();
+		if (rename(from: $atual, to: $destino)) return true;
+		else
+			$this->path = $atual;
+		return false;
+	}
+
+	/**
+	 * Copiar arquivo atual para outro diretorio
+	 * @version 1
+	 * @access public
+	 * @param string $destino Destino do arquivo
+	 * @return bool
+	 */
+	public function copiar(string $destino): bool
 	{
 		$atual = $this->path;
 		$this->path = $destino;
 		$this->criaPasta();
 		$this->path = $atual;
-		return copy($this->path, $destino);
+		return copy(from: $this->path, to: $destino);
 	}
 
 	/**
-	 * Função para pegar o conteudo de um arquivo
-	 *
-	 * @return array|string - arrays para json, string para diversos
+	 * Função para ler o arquivo
+	 * @version 1
+	 * @access public
+	 * @return array|string
+	 * array caso arquivos json
+	 * string para outros
 	 */
-	public function ler()
+	public function ler(): array|string
 	{
 		switch ($this->getExt()) {
-			case 'json': //caso json chama a função lerJson
+			case 'json':
 				return $this->lerJson();
-			default: //função para ler arquivo
+			default:
 				return $this->lerArquivo();
 		}
 	}
 
 	/**
 	 * Função para escrever no arquivo
-	 *
-	 * @param string|array Array para arquivos json, string para outros tipos de arquivos
+	 * @version 1
+	 * @access public
+	 * @param string|array $conteudo conteudo do arquivo
 	 * @return bool
 	 */
-	public function escrever(string|array $conteudo)
+	public function escrever(string|array $conteudo): bool
 	{
 		switch ($this->getExt()) {
 			case 'json':
-				return $this->escreverJson($conteudo);
+				return $this->escreverJson(arr: $conteudo);
 			default:
-				return $this->escreverArquivo($conteudo);
+				return $this->escreverArquivo(conteudo: $conteudo);
 		}
 	}
 
 	/**
 	 * adiciona conteudo ao final do arquivo
-	 *
-	 * @param string|array - Array para arquivos json, string para outros tipos de arquivos
+	 * @version 1
+	 * @access public
+	 * @param string|array $conteudo conteudo que será escrito
 	 * @return bool
 	 */
-	public function adicionar(string|array $conteudo)
+	public function adicionar(string|array $conteudo): bool
 	{
 		switch ($this->getExt()) {
 			case 'json':
-				return $this->escrever(array_merge($this->ler(), $conteudo));
+				return $this->escrever(conteudo: array_merge($this->ler(), $conteudo));
 			default:
-				return $this->escrever($this->ler() . $conteudo);
+				return $this->escrever(conteudo: $this->ler() . $conteudo);
 		}
+		return false;
 	}
 
 	/**
 	 * Função para ler e exibir o conteudo de um arquivo na tela
+	 * @version 1
+	 * @access public
+	 * @return void
+	 * Retorna void, porem renderiza o arquivo na tela/request
 	 */
-	public function renderiza()
+	public function renderiza(): void
 	{
 		switch ($this->getExt()) {
 			case "php":
@@ -162,25 +193,30 @@ class Arquivo
 			default:
 				header("Content-Type: " . $this->getMimeType());
 				header("Cache-Control: " . $this->tempoCache());
-				readfile($this->path);
+				readfile(filename: $this->path);
 				break;
 		}
+		return;
 	}
 
 	/**
 	 * Função para apagar um arquivo
-	 * @return bool - diz se o arquivo foi apagado ou não
+	 * @version 1
+	 * @access public
+	 * @return bool diz se o arquivo foi apagado ou não
 	 */
-	public function apagar()
+	public function apagar(): bool
 	{
-		return unlink($this->path);
+		return unlink(filename: $this->path);
 	}
 
 	/**
 	 * Função para pegar o tempo de cache do arquivo
-	 * @return string - cache a ser colocado no arquivo
+	 * @version 1
+	 * @access public
+	 * @return string cache a ser colocado no arquivo
 	 */
-	function tempoCache()
+	public function tempoCache(): string
 	{
 		$config = new Config;
 		$cache = $config->getconfigCache();
@@ -198,20 +234,21 @@ class Arquivo
 
 	/**
 	 * Retorna o mimetype do arquivo
-	 *
-	 * @return string - mimetype do arquivo
+	 * @version 1
+	 * @access public
+	 * @return string mimetype do arquivo
 	 */
-	function getMimeType()
+	public function getMimeType(): string
 	{
 		$arquivo = $this->path;
-		if (file_exists($arquivo)) {
+		if ($this->existe()) {
 			switch ($this->getExt()) {
 				case "js":
 					return "application/javascript";
 				case "css":
 					return "text/css";
 				default:
-					return mime_content_type($arquivo);
+					return mime_content_type(filename: $arquivo);
 			}
 		} else {
 			return "text/plain";
@@ -220,9 +257,11 @@ class Arquivo
 
 	/**
 	 * Retorna a extenção do arquivo
-	 * @return string - extenção do arquivo
+	 * @version 1
+	 * @access public
+	 * @return string extenção do arquivo
 	 */
-	function getExt()
+	public function getExt(): string
 	{
 		$array = explode(".", $this->path);
 		return end($array);
@@ -230,9 +269,11 @@ class Arquivo
 
 	/**
 	 * Retorna o nome do arquivo
-	 * @return string - nome do arquivo
+	 * @version 1
+	 * @access public
+	 * @return string nome do arquivo
 	 */
-	function getNome()
+	public function getNome(): string
 	{
 		$array = explode("/", $this->path);
 		return end($array);
@@ -240,14 +281,16 @@ class Arquivo
 
 	/**
 	 * string com pastas até o arquivo
-	 * @param bool - true para receber o retorno como array, default false
+	 * @version 1
+	 * @access public
+	 * @param bool $array true para receber o retorno como array, default false
 	 * @return string|array - caminho até o arquivo
 	 */
-	function getPasta(bool $array = false)
+	public function getPasta(bool $array = false): string|array
 	{
-		$retorno = str_replace($this->getNome(), "", $this->path);
+		$retorno = str_replace(search: $this->getNome(), replace: "", subject: $this->path);
 		if ($array) {
-			$retorno = explode("/", $retorno);
+			$retorno = explode(separator: "/", string: $retorno);
 		}
 		return $retorno;
 	}
@@ -256,55 +299,60 @@ class Arquivo
 
 	/**
 	 * Função para ler o conteudo de um arquivo
-	 *
-	 * @return string - o conteudo do arquivo
+	 * @version 1
+	 * @access private
+	 * @return string o conteudo do arquivo
 	 */
-	private function lerArquivo()
+	private function lerArquivo(): string
 	{
-		return file_get_contents($this->path);
+		return file_get_contents(filename: $this->path);
 	}
 
 	/**
 	 * Função para escrever no arquivo
-	 *
-	 * @param string - o conteudo que será escrito
+	 * @version 1
+	 * @access private
+	 * @param string o conteudo que será escrito
 	 * @return bool
 	 */
-	function escreverArquivo(string $conteudo)
+	private function escreverArquivo(string $conteudo): bool
 	{
-		return file_put_contents($this->path, $conteudo);
+		return file_put_contents(filename: $this->path, data: $conteudo);
 	}
 
 	/**
 	 * função para retornar os dados de um arquivo .json
-	 *
-	 * @return array - json decodificado
+	 * @version 1
+	 * @access private
+	 * @return array json decodificado
 	 */
-	function lerJson()
+	private function lerJson(): array
 	{
-		return json_decode($this->lerArquivo($this->path), true);
+		return json_decode($this->lerArquivo(), true);
 	}
 
 	/**
 	 * Função para escrever um arr em um arquivo .json
-	 *
-	 * @param array - array de dados que serão convertidos em json
+	 * @version 1
+	 * @access private
+	 * @param array $arr de dados que serão convertidos em json
 	 * @return bool
 	 */
-	function escreverJson(array $arr)
+	private function escreverJson(array $arr): bool
 	{
-		return $this->escreverArquivo(is_array($arr) ? json_encode($arr) : $arr);
+		return $this->escreverArquivo(conteudo: is_array($arr) ? json_encode($arr) : $arr);
 	}
 
 	/**
 	 * Função para criar as pastas até o arquivo
-	 * @return bool
+	 * @version 1
+	 * @access private
+	 * @return void
 	 */
-	function criaPasta()
+	private function criaPasta(): void
 	{
 		$pastas = $this->getPasta();
-		if (!is_dir($pastas)) {
-			mkdir($pastas, 0777, true);
-		}
+		if (!is_dir($pastas)) mkdir($pastas, 0777, true);
+		return;
 	}
 }
