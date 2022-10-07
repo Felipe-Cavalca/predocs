@@ -180,7 +180,7 @@ class Banco extends Config
 		//cria campos que são prenchidos altomaticamente pelo framework
 		$campos = $this->query("DESC {$tabela}");
 		foreach ($campos as $campo) {
-			switch ($campo["Field"]) {
+			switch ($campo["field"]) {
 				case "modificado":
 					$dados[$campo["Field"]] = date("Y-m-d H:m:s");
 					break;
