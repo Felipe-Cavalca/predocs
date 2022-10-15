@@ -42,7 +42,7 @@ class Banco
 				case "sqlite":
 				default:
 					$caminhoArquivo = explode(":", $config["stringConn"])[1];
-					$arquivo = new Arquivo($caminhoArquivo, true);
+					$arquivo = new Arquivo(arquivo: $caminhoArquivo, novo: true);
 					if ($arquivo->criar() === false) {
 						new Log("Erro ao criar arquivo sqlite", "core/banco", "conexao");
 						return false;
@@ -83,7 +83,7 @@ class Banco
 		}
 
 		//cria campos que são prenchidos pelo framework
-		$campos = $this->detTabela($tabela);
+		$campos = $this->detTabela(tabela: $tabela);
 		foreach ($campos as $campo) {
 			switch ($campo["nome"]) {
 				case "criado":
@@ -100,7 +100,7 @@ class Banco
 		$valores = "'" . implode("', '", $dados) . "'";
 		$query = "INSERT INTO {$tabela} ({$campos}) VALUES ({$valores})";
 
-		$retorno = $this->query($query);
+		$retorno = $this->query(query: $query);
 
 		if ($retorno === false) {
 			new Log("Não doi possivel inserir os dados na base de dados", "core/banco", "insert");
@@ -135,16 +135,16 @@ class Banco
 			new Log("Tabela não definida para listar", "core/banco", "select");
 			return false;
 		}
-		if (!$this->existeTabela($arr["tabela"])) {
+		if (!$this->existeTabela(tabela: $arr["tabela"])) {
 			new Log("Tabela não localizada para listar", "core/banco", "select");
 			return false;
 		}
 
 		$where = [];
 		if (isset($arr["igual"]))
-			$where[] = $this->where($arr["igual"]);
+			$where[] = $this->where(where: $arr["igual"]);
 		if (isset($arr["where"]))
-			$where[] = $this->where($arr["where"]);
+			$where[] = $this->where(where: $arr["where"]);
 		if (!empty($where))
 			$where = "WHERE " . implode(" ", $where);
 
@@ -157,16 +157,16 @@ class Banco
 
 		$query = [
 			"SELECT",
-			$selectHelper->campos($arr),
+			$selectHelper->campos(arr: $arr),
 			"FROM",
-			$selectHelper->tabela($arr),
-			$selectHelper->join($arr),
+			$selectHelper->tabela(arr: $arr),
+			$selectHelper->join(arr: $arr),
 			$where,
 			$order
 		];
 
 		return implode(" ", $query);
-		return $this->query(implode(" ", $query));
+		return $this->query(query: implode(" ", $query));
 	}
 
 	/**
@@ -188,13 +188,13 @@ class Banco
 			new Log("Nenhuma tabela definida para atualizar os dados", "core/banco", "update");
 			return false;
 		}
-		if (!$this->existeTabela($tabela)) {
+		if (!$this->existeTabela(tabela: $tabela)) {
 			new Log("Tabela {$tabela} inexistente", "core/banco", "update");
 			return false;
 		}
 
 		//cria campos que são prenchidos pelo framework
-		$campos = $this->detTabela($tabela);
+		$campos = $this->detTabela(tabela: $tabela);
 		foreach ($campos as $campo) {
 			switch ($campo["nome"]) {
 				case "modificado":
@@ -209,10 +209,10 @@ class Banco
 		}
 		$camposValores = implode(", ", $camposValores);
 
-		$dadosWhere = $this->where($where);
+		$dadosWhere = $this->where(where: $where);
 
 		$query = "UPDATE {$tabela} SET {$camposValores} WHERE {$dadosWhere}";
-		return $this->query($query);
+		return $this->query(query: $query);
 	}
 
 	/**
@@ -230,12 +230,12 @@ class Banco
 			return false;
 		}
 
-		if (!$this->existeTabela($tabela)) {
+		if (!$this->existeTabela(tabela: $tabela)) {
 			new Log("Tabela {$tabela} inexistente", "core/banco", "delete");
 			return false;
 		}
 
-		if ($this->query("DELETE FROM {$tabela} WHERE {$this->where($where)}") === false) {
+		if ($this->query(query: "DELETE FROM {$tabela} WHERE {$this->where($where)}") === false) {
 			new Log("Erro ao executar script de delete", "core/banco", "delete");
 			return false;
 		}
@@ -345,7 +345,7 @@ class Banco
 
 		if ($this->tipo == "mysql") {
 			$campos = [];
-			foreach ($this->query("DESC {$tabela}") as $campo) {
+			foreach ($this->query(query:"DESC {$tabela}") as $campo) {
 				$campos[] = [
 					"nome" => $campo["Field"],
 					"tipo" => $campo["Type"],
@@ -357,7 +357,7 @@ class Banco
 			return $campos;
 		} else if ($this->tipo == "sqlite") {
 			$campos = [];
-			foreach ($this->query("PRAGMA table_info ('{$tabela}')") as $campo) {
+			foreach ($this->query(query:"PRAGMA table_info ('{$tabela}')") as $campo) {
 				if ($campo["type"] == "INTEGER")
 					$campo["type"] = "int(11)";
 				$campos[] = [
@@ -384,7 +384,7 @@ class Banco
 	{
 		if ($this->tipo == "mysql") {
 			$retorno = [];
-			foreach ($this->query("SHOW TABLES") as $tabela) {
+			foreach ($this->query(query:"SHOW TABLES") as $tabela) {
 				foreach ($tabela as $nome) {
 					$retorno[] = $nome;
 				}
@@ -392,7 +392,7 @@ class Banco
 			return $retorno;
 		} else if ($this->tipo == "sqlite") {
 			$retorno = [];
-			foreach ($this->query("SELECT * FROM sqlite_master WHERE type='table'") as $tabela) {
+			foreach ($this->query(query:"SELECT * FROM sqlite_master WHERE type='table'") as $tabela) {
 				if ($tabela["name"] != "sqlite_sequence")
 					$retorno[] = $tabela["name"];
 			}
