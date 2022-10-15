@@ -7,29 +7,16 @@ class Log extends Arquivo
 {
     /**
      * Função para escrever algo no storage
-     * @version 1
+     *
+     * Para funções dentro de controller é necessario apenas o primeiro parametro
+     * @version 2
      * @access public
      * @param string $mensagem mensagem que será adicionada no log
+     * @param string $controller arquivo que está executando
+     * @param string $function função que está executando
+     * @return void
      */
-    public function __construct(string $mensagem = "")
-    {
-        if (empty($mensagem))
-            return;
-
-        $this->escreveLog($mensagem);
-
-        return;
-    }
-
-    /**
-     * Função para escrever mensagem de erro no log
-     * @version 1
-     * @access public
-     * @param string $mensagem mensagem de erro
-     * @param string $controller nome do controller
-     * @param string $function funcao que acusou erro
-     */
-    public function erroLog(string $msg, string $controller = "", string $function = ""): void
+    public function __construct(string $mensagem = "", string $controller = "", string $function = "")
     {
         if (empty($controller))
             $controller = $_GET["controller"];
@@ -37,7 +24,8 @@ class Log extends Arquivo
         if (empty($function))
             $function = $_GET["function"];
 
-        $this->escreveLog("Erro em {$controller} - {$function} : $msg");
+        $this->escreveLog("{$controller} - {$function} : {$mensagem}");
+
         return;
     }
 

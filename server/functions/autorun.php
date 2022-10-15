@@ -23,101 +23,92 @@ class autorun
 
     /**
      * Função responsavel por instalar a base de dados
-     *
-     * @return array ["status" => boolean, "msg" => string]
+     * @version 1
+     * @access public
+     * @return bool
      */
-    function installBanco()
+    public function installBanco(): bool
     {
         $configBanco = $this->config->getConfigBanco();
 
         if (!$configBanco["instalado"]) {
             if (!$this->executaSqlPasta("{$this->config->getCaminho("sql")}/database/")) {
-                new Log("erro na instalação do banco de dados");
-                return [
-                    "status" => false,
-                    "msg" => "erro na instalação do banco de dados"
-                ];
+                new Log("Erro ao criar tabelas");
+                return false;
             }
 
             if (!$this->executaSqlPasta("{$this->config->getCaminho("sql")}/data/")) {
-                new Log("erro ao inserir dados na base de dados");
-                return [
-                    "status" => false,
-                    "msg" => "erro ao inserir dados na base de dados"
-                ];
+                new Log("Erro ao inserir dados na base de dados");
+                return false;
             }
 
             if ($configBanco["tipo"] == "mysql") {
                 if (!$this->executaSqlPasta("{$this->config->getCaminho("sql")}/triggers/")) {
-                    new Log("erro ao adicionar triggers na base de dados");
-                    return [
-                        "status" => false,
-                        "msg" => "erro ao adicionar triggers na base de dados"
-                    ];
+                    new Log("Erro ao adicionar triggers na base de dados");
+                    return false;
                 }
             }
 
             $this->config->setConfigBanco(["instalado" => true]);
         }
 
-        return [
-            "status" => true,
-            "msg" => "Banco instalado com sucesso"
-        ];
+        new Log("Banco instalado com sucesso");
+        return true;
     }
 
     /**
      * Roda scripts para realizar a atulização do banco
-     * @return array ["status" => boolean, "msg" => string]
+     * @version 1
+     * @access public
+     * @return bool
      */
-    function updateBanco()
+    function updateBanco(): bool
     {
         if (!$this->executaSqlPasta("{$this->config->getCaminho("sql")}/update/", true)) {
             new Log("Erro ao atualizar banco de dados");
-            return [
-                "status" => false,
-                "msg" => "Erro ao atualizar banco de dados"
-            ];
+            return false;
         }
 
-        return [
-            "status" => true,
-            "msg" => "Banco atualizado com sucesso"
-        ];
+        new Log("Base de dados atualizada com sucesso");
+        return true;
     }
 
     /**
      * Função para apagar todas as tabelas da base de dados APAGAR EM PRODUÇÂO - APENAS PARA DEV
-     *
-     * @return array ["status" => boolean, "msg" => string]
+     * @version 1
+     * @access public
+     * @return bool
      */
-    function deleteBanco()
+    public function deleteBanco(): bool
     {
         if ($this->banco->tipo == "mysql") {
-            foreach ($this->banco->query("show tables")["retorno"] as $tabela) {
-                if (!$this->banco->query("DROP TABLE {$tabela};")["retorno"]) {
-                    new Log("Erro ao excluir a base de dados");
-                    return ["status" => false, "msg" => "Erro ao excluir a base de dados"];
+            foreach ($this->banco->query("show tables") as $tabela) {
+                if (!$this->banco->query("DROP TABLE {$tabela};")) {
+                    new Log("Erro ao excluir a tabela {$tabela} da base de dados");
+                    return false;
                 }
             }
         } else {
             $arquivo = new Arquivo(explode(":", $this->config->getConfigBanco()["stringConn"])[1]);
             if (!$arquivo->apagar()) {
-                new Log("Erro ao excluir a base de dados");
-                return ["status" => false, "msg" => "Erro ao excluir a base de dados"];
+                new Log("Erro ao excluir arquivo da base de dados");
+                return false;
             }
         }
 
         $this->config->setConfigBanco(["instalado" => false]);
-        return ["status" => true, "msg" => "base de dados excluida com sucesso"];
+        new Log("Base de dados apagada");
+        return true;
     }
 
     /**
      * Executa arquivos sql de uma pasta
-     * @param string - caminho para a pasta dos arquivos a serem executados
-     * @return boolean - caso todos os arquivos foram executados
+     * @version 1
+     * @access public
+     * @param string $pasta caminho para a pasta dos arquivos a serem executados
+     * @return bool
      */
-    function executaSqlPasta($pasta)
+    function executaSqlPasta($pasta): bool
     {
         $funcoes = new funcoes();
 
@@ -129,8 +120,11 @@ class autorun
 
             foreach (explode(";", $script->ler()) as $query) {
                 if (empty($this->removeCaracteres($query))) continue;
-                if (!$this->banco->query("{$query};")['status']) {
-                    new Log("erro ao executar o script {$pasta}{$sql}");
+
+                $retorno = $this->banco->query("{$query};");
+
+                if (!$retorno) {
+                    new Log("Erro ao executar o script {$pasta}{$sql}");
                     return false;
                 }
             }
@@ -141,7 +135,7 @@ class autorun
 
     /**
      * Remove caracteres de uma string
-     * @param string - string com dados a serem removidos
+     * @param string $str string com dados a serem removidos
      * @return string
      */
     function removeCaracteres($str)
