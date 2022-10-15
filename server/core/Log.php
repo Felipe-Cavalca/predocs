@@ -37,7 +37,7 @@ class Log extends Arquivo
      */
     private function escreveLog(string $mensagem)
     {
-        $config = new Config();
+        $config = new Config;
         $dia = date("Y/m/d");
         $hora = date("H:i:s");
         parent::__construct("{$config->getCaminho("log")}/{$dia}.log");

@@ -1,46 +1,36 @@
 <?php
 
 //classe de config extende a classe arquivo para que consiga ler os arquivos de configuração
-class Config extends Arquivo
+class Config
 {
-	public $debug = true;
-
-	/**
-	 * Função contrutura para setar o arquivo de config
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		// $this->debug = $this->getConfig()["debug"];
-	}
-
 	/**
 	 * Função para pegar o caminho do arquivo json do ambiente em que o servidor está rodando
-	 * @param string nome do arquivo de config
-	 * @return obj - objeto arquivo
+	 * @version 1
+	 * @access public
+	 * @param string $nome do arquivo de config
+	 * @return Arquivo objeto arquivo
 	 */
-	function fileConfig(string $arquivo = "")
+	public function fileConfig(string $arquivo = ""): Arquivo
 	{
-		$file = "{$this->getCaminho("config")}/{$arquivo}.json";
-		if (file_exists($file)) {
-			return new Arquivo($file);
-		}
+		$arquivoConfig = new Arquivo("{$this->getCaminho("config")}/{$arquivo}.json");
+		if ($arquivoConfig->existe() !== false)
+			return $arquivoConfig;
 
-		$origin = new Arquivo("{$this->getCaminho("model/config")}/{$arquivo}.json", false);
-		$new = new Arquivo($file, true);
-		$new->escrever($origin->ler());
-		return $new;
+		$modelo = new Arquivo("{$this->getCaminho("model/config")}/{$arquivo}.json");
+		$arquivoConfig->criar();
+		$arquivoConfig->escrever(conteudo: $modelo->ler());
+		return $arquivo;
 	}
 
 	/**
 	 * Pegar as variaveis da base de dados
-	 *
-	 * @return array - dados do banco
+	 * @version 1
+	 * @access public
+	 * @return array config de conexao
 	 */
-	public function getConfigBanco()
+	public function getConfigBanco(): array
 	{
-		$config = $this->fileConfig("banco")->ler();
+		$config = $this->fileConfig(arquivo: "banco")->ler();
 
 		$retorno["tipo"] = $config["tipo"];
 		$retorno["nome"] = $config["nome"];
@@ -59,55 +49,58 @@ class Config extends Arquivo
 	}
 
 	/**
-	 * Salvar variaveis no banco
-	 *
-	 * @param array $config - configurações a serem salvas
-	 * @return boolean
+	 * Salvar variaveis da base de dados
+	 * @version 1
+	 * @access public
+	 * @param array $config configurações a serem salvas
+	 * @return bool
 	 */
-	public function setConfigBanco(array $configs)
+	public function setConfigBanco(array $configs): bool
 	{
-
 		return $this->fileConfig("banco")->adicionar($configs);
 	}
 
 	/**
 	 * Função para pegar as configurações de cache
-	 *
-	 * @return array|string - array com os dados de cache
+	 * @version 1
+	 * @access public
+	 * @return array|string array com os dados de cache
 	 */
-	function getConfigCache()
+	public function getConfigCache(): array|string
 	{
 		return $this->fileConfig("cache")->ler();
 	}
 
 	/**
 	 * Função para pegar as configurações
-	 *
-	 * @return array|string - array com os dados de cache
+	 * @version 1
+	 * @access public
+	 * @return array|string array com os dados de config
 	 */
-	function getConfig()
+	public function getConfig(): array
 	{
 		return $this->fileConfig("config")->ler();
 	}
 
 	/**
 	 * Função para pegar o caminho até a pasta de ambiente
+	 * @version 1
+	 * @access public
 	 * @return string
 	 */
-	function getCaminhoEnvironment()
+	public function ambiente(): string
 	{
-		$name = $_SERVER["HTTP_HOST"];
-		// $name = "Teste";
-		$path = "./data/{$name}";
-		return $path;
+		return $_SERVER["HTTP_HOST"];
 	}
 
 	/**
-	 * Função para listar algum diretorio
-	 * @param string $tipo - nome da pasta que será exibida
-	 * @return string - caminho até a pasta selecionada
+	 * Função para pegar o caminho até um diretori
+	 * @version 1
+	 * @access public
+	 * @param string $tipo nome da pasta que será exibida
+	 * @return string caminho até a pasta selecionada
 	 */
-	function getCaminho(string $tipo = "")
+	public function getCaminho(string $tipo = ""): string
 	{
 		switch ($tipo) {
 			case "controller":
@@ -118,9 +111,9 @@ class Config extends Arquivo
 			case "config":
 			case "storage":
 			case "session":
-				return "./data/{$tipo}";
+				return "./data/{$this->ambiente()}/{$tipo}";
 			case "sqlite":
-				return "./data/database";
+				return "./data/{$this->ambiente()}/database";
 			case "sql":
 			case "functions":
 			case "includes":
@@ -128,26 +121,4 @@ class Config extends Arquivo
 				return "./{$tipo}";
 		}
 	}
-
-	// /**
-	//  * Retorna dados da parte administrativa do framework
-	//  *
-	//  * @return array array de configurações
-	//  */
-	// function getConfigAdmin()
-	// {
-	// 	$this->path = $this->fileConfig("admin");
-	// 	return $this->ler();
-	// }
-
-	/**
-	 * Função para pegar as variaveis do app
-	 * @return array array de configurações a serem enviadas para o front-end
-	 */
-	// function getConfigApp()
-	// {
-	// 	$this->path = $this->fileConfig("app");
-	// 	return $this->ler();
-	// }
-
 }
