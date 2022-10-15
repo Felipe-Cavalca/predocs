@@ -165,7 +165,6 @@ class Banco
 			$order
 		];
 
-		return implode(" ", $query);
 		return $this->query(query: implode(" ", $query));
 	}
 
