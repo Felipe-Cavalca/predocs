@@ -108,6 +108,7 @@ class funcoes
 	public function criaPasta(string $path, int $permission = 0777): bool
 	{
 		if (!is_dir($path)) return mkdir($path, $permission, true);
+		return false;
 	}
 
 	/**
