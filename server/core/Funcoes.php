@@ -113,7 +113,7 @@ class funcoes
 
 	/**
 	 * Função para setar as config do php
-	 * @version 1
+	 * @version 1.1
 	 * @access public
 	 * @return void
 	 */
@@ -136,7 +136,6 @@ class funcoes
 		ini_set("display_errors", "1");
 
 		session_start();
-		$_SESSION["_CONEXAO"];
 
 		return;
 	}

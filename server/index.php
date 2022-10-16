@@ -1,5 +1,10 @@
 <?php
 
+$_BANCO = [
+	"tipo" => null,
+	"conexao" => null
+];
+
 //inclui os arquivos do core
 include_once("./core/Funcoes.php");
 include_once("./core/Arquivo.php");

@@ -53,15 +53,15 @@ class Banco
 
 	/**
 	 * Efetua a conexão com o banco de dados
-	 * @version 2
+	 * @version 2.1
 	 * @access public
 	 * @return bool
 	 * A conexão sera salva na variavel $conexao e o tipo em $tipo
 	 */
 	public function conexao(): bool
 	{
-		if (!empty($_SESSION["_CONEXAO"]))
-			$this->conexao = $_SESSION["_CONEXAO"];
+		$this->conexao = $GLOBALS["_BANCO"]["conexao"];
+		$this->tipo = $GLOBALS["_BANCO"]["tipo"];
 
 		if (!empty($this->conexao))
 			return true;
@@ -86,7 +86,8 @@ class Banco
 					$this->conexao = new PDO($config["stringConn"]);
 					break;
 			}
-			$_CONEXAO = $this->conexao;
+			$GLOBALS["_BANCO"]["conexao"] = $this->conexao;
+			$GLOBALS["_BANCO"]["tipo"] = $this->tipo;
 
 			return true;
 		} catch (Exception $e) {
@@ -150,7 +151,7 @@ class Banco
 
 	/**
 	 * Função para pesquisar no banco de dados
-	 * @version 1
+	 * @version 1.1
 	 * @access public
 	 * @param array arr array com os dados :
 	 * indices do array:
@@ -161,10 +162,9 @@ class Banco
 	 * @param array igual campos que serão pesquisados ["campo" => "valor", "campo2" => "valor", "campo3" => "valor", ...]
 	 * @param string where String que será adicionada apos o where
 	 * @param string order String que será adicionada a pos o order
-	 * @param bool contar se serão listados apenas a quantidade de registros
 	 * @return array|false
 	 */
-	public function select(array $arr = []): string|false
+	public function select(array $arr = []): array|false
 	{
 		$funcoes = new funcoes();
 
@@ -174,7 +174,7 @@ class Banco
 			return false;
 		}
 		if (!$this->existeTabela(tabela: $arr["tabela"])) {
-			new Log("Tabela não localizada para listar", "core/banco", "select");
+			new Log("Tabela {$arr["tabela"]} não localizada para listar", "core/banco", "select");
 			return false;
 		}
 
@@ -282,7 +282,7 @@ class Banco
 
 	/**
 	 * executa uma query sql
-	 * @version 1
+	 * @version 1.1
 	 * @access public
 	 * @param string $query
 	 * @return bool|array|int|PDOStatement
@@ -313,8 +313,12 @@ class Banco
 				$execucao = $this->conexao->query($query);
 				return $execucao->fetchAll(PDO::FETCH_ASSOC);
 				break;
-			case "CREATE":
 			case "UPDATE":
+				if ($this->conexao->query($query) === false)
+					return false;
+				return true;
+				break;
+			case "CREATE":
 			case "DELETE":
 			case "DROP":
 			default:
@@ -458,7 +462,7 @@ class SelectHelper
 {
 	/**
 	 * função para retornar os campos da query
-	 * @version 1
+	 * @version 1.1
 	 * @access public
 	 * @param array $arr array do select
 	 * @return string alias utilizado em fields
@@ -467,6 +471,9 @@ class SelectHelper
 	{
 		$as = $this->alias($arr);
 
+		if (isset($arr["join"]))
+			$as = null;
+
 		if (!empty($as))
 			$as = "$as.";
 
@@ -474,7 +481,7 @@ class SelectHelper
 		$campos = [];
 		if (isset($arr["campos"]) && is_array($arr["campos"])) {
 			foreach ($arr["campos"] as $campo) {
-				$campos[] = "$as$campo";
+				$campos[] = "{$as}{$campo}";
 			}
 		} else {
 			$campos[] = "$as*";
@@ -485,7 +492,7 @@ class SelectHelper
 
 	/**
 	 * Função para pegar o nome da tabela no select
-	 * @version 1
+	 * @version 1.1
 	 * @access public
 	 * @param array $arr array do select
 	 * @return string
@@ -494,15 +501,12 @@ class SelectHelper
 	{
 		$as = $this->alias($arr);
 
-		if (empty($as))
-			return $arr["tabela"];
-
-		return "{$arr["tabela"]} AS $as";
+		return "{$arr["tabela"]} {$as}";
 	}
 
 	/**
 	 * Função para pegar o alias da query
-	 * @version 1
+	 * @version 1.1
 	 * @access public
 	 * @param array $arr array do select
 	 * @return string
@@ -510,7 +514,7 @@ class SelectHelper
 	public function alias($arr): string
 	{
 		//verifica o alias
-		if (isset($arr["as"]) && !isset($arr["join"]))
+		if (isset($arr["as"]))
 			return $arr["as"];
 
 		return "";
