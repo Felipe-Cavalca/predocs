@@ -19,7 +19,7 @@ class Config
 		$modelo = new Arquivo("{$this->getCaminho("model/config")}/{$arquivo}.json");
 		$arquivoConfig->criar();
 		$arquivoConfig->escrever(conteudo: $modelo->ler());
-		return $arquivo;
+		return $arquivoConfig;
 	}
 
 	/**
