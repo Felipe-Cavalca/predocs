@@ -1,6 +1,6 @@
 {
     "instalado": false,
-    "tipo": "mysql",
+    "tipo": "sqlite",
     "nome": "lis",
     "sqlite": {},
     "mysql": {
