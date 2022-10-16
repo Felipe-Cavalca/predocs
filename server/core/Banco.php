@@ -19,14 +19,50 @@ class Banco
 	}
 
 	/**
-	 * Efetua a conexão com o banco de dados
+	 * Função para iniciar uma transação no banco de dados
 	 * @version 1
+	 * @access public
+	 * @return bool
+	 */
+	public function inicio(): bool
+	{
+		return $this->conexao->beginTransaction();
+	}
+
+	/**
+	 * Função para realizar um roolback
+	 * @version 1
+	 * @access public
+	 * @return bool
+	 */
+	public function reverter(): bool
+	{
+		return $this->conexao->rollback();
+	}
+
+	/**
+	 * Função para salvar os dados apos o inicio
+	 * @version 1
+	 * @access public
+	 * @return bool
+	 */
+	public function salvar(): bool
+	{
+		return $this->conexao->commit();
+	}
+
+	/**
+	 * Efetua a conexão com o banco de dados
+	 * @version 2
 	 * @access public
 	 * @return bool
 	 * A conexão sera salva na variavel $conexao e o tipo em $tipo
 	 */
 	public function conexao(): bool
 	{
+		if (!empty($_SESSION["_CONEXAO"]))
+			$this->conexao = $_SESSION["_CONEXAO"];
+
 		if (!empty($this->conexao))
 			return true;
 
@@ -50,6 +86,8 @@ class Banco
 					$this->conexao = new PDO($config["stringConn"]);
 					break;
 			}
+			$_CONEXAO = $this->conexao;
+
 			return true;
 		} catch (Exception $e) {
 			new Log("Erro ao se conectar a base de dados " . $e, "core/banco", "conexao");
@@ -344,7 +382,7 @@ class Banco
 
 		if ($this->tipo == "mysql") {
 			$campos = [];
-			foreach ($this->query(query:"DESC {$tabela}") as $campo) {
+			foreach ($this->query(query: "DESC {$tabela}") as $campo) {
 				$campos[] = [
 					"nome" => $campo["Field"],
 					"tipo" => $campo["Type"],
@@ -356,7 +394,7 @@ class Banco
 			return $campos;
 		} else if ($this->tipo == "sqlite") {
 			$campos = [];
-			foreach ($this->query(query:"PRAGMA table_info ('{$tabela}')") as $campo) {
+			foreach ($this->query(query: "PRAGMA table_info ('{$tabela}')") as $campo) {
 				if ($campo["type"] == "INTEGER")
 					$campo["type"] = "int(11)";
 				$campos[] = [
@@ -383,7 +421,7 @@ class Banco
 	{
 		if ($this->tipo == "mysql") {
 			$retorno = [];
-			foreach ($this->query(query:"SHOW TABLES") as $tabela) {
+			foreach ($this->query(query: "SHOW TABLES") as $tabela) {
 				foreach ($tabela as $nome) {
 					$retorno[] = $nome;
 				}
@@ -391,7 +429,7 @@ class Banco
 			return $retorno;
 		} else if ($this->tipo == "sqlite") {
 			$retorno = [];
-			foreach ($this->query(query:"SELECT * FROM sqlite_master WHERE type='table'") as $tabela) {
+			foreach ($this->query(query: "SELECT * FROM sqlite_master WHERE type='table'") as $tabela) {
 				if ($tabela["name"] != "sqlite_sequence")
 					$retorno[] = $tabela["name"];
 			}
