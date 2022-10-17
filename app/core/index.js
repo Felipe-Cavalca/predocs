@@ -323,6 +323,20 @@ try {
         });
     };
 
+    /**
+     * Verifica onde a aplicação está sendo executada
+     * @return {string} diz onde o aplicativo está rodando
+     */
+    Lis.modeApp = () => {
+        const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+        if (document.referrer.startsWith("android-app://")) {
+            return "pwa";
+        } else if (navigator.standalone || isStandalone) {
+            return "standalone";
+        }
+        return "browser";
+    }
+
     //iniciando a pagina ===========================================
     init();
 } catch (e) {
