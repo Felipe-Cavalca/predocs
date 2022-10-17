@@ -3,7 +3,8 @@ try {
 
     /**
      * Adiciona as tags de script e link a tela
-     *
+     * @version 1
+     * @access public
      * @param {array} links - Array de urls que serão importadas
      * @param {string} tipo - tipo de arquivo que será adicionado na tela (css, js)
      * @return {void} - Função não retorna dados
@@ -36,7 +37,8 @@ try {
 
     /**
      * Função para adicionar os metadados ao arquivo
-     *
+     * @version 1
+     * @access public
      * @return {void} - Função não retorna dados
      */
     function createMeta() {
@@ -80,6 +82,8 @@ try {
 
     /**
      * Função para adicionar o PWA a pagina
+     * @version 1
+     * @access public
      * @return {void}
      */
     function PWA() {
@@ -102,6 +106,8 @@ try {
         /**
          * Função para exibir a tela de instação do app
          * OBS: Essa função só pode ser executada através de um gesto do usuario
+         * @version 1
+         * @access public
          * @return {void}
         */
         Lis.installApp = () => {
@@ -123,6 +129,8 @@ try {
 
         /**
          * Função a que será adicionada ao evento de click
+         * @version 1
+         * @access public
          * @return {void}
          */
         function chamaInstallApp() {
@@ -132,7 +140,8 @@ try {
 
     /**
      * Função chamada para iniciar o framework
-     *
+     * @version 1
+     * @access public
      * @return {void} - Função não tem retorno
      */
     async function init() {
@@ -185,6 +194,8 @@ try {
 
     /**
      * Função para pegar um objeto de configurações
+     * @version 1
+     * @access public
      * @param {string} tipo - Tipo de config que deseja receber
      * app - Configurações do app
      * servidor - Url do servidor
@@ -205,7 +216,8 @@ try {
 
     /**
      * Função para retornar a url completa do sistema
-     *
+     * @version 1
+     * @access public
      * @param {string} url- url que será montada
      * @returns {string} - url montada
      */
@@ -223,7 +235,8 @@ try {
 
     /**
      * Função para fazer um requisição GET
-     *
+     * @version 1
+     * @access public
      * @param {string} url - Url destino da solicitação
      * @param {boolean} assincrona - função assincrona ? - padrão false
      */
@@ -236,6 +249,8 @@ try {
 
     /**
      * Função para realizar uma requisição POST
+     * @version 1
+     * @access public
      * @param {string} url - link para a requisição post
      * @param {obj} dados - dados a serem enviados para o servidor
      * @param {boolean} json - indica se os dados são json ou FormData
@@ -250,7 +265,8 @@ try {
     };
 
     /**
-     *
+     * @version 1
+     * @access public
      * @param {string} component Nome do component a ser colocado
      * @param {string} element local onde o elemento será criado
      * @param {string} local - como será criado o elemento (append, prepend)
@@ -288,6 +304,8 @@ try {
 
     /**
      * Função a ser aplicada nos forms, para que consiga realizar o envio de dados
+     * @version 1
+     * @access public
      * @param {string} element seletor do elemento do form
      * @param {function} before Função a ser executada antes do envio
      * @param {function} after Função a ser executada apos o envio
@@ -311,6 +329,8 @@ try {
 
     /**
      * Função para adicionar valores ao select
+     * @version 1
+     * @access public
      * @param {string} element - seletor até o select
      * @param {array} array - array de objetos contendo o value e o texto
      */
@@ -325,6 +345,10 @@ try {
 
     /**
      * Verifica onde a aplicação está sendo executada
+     * @version 1
+     * @access public
+     * @version 1
+     * @access public
      * @return {string} diz onde o aplicativo está rodando
      */
     Lis.rodando = () => {
