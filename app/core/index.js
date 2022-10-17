@@ -327,7 +327,7 @@ try {
      * Verifica onde a aplicação está sendo executada
      * @return {string} diz onde o aplicativo está rodando
      */
-    Lis.modeApp = () => {
+    Lis.rodando = () => {
         const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
         if (document.referrer.startsWith("android-app://")) {
             return "pwa";
