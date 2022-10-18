@@ -64,7 +64,7 @@ class funcoes
 	 * @access public
 	 * @param array $indices nome dos campos a serem verificados
 	 * @param array $array array a ser verificado
-	 * @return array ["status" => boolean, "msg" => string]
+	 * @return array ["status" => bool, "msg" => string]
 	 */
 	public function isset(array $indices = [], array $array = []): array
 	{
@@ -83,7 +83,7 @@ class funcoes
 	 * @access public
 	 * @param array $indices nome dos indices a serem verificados
 	 * @param array $array array a ser verificado
-	 * @return ["status" => boolean, "msg" => string]
+	 * @return ["status" => bool, "msg" => string]
 	 */
 	public function empty(array $indices = [], array $array = []): array
 	{
