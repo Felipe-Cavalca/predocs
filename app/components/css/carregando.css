@@ -6,7 +6,7 @@ carregando {
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	background-color: var(--background-color);
+	background-color: var(--cor-fundo);
 }
 
 /* animação de aparecer e sumir */

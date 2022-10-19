@@ -1,0 +1,15 @@
+/* variaveis css */
+:root {
+	/* variveis gerais */
+	--cor-fundo: #dcdcdc;
+	--cor-texto: black;
+	--cor-fundo-primario: pink;
+	--cor-texto-primario: black;
+	--cor-fundo-secundario: cadetblue;
+	--cor-texto-secundario: black;
+	--cor-fundo-terciario: rgb(93, 93, 255);
+	--cor-texto-terciario: black;
+
+	/* variaveis componentes */
+	--cor-fundo-nav: red;
+}

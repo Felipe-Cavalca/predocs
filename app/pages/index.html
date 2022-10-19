@@ -13,13 +13,13 @@
 				<div class="card-body">
 					<h5 class="card-title">{{VarsApp['nome']}}</h5>
 					<p class="card-text">Um framework para desenvolvimento web</p>
-					<a href="deslogado/cadastro.html" class="btn btn-primary">Cadastro</a>
+					<a href="deslogado/cadastro.html" class="btn" tipo="primario">Cadastro</a>
 					<br /><br />
-					<a href="#" class="btn btn-primary">Login</a>
+					<a href="#" class="btn" tipo="secundario">Login</a>
 					<br /><br />
-					<button id="BtnInstallPWA" onclick="Lis.installApp()" class="btn btn-primary BtnInstallPWA">Instalar</button>
+					<button id="BtnInstallPWA" onclick="Lis.installApp()" class="btn BtnInstallPWA" tipo="terciario">Instalar</button>
 					<br /><br />
-					<button onclick='localStorage.setItem("exibeMsgInstall", true); window.location.reload()' class="btn btn-primary">Limpar localStorage</button>
+					<button onclick='localStorage.setItem("exibeMsgInstall", true); window.location.reload()' class="btn" tipo="alerta">Limpar localStorage</button>
 					<br /><br />
 					<p id="msg"></p>
 				</div>
