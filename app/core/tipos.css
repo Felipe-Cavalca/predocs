@@ -1,6 +1,10 @@
+[tipo] {
+    text-decoration: none;
+}
+
 [tipo="primario"] {
     background-color: var(--cor-fundo-primario);
-    color: var(--cor-texto-primaria);
+    color: var(--cor-texto-primario);
 }
 
 [tipo="secundario"] {
