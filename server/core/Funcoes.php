@@ -27,12 +27,12 @@ class funcoes
 				if ($controller == 404) return $this->naoEncontrado();
 				if ($controller == 401) return $this->semAutorizacao();
 				if ($controller == 200 && function_exists($_GET["function"]))
-					return call_user_func($_GET["function"], $_GET["param"]);
+					return call_user_func($_GET["function"], $_GET["param1"], $_GET["param2"], $_GET["param3"]);
 				else return $this->naoEncontrado();
 				break;
 			case "object":
 				if (method_exists($controller, $_GET["function"]))
-					return call_user_func([$controller, $_GET["function"]], $_GET["param"]);
+					return call_user_func([$controller, $_GET["function"]], $_GET["param1"], $_GET["param2"], $_GET["param3"]);
 				else return $this->naoEncontrado();
 				break;
 		}
@@ -165,7 +165,9 @@ class funcoes
 		$url = explode("/", isset($_GET["_Pagina"]) ? $_GET["_Pagina"] : "");
 		$retorno["controller"] = isset($url[0]) ? $url[0] : null;
 		$retorno["function"] = empty($url[1]) ? "index" : $url[1];
-		$retorno["param"] = isset($url[2]) ? $url[2] : null;
+		$retorno["param1"] = isset($url[2]) ? $url[2] : null;
+		$retorno["param2"] = isset($url[3]) ? $url[3] : null;
+		$retorno["param3"] = isset($url[4]) ? $url[4] : null;
 		$_GET = $retorno;
 		return;
 	}
