@@ -8,7 +8,7 @@ class funcoes
 
 	/**
 	 * funcao para analizar a request de um usuario
-	 * @version 1
+	 * @version 3
 	 * @access public
 	 * @return mixed
 	 */
@@ -18,9 +18,14 @@ class funcoes
 		$this->post(); //organiza o $_POST
 		$this->get(); //organiza o $_GET
 
+		if ($_GET["controller"] == "lis")
+			$lis = true;
+
+		$this->get(lis: $lis); //reorganiza o get para ver se tem a lis
+
 		if (empty($_GET["controller"])) return $this->naoEncontrado();
 
-		$controller = $this->incluiController($_GET["controller"]);
+		$controller = $this->incluiController(nomeController: $_GET["controller"], lis: $lis);
 
 		switch (gettype($controller)) {
 			case "integer":
@@ -155,19 +160,36 @@ class funcoes
 
 	/**
 	 * Função para organizar os dados do get
-	 * @version 1
+	 * @version 3
 	 * @access public
 	 * @return void
 	 */
-	private function get(): void
+	private function get($lis = false): void
 	{
+		//prepara variaveis
 		$retorno = [];
+		$count = 0;
+		$retorno["_Pagina"] = $_GET["_Pagina"];
 		$url = explode("/", isset($_GET["_Pagina"]) ? $_GET["_Pagina"] : "");
-		$retorno["controller"] = isset($url[0]) ? $url[0] : null;
-		$retorno["function"] = empty($url[1]) ? "index" : $url[1];
-		$retorno["param1"] = isset($url[2]) ? $url[2] : null;
-		$retorno["param2"] = isset($url[3]) ? $url[3] : null;
-		$retorno["param3"] = isset($url[4]) ? $url[4] : null;
+
+		//define quais serão os indices do get
+		$params = [
+			"controller",
+			"function",
+			"param1",
+			"param2",
+			"param3"
+		];
+
+		//caso seja para lis pega os valores seguintes
+		if ($lis) $count++;
+
+		//core pelos param
+		foreach ($params as $param) {
+			$retorno[$param] = isset($url[$count]) ? $url[$count] : null;
+			$count++;
+		}
+
 		$_GET = $retorno;
 		return;
 	}
@@ -210,24 +232,25 @@ class funcoes
 
 	/**
 	 * inclui um controller
-	 * @version 1
+	 * @version 2
 	 * @access public
 	 * @param string $nome nome do controller
+	 * @param bool $lis Função da lis
 	 * @return object|int obj para o controller, int com o status da importação
 	 * caso haja uma classe, retorna o mesmo
 	 * caso não haja - true e inclui o arquivo
 	 */
-	public function incluiController(string $nomeController): mixed
+	public function incluiController(string $nomeController, bool $lis = false): mixed
 	{
 		$config = new Config;
-		$controller = new Arquivo("{$config->getCaminho("controller")}/{$nomeController}Controller.php");
 
-		//valida se o controller não é uma função do framework
-		switch ($nomeController) {
-			case "autorun":
-				$controller = new Arquivo("{$config->getCaminho("functions")}/autorun.php");
-				break;
+		if ($lis) {
+			$controller = new Arquivo("{$config->getCaminho("functions")}/{$nomeController}.php");
+		} else {
+			$controller = new Arquivo("{$config->getCaminho("controller")}/{$nomeController}Controller.php");
 		}
+
+		pr($controller);
 
 		if (!$controller->existe()) return 404;
 		$controller->renderiza();
