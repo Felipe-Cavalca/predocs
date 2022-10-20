@@ -232,7 +232,7 @@ class funcoes
 
 	/**
 	 * inclui um controller
-	 * @version 2
+	 * @version 2.0.1
 	 * @access public
 	 * @param string $nome nome do controller
 	 * @param bool $lis Função da lis
@@ -249,8 +249,6 @@ class funcoes
 		} else {
 			$controller = new Arquivo("{$config->getCaminho("controller")}/{$nomeController}Controller.php");
 		}
-
-		pr($controller);
 
 		if (!$controller->existe()) return 404;
 		$controller->renderiza();
