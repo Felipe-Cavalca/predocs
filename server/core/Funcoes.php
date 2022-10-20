@@ -160,7 +160,7 @@ class funcoes
 
 	/**
 	 * Função para organizar os dados do get
-	 * @version 3
+	 * @version 3.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -186,7 +186,13 @@ class funcoes
 
 		//core pelos param
 		foreach ($params as $param) {
-			$retorno[$param] = isset($url[$count]) ? $url[$count] : null;
+			switch($param){
+				case "function":
+					$retorno[$param] = isset($url[$count]) ? $url[$count] : "index";
+					break;
+				default:
+				$retorno[$param] = isset($url[$count]) ? $url[$count] : null;
+			}
 			$count++;
 		}
 
