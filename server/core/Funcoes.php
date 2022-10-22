@@ -8,7 +8,7 @@ class funcoes
 
 	/**
 	 * funcao para analizar a request de um usuario
-	 * @version 3
+	 * @version 3.0.1
 	 * @access public
 	 * @return mixed
 	 */
@@ -17,8 +17,9 @@ class funcoes
 		$this->configPHP(); //seta as config do php
 		$this->post(); //organiza o $_POST
 		$this->get(); //organiza o $_GET
+		$lis = false;
 
-		if ($_GET["controller"] == "lis")
+		if ($_GET["controller"] == "lis"){}
 			$lis = true;
 
 		$this->get(lis: $lis); //reorganiza o get para ver se tem a lis

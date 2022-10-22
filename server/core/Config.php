@@ -95,7 +95,7 @@ class Config
 
 	/**
 	 * Função para pegar o caminho até um diretori
-	 * @version 1
+	 * @version 1.1.0
 	 * @access public
 	 * @param string $tipo nome da pasta que será exibida
 	 * @return string caminho até a pasta selecionada
@@ -114,6 +114,8 @@ class Config
 				return "./data/{$this->ambiente()}/{$tipo}";
 			case "sqlite":
 				return "./data/{$this->ambiente()}/database";
+			case "app":
+				return "./../app";
 			case "sql":
 			case "functions":
 			case "includes":
