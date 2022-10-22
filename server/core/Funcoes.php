@@ -8,7 +8,7 @@ class funcoes
 
 	/**
 	 * funcao para analizar a request de um usuario
-	 * @version 3.0.1
+	 * @version 3.0.2
 	 * @access public
 	 * @return mixed
 	 */
@@ -19,7 +19,7 @@ class funcoes
 		$this->get(); //organiza o $_GET
 		$lis = false;
 
-		if ($_GET["controller"] == "lis"){}
+		if ($_GET["controller"] == "lis")
 			$lis = true;
 
 		$this->get(lis: $lis); //reorganiza o get para ver se tem a lis
