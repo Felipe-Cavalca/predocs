@@ -1,4 +1,5 @@
 {
     "nome": "Framework Lis",
-    "server": "http://localhost/lis/server/"
+    "server": "http://localhost/lis/server/",
+    "caminho": "/lis/"
 }

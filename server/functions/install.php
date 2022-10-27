@@ -5,17 +5,29 @@ class install
     //veriavel q guarda a url até o sistema
     public $url;
 
+    //variavel q guarda o caminho apartir de / na url
+    public $caminho;
+
+    /**
+     * Função contrutora do objeto install
+     * @version 2
+     * @access public
+     */
     public function __construct()
     {
+        $protocolo = ($_SERVER["SERVER_PORT"] == 443 ? "https" : "http");
+        $host = "$protocolo://{$_SERVER["HTTP_HOST"]}";
+
+        //paga o caminho apartir de /
+        $this->caminho = explode("server/lis", $_SERVER["REDIRECT_URL"])[0];
+
         //pega a url que o sistema está rodando
-        $this->url = ($_SERVER["SERVER_PORT"] == 443 ? "https" : "http") .
-            "://{$_SERVER["HTTP_HOST"]}" .
-            explode("server/lis", $_SERVER["REDIRECT_URL"])[0];
+        $this->url = $host . $this->caminho;
     }
 
     /**
      * Função para realizar a instalação do framework em uma pasta
-     * @version 1
+     * @version 2
      * @access public
      * @return string mensagem
      */
@@ -45,7 +57,9 @@ class install
 
             $config = new Arquivo("{$config->getCaminho("app")}/config/app.json", true);
 
-            $config->escrever(array_merge($original->ler(), ["server" => $this->url . "server/"]));
+            $vars = ["server" => $this->url . "server/", "caminho" => $this->caminho];
+
+            $config->escrever(array_merge($original->ler(), $vars));
         };
 
         $etapas["editaManifest"] = function () {
@@ -73,6 +87,23 @@ class install
 
             $autoRun = $funcoes->incluiController("autorun", true);
             $autoRun->installBanco();
+        };
+
+        $etapas["listaArquivosApp"] = function () {
+            $config = new config;
+            $funcoes = new funcoes;
+
+            $caminho = $config->getCaminho("app");
+
+            $arquivo = new Arquivo("{$caminho}/sw.js", true);
+            $modelo = new Arquivo("{$caminho}/models/sw.js");
+
+            $arquivos = $funcoes->listarArquivosRecursivos($caminho);
+            $arquivos = str_replace("./../", $this->caminho, $arquivos);
+            $arquivos = json_encode($arquivos, true);
+
+
+            $arquivo->escrever(str_replace('"___ARRAY_DE_ARQUIVOS_AQUI___"', $arquivos, $modelo->ler()));
         };
 
         foreach ($etapas as $etapa) {

@@ -65,6 +65,40 @@ class funcoes
 	}
 
 	/**
+	 * Função para listar arquivos recursivamente de uma pasta
+	 * @version 1
+	 * @access public
+	 * @author https://gist.github.com/sistematico/08c5240f5c647cf3f650f395448c69e9
+	 * Modificado para o framework
+	 * @param string $pasta caminho da lista de arquivos
+	 * @return array array com o nome dos arquivos do diretorio
+	 */
+	public function listarArquivosRecursivos(string $pasta): array
+	{
+		if (empty($pasta))
+			return [];
+
+		if (!is_dir($pasta))
+			return [];
+
+		$scan = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($pasta));
+		$arquivos = $retorno = [];
+
+		foreach ($scan as $arquivo) {
+			if (!$arquivo->isDir()) {
+				$arquivos[] = $arquivo->getPathname();
+			}
+		}
+		shuffle($arquivos);
+
+		foreach ($arquivos as &$valor) {
+			$retorno[] = $valor;
+		}
+
+		return $retorno;
+	}
+
+	/**
 	 * Valida se campos existem em um array
 	 * @version 1
 	 * @access public

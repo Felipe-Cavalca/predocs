@@ -1,5 +1,6 @@
 server/data/*
 app/config/*
+app/sw.js
 
 .editorconfig
 .prettierrc

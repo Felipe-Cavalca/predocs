@@ -216,7 +216,7 @@ try {
 
     /**
      * Função para retornar a url completa do sistema
-     * @version 1
+     * @version 1.1.0
      * @access public
      * @param {string} url- url que será montada
      * @returns {string} - url montada
@@ -226,7 +226,10 @@ try {
             if (url.substr(0, 7) == "/server") {
                 return Lis.getConfig("servidor") + url.replace("/server/", "");
             } else {
-                return document.querySelector("#coreJs").src.replaceAll("/core/index.js", "") + url;
+                let inicioUrl = document.querySelector("#coreJs").src;
+                inicioUrl = inicioUrl.replaceAll("/core/index.js", "");
+                inicioUrl = inicioUrl.replaceAll(window.location.origin, "");
+                return inicioUrl + url;
             }
         } else {
             return url;
@@ -235,16 +238,29 @@ try {
 
     /**
      * Função para fazer um requisição GET
-     * @version 1
+     * @version 2
      * @access public
+     * @author felipe <flpsnocvla@gmail.com>
+     * @author Gabriel <gabrielvitorlaurindo@gmail.com>
      * @param {string} url - Url destino da solicitação
      * @param {boolean} assincrona - função assincrona ? - padrão false
      */
     Lis.get = (url, assincrona = false) => {
+        if (!navigator.onLine)
+            return localStorage.getItem(Lis.getUrl(url));
+
         const xhttp = new XMLHttpRequest();
         xhttp.open("GET", Lis.getUrl(url), assincrona);
         xhttp.send();
-        return xhttp.responseText;
+
+        if (xhttp.statusText == "OK") {
+            if (Lis.getUrl(url).substr(0, 4) != "http") {
+                localStorage.setItem(Lis.getUrl(url), xhttp.responseText);
+            }
+            return xhttp.responseText;
+        }
+
+        return null;
     };
 
     /**
