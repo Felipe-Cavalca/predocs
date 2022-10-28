@@ -27,11 +27,11 @@ class install
 
     /**
      * Função para realizar a instalação do framework em uma pasta
-     * @version 2
+     * @version 2.1.0
      * @access public
      * @return string mensagem
      */
-    public function index(): string
+    public function index($cache = "false"): string
     {
         $etapas = [];
         //declara funções para instalação
@@ -89,7 +89,7 @@ class install
             $autoRun->installBanco();
         };
 
-        $etapas["listaArquivosApp"] = function () {
+        $etapas["listaArquivosApp"] = function ($cache) {
             $config = new config;
             $funcoes = new funcoes;
 
@@ -98,16 +98,19 @@ class install
             $arquivo = new Arquivo("{$caminho}/sw.js", true);
             $modelo = new Arquivo("{$caminho}/models/sw.js");
 
-            $arquivos = $funcoes->listarArquivosRecursivos($caminho);
-            $arquivos = str_replace("./../", $this->caminho, $arquivos);
-            $arquivos = json_encode($arquivos, true);
+            if ($cache == "true") {
+                $arquivos = $funcoes->listarArquivosRecursivos($caminho);
+                $arquivos = str_replace("./../", $this->caminho, $arquivos);
+                $arquivos = json_encode($arquivos, true);
 
-
-            $arquivo->escrever(str_replace('"___ARRAY_DE_ARQUIVOS_AQUI___"', $arquivos, $modelo->ler()));
+                $arquivo->escrever(str_replace('"___ARRAY_DE_ARQUIVOS_AQUI___"', $arquivos, $modelo->ler()));
+            } else {
+                $arquivo->escrever(str_replace('"___ARRAY_DE_ARQUIVOS_AQUI___"', "[]", $modelo->ler()));
+            }
         };
 
         foreach ($etapas as $etapa) {
-            $etapa();
+            $etapa($cache);
         }
 
         return "Todas as etapas foram executadas, para mais informações veja o log";
