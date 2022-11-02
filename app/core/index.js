@@ -140,7 +140,7 @@ try {
 
     /**
      * Função chamada para iniciar o framework
-     * @version 1
+     * @version 2
      * @access public
      * @return {void} - Função não tem retorno
      */
@@ -148,6 +148,9 @@ try {
 
         //cria o elemento de carregando //component sendo carregado antes para que se consiga exibir o carregamento
         await Lis.createComponent("carregando", "html", "append", ["/components/css/carregando.css"], ["/components/js/carregando.js"]);
+
+        //cria o component offline
+        await Lis.createComponent("offline", "html", "append", ["/components/css/offline.css"], ["/components/js/offline.js"]);
 
         //Adiciona os Scripts para o pwa
         PWA();
@@ -238,7 +241,7 @@ try {
 
     /**
      * Função para fazer um requisição GET
-     * @version 2
+     * @version 3
      * @access public
      * @author felipe <flpsnocvla@gmail.com>
      * @author Gabriel <gabrielvitorlaurindo@gmail.com>
@@ -249,23 +252,26 @@ try {
         if (!navigator.onLine)
             return localStorage.getItem(Lis.getUrl(url));
 
-        const xhttp = new XMLHttpRequest();
-        xhttp.open("GET", Lis.getUrl(url), assincrona);
-        xhttp.send();
+        try {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", Lis.getUrl(url), assincrona);
+            xhttp.send();
 
-        if (xhttp.statusText == "OK") {
-            if (Lis.getUrl(url).substr(0, 4) != "http") {
-                localStorage.setItem(Lis.getUrl(url), xhttp.responseText);
+            if (xhttp.statusText == "OK") {
+                if (Lis.getUrl(url).substr(0, 4) != "http") {
+                    localStorage.setItem(Lis.getUrl(url), xhttp.responseText);
+                }
+                return xhttp.responseText;
             }
-            return xhttp.responseText;
-        }
+        } catch (e) { }
 
-        return null;
+        Lis.offlineShow();
+        return undefined;
     };
 
     /**
      * Função para realizar uma requisição POST
-     * @version 1
+     * @version 2
      * @access public
      * @param {string} url - link para a requisição post
      * @param {obj} dados - dados a serem enviados para o servidor
@@ -274,14 +280,19 @@ try {
      * @return {string} resposta do post
      */
     Lis.post = (url, dados, json = true, assincrona = false) => {
-        const xhttp = new XMLHttpRequest();
-        xhttp.open("POST", Lis.getUrl(url), assincrona);
-        xhttp.send(json ? JSON.stringify(dados) : dados);
-        return xhttp.responseText;
+        try {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", Lis.getUrl(url), assincrona);
+            xhttp.send(json ? JSON.stringify(dados) : dados);
+            return xhttp.responseText;
+        } catch (e) { }
+
+        Lis.offlineShow();
+        return undefined;
     };
 
     /**
-     * @version 1
+     * @version 1.1.0
      * @access public
      * @param {string} component Nome do component a ser colocado
      * @param {string} element local onde o elemento será criado
@@ -297,12 +308,15 @@ try {
             return false;
         }
 
-        if (component == "carregando") { //elemento carregando recebe classes e ids para que de o efeito certo
-            var elemento = document.createElement(component);
-        } else {
-            var elemento = document.createElement("section");
-            elemento.setAttribute("class", "component-" + component);
+        switch (component) {
+            case "carregando":
+            case "offline":
+                var elemento = document.createElement(component);
+                break
+            default:
+                elemento.setAttribute("class", "component-" + component);
         }
+
         switch (local) {
             case "append":
                 document.querySelector(element).append(elemento);
