@@ -292,7 +292,7 @@ try {
     };
 
     /**
-     * @version 1.1.0
+     * @version 1.1.1
      * @access public
      * @param {string} component Nome do component a ser colocado
      * @param {string} element local onde o elemento será criado
@@ -314,6 +314,7 @@ try {
                 var elemento = document.createElement(component);
                 break
             default:
+                var elemento = document.createElement("section");
                 elemento.setAttribute("class", "component-" + component);
         }
 
