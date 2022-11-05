@@ -241,7 +241,7 @@ try {
 
     /**
      * Função para fazer um requisição GET
-     * @version 3
+     * @version 3.1.0
      * @access public
      * @author felipe <flpsnocvla@gmail.com>
      * @author Gabriel <gabrielvitorlaurindo@gmail.com>
@@ -257,12 +257,10 @@ try {
             xhttp.open("GET", Lis.getUrl(url), assincrona);
             xhttp.send();
 
-            if (xhttp.statusText == "OK") {
-                if (Lis.getUrl(url).substr(0, 4) != "http") {
-                    localStorage.setItem(Lis.getUrl(url), xhttp.responseText);
-                }
-                return xhttp.responseText;
+            if (Lis.getUrl(url).substr(0, 4) != "http") {
+                localStorage.setItem(Lis.getUrl(url), xhttp.responseText);
             }
+            return xhttp.responseText;
         } catch (e) { }
 
         Lis.offlineShow();
