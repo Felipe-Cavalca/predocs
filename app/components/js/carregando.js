@@ -1,10 +1,12 @@
 //some com o body
 var body = document.querySelector("body");
-body.setAttribute("class", "scale-transition scale-out");
+body.classList.add("scale-transition");
+body.classList.add("scale-out");
 body.setAttribute("style", "display: none;");
 
 var carregando = document.querySelector("carregando");
-carregando.setAttribute("class", "scale-transition scale-in");
+carregando.classList.add("scale-transition");
+carregando.classList.add("scale-in");
 
 //Caso o component tenha uma imagem, setar o caminho abaixo
 var img = document.querySelector("carregando img");
