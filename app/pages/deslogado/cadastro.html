@@ -16,10 +16,10 @@
 			</div>
 			<div class="card-body">
 				<form action="/deslogado/cadastro" method="POST" id="cadastro">
-					<div class="input-group mb-3">
-						<span class="input-group-text">Nome e sobrenome</span>
-						<input name="nome" type="text" aria-label="Primeiro nome" class="form-control" />
-						<input name="sobrenome" type="text" aria-label="Sobrenome" class="form-control" />
+					<div class="mb-3">
+						<label for="nome" class="form-label">Nome</label>
+						<input name="nome" type="nome" class="form-control" id="nome" aria-describedby="nomeHelp" />
+						<div id="nomeHelp" class="form-text">Adicione seu apelido</div>
 					</div>
 					<div class="mb-3">
 						<label for="email" class="form-label">Email</label>
@@ -27,12 +27,12 @@
 						<div id="emailHelp" class="form-text">Nunca compartilharemos seu e-mail com mais ninguém.</div>
 					</div>
 					<div class="mb-3">
-						<label for="senha" class="form-label">Password</label>
+						<label for="senha" class="form-label">Senha</label>
 						<input name="senha" type="password" class="form-control" id="senha" />
 					</div>
 					<div class="mb-3">
-						<label for="formFileSm" class="form-label">Small file input example</label>
-						<input class="form-control form-control-sm" id="formFileSm" type="file" name="arquivo">
+						<input id="formFileSm" type="file" name="arquivo" style="display: none;">
+						<label for="formFileSm" tipo="secundario" class="form-label">Arquivo</label>
 					  </div>
 					<button type="" class="btn" tipo="confirma">Cadastrar</button>
 				</form>

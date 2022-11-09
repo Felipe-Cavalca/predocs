@@ -1,3 +1,4 @@
 nav {
 	background-color: var(--cor-fundo-nav) !important;
+	color: var(--cor-texto-nav) !important;
 }

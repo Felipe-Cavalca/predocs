@@ -1,15 +1,20 @@
 /* variaveis css */
 :root {
 	/* variveis gerais */
-	--cor-fundo: #dcdcdc;
-	--cor-texto: black;
-	--cor-fundo-primario: pink;
-	--cor-texto-primario: black;
-	--cor-fundo-secundario: cadetblue;
-	--cor-texto-secundario: black;
-	--cor-fundo-terciario: rgb(93, 93, 255);
-	--cor-texto-terciario: black;
+	--cor-fundo: #1A233A;
+	--cor-texto: #8DC7F8;
+	--cor-fundo-primario: #5A8DEE;
+	--cor-texto-primario: #FFFFFF;
+	--cor-fundo-secundario: rgba(90, 141, 238, 0.3);
+	--cor-texto-secundario: #FFFFFF;
+	--cor-fundo-terciario: rgba(0, 0, 0, 0.2);
+	--cor-texto-terciario: #828D99;
+
+	/* cards */
+	--cor-fundo-card: #272E48;
+	--cor-texto-card: var(--cor-texto);
 
 	/* variaveis componentes */
-	--cor-fundo-nav: red;
+	--cor-fundo-nav: #272E48;
+	--cor-texto-nav: var(--cor-texto);
 }
