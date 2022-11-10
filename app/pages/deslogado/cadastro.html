@@ -10,34 +10,42 @@
 
 <body>
 	<section id="app">
-		<div class="card" style="margin: 40px 20px 5px 20px">
-			<div class="card-header">
-				<h1><b>Cadastro</b></h1>
+		<center class="row mt-5">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h1><b>Cadastro</b></h1>
+					</div>
+					<div class="card-body">
+						<form action="/deslogado/cadastro" method="POST" id="cadastro">
+							<div class="mb-3">
+								<label for="nome" class="form-label">Nome</label>
+								<input name="nome" type="nome" class="form-control" id="nome"
+									aria-describedby="nomeHelp" />
+								<div id="nomeHelp" class="form-text">Adicione seu apelido</div>
+							</div>
+							<div class="mb-3">
+								<label for="email" class="form-label">Email</label>
+								<input name="email" type="email" class="form-control" id="email"
+									aria-describedby="emailHelp" />
+								<div id="emailHelp" class="form-text">Nunca compartilharemos seu e-mail com mais
+									ninguém.
+								</div>
+							</div>
+							<div class="mb-3">
+								<label for="senha" class="form-label">Senha</label>
+								<input name="senha" type="password" class="form-control" id="senha" />
+							</div>
+							<div class="mb-3">
+								<input id="formFileSm" type="file" name="arquivo" style="display: none;">
+								<label for="formFileSm" tipo="secundario" class="form-label">Arquivo</label>
+							</div>
+							<button type="" class="btn" tipo="confirma">Cadastrar</button>
+						</form>
+					</div>
+				</div>
 			</div>
-			<div class="card-body">
-				<form action="/deslogado/cadastro" method="POST" id="cadastro">
-					<div class="mb-3">
-						<label for="nome" class="form-label">Nome</label>
-						<input name="nome" type="nome" class="form-control" id="nome" aria-describedby="nomeHelp" />
-						<div id="nomeHelp" class="form-text">Adicione seu apelido</div>
-					</div>
-					<div class="mb-3">
-						<label for="email" class="form-label">Email</label>
-						<input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" />
-						<div id="emailHelp" class="form-text">Nunca compartilharemos seu e-mail com mais ninguém.</div>
-					</div>
-					<div class="mb-3">
-						<label for="senha" class="form-label">Senha</label>
-						<input name="senha" type="password" class="form-control" id="senha" />
-					</div>
-					<div class="mb-3">
-						<input id="formFileSm" type="file" name="arquivo" style="display: none;">
-						<label for="formFileSm" tipo="secundario" class="form-label">Arquivo</label>
-					  </div>
-					<button type="" class="btn" tipo="confirma">Cadastrar</button>
-				</form>
-			</div>
-		</div>
+		</center>
 	</section>
 
 	<script type="text/javascript">

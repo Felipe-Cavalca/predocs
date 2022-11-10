@@ -4,7 +4,13 @@ body {
 	color: var(--cor-texto);
 }
 
+.row{
+	--bs-gutter-x: 0;
+}
+
 .card {
 	background-color: var(--cor-fundo-card);
 	color: var(--cor-texto-card);
+	max-width: 450px;
+	text-align: left;
 }
