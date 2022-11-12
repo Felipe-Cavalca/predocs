@@ -271,7 +271,7 @@ try {
      * @param {boolean} assincrona - função assincrona ? - padrão false
      */
     Lis.get = (url, assincrona = false) => {
-        if (!navigator.onLine) return localStorage.getItem(Lis.getUrl(url));
+        if (!navigator.onLine) return localStorage.getItem("GET-" + Lis.getUrl(url));
 
         try {
             const xhttp = new XMLHttpRequest();
@@ -279,7 +279,10 @@ try {
             xhttp.send();
 
             if (Lis.getUrl(url).substr(0, 4) != "http") {
-                localStorage.setItem(Lis.getUrl(url), xhttp.responseText);
+                localStorage.setItem(
+                    "GET-" + Lis.getUrl(url),
+                    xhttp.responseText
+                );
             }
             return xhttp.responseText;
         } catch (e) {}
