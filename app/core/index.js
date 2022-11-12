@@ -17,10 +17,10 @@ try {
                     script.setAttribute("src", Lis.getUrl(links[i]));
                     document.querySelector("body").appendChild(script);
                     //Aguarda o carregamento do script
-                    await new Promise(res => {
+                    await new Promise((res) => {
                         script.onload = () => {
                             res(0);
-                        }
+                        };
                     });
                 }
                 break;
@@ -95,10 +95,15 @@ try {
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register(Lis.getUrl("/sw.js"));
             var deferredPrompt; // Inicialize o deferredPrompt para posteriormente mostrar o prompt de instalação do navegador.
-            window.addEventListener("beforeinstallprompt", e => {
+            window.addEventListener("beforeinstallprompt", (e) => {
                 deferredPrompt = e;
-                if (localStorage.getItem("exibeMsgInstall") == null || localStorage.getItem("exibeMsgInstall") == "true") {
-                    document.querySelector("html").addEventListener("click", chamaInstallApp);
+                if (
+                    localStorage.getItem("exibeMsgInstall") == null ||
+                    localStorage.getItem("exibeMsgInstall") == "true"
+                ) {
+                    document
+                        .querySelector("html")
+                        .addEventListener("click", chamaInstallApp);
                 }
             });
         }
@@ -109,23 +114,25 @@ try {
          * @version 1
          * @access public
          * @return {void}
-        */
+         */
         Lis.installApp = () => {
             deferredPrompt.prompt();
             // Aguarda a resposta do usuario
-            deferredPrompt.userChoice.then(escolha => {
-                if (escolha.outcome === 'accepted') {
+            deferredPrompt.userChoice.then((escolha) => {
+                if (escolha.outcome === "accepted") {
                     // Usuário aceitou instalar o app
                 } else {
                     // Usuário recusou instalar
                 }
 
                 //zera as variaveis após exibição do botão para instalar
-                document.querySelector("html").removeEventListener("click", chamaInstallApp);
+                document
+                    .querySelector("html")
+                    .removeEventListener("click", chamaInstallApp);
                 localStorage.setItem("exibeMsgInstall", false);
                 deferredPrompt = null;
             });
-        }
+        };
 
         /**
          * Função a que será adicionada ao evento de click
@@ -145,12 +152,23 @@ try {
      * @return {void} - Função não tem retorno
      */
     async function init() {
-
         //cria o elemento de carregando //component sendo carregado antes para que se consiga exibir o carregamento
-        await Lis.createComponent("carregando", "html", "append", ["/components/css/carregando.css"], ["/components/js/carregando.js"]);
+        await Lis.createComponent(
+            "carregando",
+            "html",
+            "append",
+            ["/components/css/carregando.css"],
+            ["/components/js/carregando.js"]
+        );
 
         //cria o component offline
-        await Lis.createComponent("offline", "html", "append", ["/components/css/offline.css"], ["/components/js/offline.js"]);
+        await Lis.createComponent(
+            "offline",
+            "html",
+            "append",
+            ["/components/css/offline.css"],
+            ["/components/js/offline.js"]
+        );
 
         //Adiciona os Scripts para o pwa
         PWA();
@@ -174,7 +192,7 @@ try {
         }
 
         //inclui os components na tela
-        includes.componentsGlobal.forEach(async c => {
+        includes.componentsGlobal.forEach(async (c) => {
             Lis.createComponent(c.component, c.element, c.local, c.css, c.js);
         });
 
@@ -211,11 +229,15 @@ try {
             case "servidor":
                 return JSON.parse(Lis.get("/config/app.json")).server;
             case "iconApp":
-                return JSON.parse(Lis.get("/config/manifest.json"))["icons"][0]["src"];
+                return JSON.parse(Lis.get("/config/manifest.json"))["icons"][0][
+                    "src"
+                ];
             case "corApp":
-                return JSON.parse(Lis.get("/config/manifest.json"))["theme_color"];
+                return JSON.parse(Lis.get("/config/manifest.json"))[
+                    "theme_color"
+                ];
         }
-    }
+    };
 
     /**
      * Função para retornar a url completa do sistema
@@ -249,8 +271,7 @@ try {
      * @param {boolean} assincrona - função assincrona ? - padrão false
      */
     Lis.get = (url, assincrona = false) => {
-        if (!navigator.onLine)
-            return localStorage.getItem(Lis.getUrl(url));
+        if (!navigator.onLine) return localStorage.getItem(Lis.getUrl(url));
 
         try {
             const xhttp = new XMLHttpRequest();
@@ -261,7 +282,7 @@ try {
                 localStorage.setItem(Lis.getUrl(url), xhttp.responseText);
             }
             return xhttp.responseText;
-        } catch (e) { }
+        } catch (e) {}
 
         Lis.offlineShow();
         return undefined;
@@ -283,7 +304,7 @@ try {
             xhttp.open("POST", Lis.getUrl(url), assincrona);
             xhttp.send(json ? JSON.stringify(dados) : dados);
             return xhttp.responseText;
-        } catch (e) { }
+        } catch (e) {}
 
         Lis.offlineShow();
         return undefined;
@@ -301,7 +322,6 @@ try {
      * @return {void} - Função não tem retorno
      */
     Lis.createComponent = (component, element, local, css = [], js = []) => {
-
         if (Lis.Ncomponents && Lis.Ncomponents.includes(component)) {
             return false;
         }
@@ -310,7 +330,7 @@ try {
             case "carregando":
             case "offline":
                 var elemento = document.createElement(component);
-                break
+                break;
             default:
                 var elemento = document.createElement("section");
                 elemento.setAttribute("class", "component-" + component);
@@ -347,7 +367,16 @@ try {
                 if (before() != false) {
                     const data = new FormData(event.target);
                     if (document.querySelector(element).method == "post") {
-                        resp = JSON.parse(Lis.post("/server" + document.querySelector(element).action.replace(location.origin, ""), data, false));
+                        resp = JSON.parse(
+                            Lis.post(
+                                "/server" +
+                                    document
+                                        .querySelector(element)
+                                        .action.replace(location.origin, ""),
+                                data,
+                                false
+                            )
+                        );
                     }
                     after(resp);
                 }
@@ -364,9 +393,9 @@ try {
      * @param {array} array - array de objetos contendo o value e o texto
      */
     Lis.montaSelect = (element, array) => {
-        array.forEach(opt => {
-            let option = document.createElement('option');
-            option.setAttribute('value', opt.value ? opt.value : opt.text);
+        array.forEach((opt) => {
+            let option = document.createElement("option");
+            option.setAttribute("value", opt.value ? opt.value : opt.text);
             option.innerHTML = opt.text;
             document.querySelector(element).appendChild(option);
         });
@@ -381,14 +410,16 @@ try {
      * @return {string} diz onde o aplicativo está rodando
      */
     Lis.rodando = () => {
-        const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+        const isStandalone = window.matchMedia(
+            "(display-mode: standalone)"
+        ).matches;
         if (document.referrer.startsWith("android-app://")) {
             return "pwa";
         } else if (navigator.standalone || isStandalone) {
             return "standalone";
         }
         return "browser";
-    }
+    };
 
     //iniciando a pagina ===========================================
     init();
