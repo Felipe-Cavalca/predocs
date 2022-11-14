@@ -1,0 +1,14 @@
+#forçando utf-8
+<FilesMatch ".(htm|html|css|js)$">
+    AddDefaultCharset UTF-8
+</FilesMatch>
+
+#Cache de arquivos
+<IfModule mod_headers.c>
+    <FilesMatch "\.(ico|gif|jpg|jpeg|png)$">
+        Header set Cache-Control "max-age=31536000"
+    </FilesMatch>
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "max-age=31536000"
+    </FilesMatch>
+</IfModule>
