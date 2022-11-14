@@ -13,23 +13,29 @@ try {
         switch (tipo) {
             case "js":
                 for (var i = 0; i < links.length; i++) {
-                    const script = document.createElement("script");
-                    script.setAttribute("src", Lis.getUrl(links[i]));
-                    document.querySelector("body").appendChild(script);
-                    //Aguarda o carregamento do script
-                    await new Promise((res) => {
-                        script.onload = () => {
-                            res(0);
-                        };
-                    });
+                    let scriptsNegados = Lis.Nscripts;
+                    if (!scriptsNegados.includes(links[i])) {
+                        const script = document.createElement("script");
+                        script.setAttribute("src", Lis.getUrl(links[i]));
+                        document.querySelector("body").appendChild(script);
+                        //Aguarda o carregamento do script
+                        await new Promise((res) => {
+                            script.onload = () => {
+                                res(0);
+                            };
+                        });
+                    }
                 }
                 break;
             case "css":
                 links.forEach((url) => {
-                    const style = document.createElement("link");
-                    style.setAttribute("rel", "stylesheet");
-                    style.setAttribute("href", Lis.getUrl(url));
-                    document.querySelector("head").appendChild(style);
+                    let stylesNegados = Lis.Nstyles;
+                    if (!stylesNegados.includes(url)) {
+                        const style = document.createElement("link");
+                        style.setAttribute("rel", "stylesheet");
+                        style.setAttribute("href", Lis.getUrl(url));
+                        document.querySelector("head").appendChild(style);
+                    }
                 });
                 break;
         }
