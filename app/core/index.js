@@ -206,6 +206,10 @@ try {
             };
         }
 
+        document.querySelectorAll("input:not([autocomplete])").forEach((element) => {
+            element.setAttribute("autocomplete", "off");
+        });
+
         document.querySelector("html").onerror = (erro) => {
             window.location.href = Lis.getUrl("/error");
         };
