@@ -3,7 +3,7 @@ try {
 
     /**
      * Adiciona as tags de script e link a tela
-     * @version 1
+     * @version 2.0.1
      * @access public
      * @param {array} links - Array de urls que serão importadas
      * @param {string} tipo - tipo de arquivo que será adicionado na tela (css, js)
@@ -13,7 +13,7 @@ try {
         switch (tipo) {
             case "js":
                 for (var i = 0; i < links.length; i++) {
-                    let scriptsNegados = Lis.Nscripts;
+                    let scriptsNegados = Lis.Nscripts ?? [];
                     if (!scriptsNegados.includes(links[i])) {
                         const script = document.createElement("script");
                         script.setAttribute("src", Lis.getUrl(links[i]));
@@ -29,7 +29,7 @@ try {
                 break;
             case "css":
                 links.forEach((url) => {
-                    let stylesNegados = Lis.Nstyles;
+                    let stylesNegados = Lis.Nstyles ?? [];
                     if (!stylesNegados.includes(url)) {
                         const style = document.createElement("link");
                         style.setAttribute("rel", "stylesheet");
