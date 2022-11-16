@@ -158,6 +158,11 @@ try {
      * @return {void} - Função não tem retorno
      */
     async function init() {
+        //função a ser executada antes do resto // apenas js e funções Lis
+        if (Lis && typeof Lis.beforeInit === "function") {
+            await Lis.beforeInit();
+        }
+
         //cria o elemento de carregando //component sendo carregado antes para que se consiga exibir o carregamento
         await Lis.createComponent(
             "carregando",
@@ -212,9 +217,11 @@ try {
             };
         }
 
-        document.querySelectorAll("input:not([autocomplete])").forEach((element) => {
-            element.setAttribute("autocomplete", "off");
-        });
+        document
+            .querySelectorAll("input:not([autocomplete])")
+            .forEach((element) => {
+                element.setAttribute("autocomplete", "off");
+            });
 
         document.querySelector("html").onerror = (erro) => {
             window.location.href = Lis.getUrl("/error");
