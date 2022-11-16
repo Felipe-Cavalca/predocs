@@ -1,4 +1,5 @@
-input{
+input,
+select {
     background-color: #1a233a !important;
     border-color: #464d5c !important;
     color: #8a99b5 !important;
@@ -18,7 +19,7 @@ input{
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-input[type='file']~label{
+input[type='file']~label {
     display: inline-block;
     text-align: center;
     vertical-align: middle;
