@@ -14,3 +14,16 @@ body {
 	max-width: 450px;
 	text-align: left;
 }
+
+/* alinhamento dos textos */
+.texto-direita {
+	text-align: right;
+}
+
+.texto-centro {
+	text-align: center;
+}
+
+.texto-direita {
+	text-align: left;
+}
