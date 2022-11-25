@@ -1,4 +1,29 @@
 html,
-body{
-	background-color: var(--background-color);
+body {
+	background-color: var(--cor-fundo);
+	color: var(--cor-texto);
+}
+
+.row{
+	--bs-gutter-x: 0;
+}
+
+.card {
+	background-color: var(--cor-fundo-card);
+	color: var(--cor-texto-card);
+	max-width: 450px;
+	text-align: left;
+}
+
+/* alinhamento dos textos */
+.texto-direita {
+	text-align: right;
+}
+
+.texto-centro {
+	text-align: center;
+}
+
+.texto-esquerda {
+	text-align: left;
 }

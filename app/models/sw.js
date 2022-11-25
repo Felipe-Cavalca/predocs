@@ -1,7 +1,11 @@
 var CACHE_NAME = "Cache-App";
 
 self.addEventListener("install", event => {
-    event.waitUntil(caches.open(CACHE_NAME).then(cache => { return cache.addAll([]); }))
+    event.waitUntil(caches.open(CACHE_NAME).then(cache => {
+        var urlsCACHE = "___ARRAY_DE_ARQUIVOS_AQUI___";
+
+        return cache.addAll(urlsCACHE);
+    }))
 });
 
 self.addEventListener("fetch", event => {

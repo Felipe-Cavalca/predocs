@@ -1,0 +1,31 @@
+[tipo] {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+[tipo="primario"] {
+    background-color: var(--cor-fundo-primario);
+    color: var(--cor-texto-primario);
+}
+
+[tipo="secundario"] {
+    background-color: var(--cor-fundo-secundario);
+    color: var(--cor-texto-secundario);
+}
+
+[tipo="terciario"] {
+    background-color: var(--cor-fundo-terciario);
+    color: var(--cor-texto-terciario);
+}
+
+[tipo="alerta"] {
+    background-color: yellow;
+}
+
+[tipo="perigo"] {
+    background-color: red;
+}
+
+[tipo="confirma"] {
+    background-color: green;
+}

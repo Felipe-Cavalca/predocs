@@ -4,6 +4,6 @@ create table if not exists `usuario` (
 	`sobrenome` varchar(255),
 	`email` varchar(255) NOT NULL,
 	`ativo` boolean,
-	`created` datetime,
-	`modified` datetime
+	`criado` datetime,
+	`modificado` datetime
 );
