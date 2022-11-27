@@ -3,6 +3,11 @@
  * @param {domElement} e elemento dom
  */
 function initVueDefault(e) {
+
+    if (typeof Vue == "undefined") {
+        throw "Vue js não existe!";
+    }
+
     const pagina = {
         data() {
             return {
