@@ -1,8 +1,8 @@
 on:
-  push:
+  pull_request:
     branches:
       - Servidor
-name: Deploy website on push
+name: Enviar para servidor
 
 jobs:
   building:
