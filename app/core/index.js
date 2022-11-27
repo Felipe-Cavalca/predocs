@@ -441,6 +441,24 @@ try {
         return "browser";
     };
 
+    /**
+     * Função para substituir variaveis na view
+     * @version 1
+     * @access public
+     * @param {string} elem Elemento que será executada a ação
+     * @param {object} obj Objeto contendo os nomes dos campos e os valores a serem substituidos
+     * @return {void}
+     */
+    Lis.varsInView = (elem, obj) => {
+        let html = document.querySelector(elem).innerHTML;
+
+        Object.keys(obj).forEach((val) => {
+            html = html.replaceAll("{{" + val + "}}", obj[val]);
+        });
+
+        document.querySelector(elem).innerHTML = html;
+    }
+
     //iniciando a pagina ===========================================
     init();
 } catch (e) {
