@@ -2,7 +2,6 @@
     "scriptsGlobais": [
         "/framework/jquery-3.6.0.js",
         "/framework/bootstrap-5.1.3-dist/js/bootstrap.js",
-        "/framework/vue.global.js",
         "/js/global/funcoes.js"
     ],
     "stylesGlobais": [
