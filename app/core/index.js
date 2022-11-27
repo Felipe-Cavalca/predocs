@@ -445,7 +445,7 @@ try {
      * @access public
      * @param {string} elem Elemento que será executada a ação
      * @param {object} obj Objeto contendo os nomes dos campos e os valores a serem substituidos
-     * @return {void}
+     * @return {void} Função não retorna dados
      */
     Lis.varsInView = (elem, obj) => {
         let html = document.querySelector(elem).innerHTML;
