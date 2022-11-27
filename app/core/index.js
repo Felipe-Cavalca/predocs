@@ -425,8 +425,6 @@ try {
      * Verifica onde a aplicação está sendo executada
      * @version 1
      * @access public
-     * @version 1
-     * @access public
      * @return {string} diz onde o aplicativo está rodando
      */
     Lis.rodando = () => {
