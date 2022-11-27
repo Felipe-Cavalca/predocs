@@ -141,6 +141,8 @@ class Banco
 
 		$retorno = $this->query(query: $query);
 
+		$this->logTabela($tabela, "INSERT", json_encode(["dados" => $dados]));
+
 		if ($retorno === false) {
 			new Log("Não doi possivel inserir os dados na base de dados", "core/banco", "insert");
 			return false;
@@ -249,6 +251,9 @@ class Banco
 		$dadosWhere = $this->where(where: $where);
 
 		$query = "UPDATE {$tabela} SET {$camposValores} WHERE {$dadosWhere}";
+
+		$this->logTabela($tabela, "UPDATE", json_encode(["dados" => $dados, "where" => $where]));
+
 		return $this->query(query: $query);
 	}
 
@@ -272,10 +277,14 @@ class Banco
 			return false;
 		}
 
-		if ($this->query(query: "DELETE FROM {$tabela} WHERE {$this->where($where)}") === false) {
+		$query = "DELETE FROM {$tabela} WHERE {$this->where($where)}";
+
+		if ($this->query(query: $query) === false) {
 			new Log("Erro ao executar script de delete", "core/banco", "delete");
 			return false;
 		}
+
+		$this->logTabela($tabela, "DELETE", json_encode(["where" => $where]));
 
 		return true;
 	}
@@ -452,6 +461,45 @@ class Banco
 	public function existeTabela(string $tabela): bool
 	{
 		return in_array($tabela, $this->getTabelas());
+	}
+
+	/**
+	 * Insere o log em sua tabela de log
+	 * @version 1
+	 * @access private
+	 * @return bool
+	 */
+	private function logTabela(string $tabela, string $acao, string $query): bool
+	{
+		//valida se não é a tabela de log
+		if (substr($tabela, -4) == "_log") {
+			return true;
+		}
+
+		if (!$this->existeTabela($tabela . "_log")) {
+			$queryTabelaLog = "CREATE TABLE IF NOT EXISTS {$tabela}_log (
+				`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+				`acao` varchar(255) NOT NULL,
+				`query` varchar(255),
+				`ip` varchar(255),
+				`criado` datetime
+			);";
+
+			$this->query($queryTabelaLog);
+		}
+
+		// Valida se existe o ip do usuario
+		if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+			$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+		}
+
+		$this->insert([
+			"acao" => $acao,
+			"query" => $query,
+			"ip" => $_SERVER['REMOTE_ADDR']
+		], $tabela . "_log");
+
+		return true;
 	}
 }
 
