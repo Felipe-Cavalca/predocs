@@ -14,7 +14,7 @@
 						<h1><b>INDEX</b></h1>
 					</div>
 					<div class="card-body">
-						<h5 class="card-title">{{VarsApp['nome']}}</h5>
+						<h5 class="card-title">{{nome}}</h5>
 						<p class="card-text">Um framework para desenvolvimento web</p>
 						<a href="deslogado/cadastro.html" class="btn" tipo="primario">Cadastro</a>
 						<br /><br />
@@ -36,7 +36,7 @@
 	<script type="text/javascript">
 		const Lis = {
 			beforeInit(){
-				console.log("before init");
+				Lis.varsInView("#app", Lis.getConfig("app"));
 			},
 			init() {
 			},

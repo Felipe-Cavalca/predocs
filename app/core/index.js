@@ -425,8 +425,6 @@ try {
      * Verifica onde a aplicação está sendo executada
      * @version 1
      * @access public
-     * @version 1
-     * @access public
      * @return {string} diz onde o aplicativo está rodando
      */
     Lis.rodando = () => {
@@ -440,6 +438,24 @@ try {
         }
         return "browser";
     };
+
+    /**
+     * Função para substituir variaveis na view
+     * @version 1
+     * @access public
+     * @param {string} elem Elemento que será executada a ação
+     * @param {object} obj Objeto contendo os nomes dos campos e os valores a serem substituidos
+     * @return {void} Função não retorna dados
+     */
+    Lis.varsInView = (elem, obj) => {
+        let html = document.querySelector(elem).innerHTML;
+
+        Object.keys(obj).forEach((val) => {
+            html = html.replaceAll("{{" + val + "}}", obj[val]);
+        });
+
+        document.querySelector(elem).innerHTML = html;
+    }
 
     //iniciando a pagina ===========================================
     init();
