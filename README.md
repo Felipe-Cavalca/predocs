@@ -2,7 +2,6 @@
 
 ---
 ## Instalação
-batata
 
 Para realizar a instação da lis em seu servidor basta abrir a pasta via browser e executar o caminho:
 ``` /install ```
