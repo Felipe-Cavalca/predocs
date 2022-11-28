@@ -195,7 +195,7 @@ class funcoes
 
 	/**
 	 * Função para organizar os dados do get
-	 * @version 3.1.1
+	 * @version 3.1.2
 	 * @access public
 	 * @return void
 	 */
@@ -204,8 +204,8 @@ class funcoes
 		//prepara variaveis
 		$retorno = [];
 		$count = 0;
-		$retorno["_Pagina"] = $_GET["_Pagina"];
-		$url = explode("/", isset($_GET["_Pagina"]) ? $_GET["_Pagina"] : "");
+		$retorno["_Pagina"] = $_GET["_Pagina"] ?? "";
+		$url = explode("/", $retorno["_Pagina"]);
 
 		//define quais serão os indices do get
 		$params = [
