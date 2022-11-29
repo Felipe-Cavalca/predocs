@@ -1,14 +1,14 @@
 <?php
 
-function cadastro($var = 'vazia', $var2, $var3)
+function cadastro($var = "vazia", $var2 = null, $var3 = null)
 {
     return [
-        'parametro' => [
+        "parametro" => [
             $var,
             $var2,
             $var3
         ],
-        'post' => $_POST,
-        'arquivo' => $_FILES
+        "post" => $_POST,
+        "arquivo" => $_FILES
     ];
 }
