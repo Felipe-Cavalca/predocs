@@ -288,7 +288,8 @@ try {
      * @param {boolean} assincrona - função assincrona ? - padrão false
      */
     Lis.get = (url, assincrona = false) => {
-        if (!navigator.onLine) return localStorage.getItem("GET-" + Lis.getUrl(url));
+        if (!navigator.onLine)
+            return localStorage.getItem("GET-" + Lis.getUrl(url));
 
         try {
             const xhttp = new XMLHttpRequest();
@@ -455,7 +456,7 @@ try {
         });
 
         document.querySelector(elem).innerHTML = html;
-    }
+    };
 
     //iniciando a pagina ===========================================
     init();
