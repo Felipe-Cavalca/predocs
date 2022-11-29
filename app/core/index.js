@@ -153,11 +153,14 @@ try {
 
     /**
      * Função chamada para iniciar o framework
-     * @version 2
+     * @version 2.1.0
      * @access public
      * @return {void} - Função não tem retorno
      */
     async function init() {
+        //inicia variaveis
+        Lis.config = {};
+
         //função a ser executada antes do resto // apenas js e funções Lis
         if (Lis && typeof Lis.beforeInit === "function") {
             await Lis.beforeInit();
@@ -232,7 +235,7 @@ try {
 
     /**
      * Função para pegar um objeto de configurações
-     * @version 1
+     * @version 2.0.0
      * @access public
      * @param {string} tipo - Tipo de config que deseja receber
      * app - Configurações do app
@@ -240,19 +243,21 @@ try {
      * @return {json, string} - Json com os dados ou uma string
      */
     Lis.getConfig = (tipo) => {
-        switch (tipo) {
-            case "app":
-                return JSON.parse(Lis.get("/config/app.json"));
-            case "servidor":
-                return JSON.parse(Lis.get("/config/app.json")).server;
-            case "iconApp":
-                return JSON.parse(Lis.get("/config/manifest.json"))["icons"][0][
-                    "src"
-                ];
-            case "corApp":
-                return JSON.parse(Lis.get("/config/manifest.json"))[
-                    "theme_color"
-                ];
+        const functions = {
+            app: () => JSON.parse(Lis.get("/config/app.json")),
+            servidor: () => JSON.parse(Lis.get("/config/app.json")).server,
+            iconApp: () =>
+                JSON.parse(Lis.get("/config/manifest.json"))["icons"][0]["src"],
+            corApp: () =>
+                JSON.parse(Lis.get("/config/manifest.json"))["theme_color"],
+        };
+
+        return existeConfig(tipo, functions[tipo]);
+
+        function existeConfig(name, callback) {
+            if (typeof Lis.config[name] === "undefined")
+                Lis.config[name] = callback();
+            return Lis.config[name];
         }
     };
 
