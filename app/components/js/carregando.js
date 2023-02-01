@@ -1,56 +1,56 @@
-//some com o body
-var body = document.querySelector("body");
-body.classList.add("scale-transition");
-body.classList.add("scale-out");
-body.setAttribute("style", "display: none;");
+class Carregando extends Predocs {
+    constructor() {
+        super();
 
-var carregando = document.querySelector("carregando");
-carregando.classList.add("scale-transition");
-carregando.classList.add("scale-in");
+        this.body = document.querySelector("body");
+        this.carregando = document.querySelector("carregando");
+        this.img = document.querySelector("carregando img");
 
-//Caso o component tenha uma imagem, setar o caminho abaixo
-var img = document.querySelector("carregando img");
-var urlImg = Lis.getUrl("/midia/global/gif_carregando.gif");
-img.setAttribute("src", urlImg);
+        this._initBody();
+        this._initCarregando();
+        this._setImage();
+    }
 
-/**
- * Esconde a tela de carregando
- *
- * @return {void} - Função não tem retorno
- */
-Lis.carregandoHide = function () {
-    const carregando = document.querySelector("carregando");
-    const pagina = document.querySelector("body");
+    _initBody() {
+        this.body.classList.add("scale-transition");
+        this.body.style.display = "none";
+    }
 
-    carregando.classList.remove("scale-in");
-    carregando.classList.add("scale-out");
-    setTimeout(function () {
-        carregando.style.display = "none";
-        pagina.style.display = null;
-        setTimeout(function () {
-            pagina.classList.remove("scale-out");
-            pagina.classList.add("scale-in");
+    _initCarregando() {
+        this.carregando.classList.add("scale-transition");
+    }
+
+    _setImage() {
+        this.img.src =
+            this.getUrl("/midia/global/gif_carregando.gif") ||
+            "/midia/global/gif_carregando.gif";
+    }
+
+    hide() {
+        this.carregando.classList.remove("scale-in");
+        this.carregando.classList.add("scale-out");
+
+        setTimeout(() => {
+            this.carregando.style.display = "none";
+            this.body.style.display = null;
+            setTimeout(() => {
+                this.body.classList.remove("scale-out");
+                this.body.classList.add("scale-in");
+            }, 200);
+        }, 500);
+    }
+
+    show() {
+        this.body.classList.remove("scale-in");
+        this.body.classList.add("scale-out");
+
+        setTimeout(() => {
+            this.body.style.display = "none";
+            this.carregando.style.display = null;
+            setTimeout(() => {
+                this.carregando.classList.remove("scale-out");
+                this.carregando.classList.add("scale-in");
+            }, 200);
         }, 200);
-    }, 500);
-};
-
-/**
- * Exibe a tela de carregando
- *
- * @return {void} - Função não tem retorno
- */
-Lis.carregandoShow = function () {
-    const carregando = document.querySelector("carregando");
-    const pagina = document.querySelector("body");
-
-    pagina.classList.remove("scale-in");
-    pagina.classList.add("scale-out");
-    setTimeout(function () {
-        pagina.style.display = "none";
-        carregando.style.display = null;
-        setTimeout(function () {
-            carregando.classList.remove("scale-out");
-            carregando.classList.add("scale-in");
-        }, 200);
-    }, 500);
-};
+    }
+}

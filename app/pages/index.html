@@ -33,30 +33,26 @@
 		</center>
 	</section>
 
+	<script id="coreJs" src="../core/predocs.js"></script>
 	<script type="text/javascript">
-		const Lis = {
-			beforeInit(){
-				Lis.varsInView("#app", Lis.getConfig("app"));
-			},
-			init() {
-			},
-			Ncomponents: [
-				"nav"
-			],
-			scripts: [],
+		let app = {
+			Ncomponents: ["nav"],
+			script: [],
 			Nscripts: [
 				"/framework/jquery-3.6.0.js",
 				"/framework/bootstrap-5.1.3-dist/js/bootstrap.js"
 			],
-			styles: [
-				"/css/pages/index.css"
-			],
-			Nstyles: [
-				// "/framework/bootstrap-5.1.3-dist/css/bootstrap.css"
-			]
-		};
+			styles: ["/css/pages/index.css"],
+			Nstyles: ["/framework/bootstrap-5.1.3-dist/css/bootstrap.css"],
+		}
+
+		let docs = new Predocs(app);
+
+		let before = () => { docs.replaceTextInView("#app", docs.getConfig("app")); };
+		let after = () => {};
+
+		docs.init(before, after);
 	</script>
-	<script id="coreJs" src="../core/index.js"></script>
 </body>
 
 </html>
