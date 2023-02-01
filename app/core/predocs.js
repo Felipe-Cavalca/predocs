@@ -17,95 +17,20 @@ class Predocs {
         this.componentesBloqueados = params.componentesBloqueados || [];
     }
 
-    async init(before, after) {
+    init(before, after) {
         if (typeof before === "function") {
-            await before();
+            before();
         }
 
-        await Promise.all([
-            this.createComponent(
-                "carregando",
-                "html",
-                "append",
-                ["/components/css/carregando.css"],
-                ["/components/js/carregando.js"]
-            ),
-            this.createComponent(
-                "offline",
-                "html",
-                "append",
-                ["/components/css/offline.css"],
-                ["/components/js/offline.js"]
-            ),
-        ]);
-
-        this.PWA();
-        this.criarMetaDados();
-
-        const includes = JSON.parse(this.get("/config/includes.json"));
-        this.incluirRecurso("link", [
-            ...includes.stylesGlobais,
-            ...(this.styles || []),
-        ]);
-        this.incluirRecurso("script", [
-            ...includes.scriptsGlobais,
-            ...(this.scripts || []),
-        ]);
-
-        await Promise.all(
-            includes.componentsGlobal.map((c) =>
-                this.createComponent(
-                    c.component,
-                    c.element,
-                    c.local,
-                    c.css,
-                    c.js
-                )
-            )
-        );
-
-        document.querySelector("body").onload = () => {
-            this.carregando = new Carregando(this);
-            this.offline = new Offline(this);
-
-            if (typeof after === "function") {
-                after();
-            }
-
-            this.carregando.hide();
-        };
-
-        Array.from(
-            document.querySelectorAll("input:not([autocomplete])")
-        ).forEach((element) => {
-            element.setAttribute("autocomplete", "off");
-        });
-
-        document.querySelector("html").onerror = () => {
-            window.location.href = this.getUrl("/error");
-        };
+        this._criarComponentesIniciais();
+        this._PWA();
+        this._criarMetaDados();
+        this._incluirDependenciasGlobais();
+        this._onloadBody(after);
+        this._desabilitarAutocomplete();
     }
 
-    mostrarBotaoInstalacao() {
-        document.querySelector("html").addEventListener("click", () => {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((escolha) => {
-                if (escolha.outcome === "accepted") {
-                    console.log("Usuário aceitou instalar o app");
-                } else {
-                    console.log("Usuário recusou instalar");
-                }
-                document
-                    .querySelector("html")
-                    .removeEventListener("click", this.mostrarBotaoInstalacao);
-                localStorage.setItem("exibeMsgInstall", false);
-                deferredPrompt = null;
-            });
-        });
-        return undefined;
-    }
-
-    determinaModoExecucao() {
+    getModoExecucao() {
         const suportaModoStandalone = window.matchMedia(
             "(display-mode: standalone)"
         ).matches;
@@ -142,7 +67,7 @@ class Predocs {
             console.error(e);
         }
 
-        this.offlineShow();
+        this.offline.show();
         return undefined;
     }
 
@@ -156,7 +81,7 @@ class Predocs {
             return xhttp.responseText;
         } catch (e) {}
 
-        this.offlineShow();
+        this.offline.show();
         return undefined;
     }
 
@@ -205,7 +130,7 @@ class Predocs {
         return true;
     }
 
-    createComponent(component, element, local, css = [], js = []) {
+    criarComponente(component, element, local, css = [], js = []) {
         let componentElement;
 
         switch (component) {
@@ -237,61 +162,6 @@ class Predocs {
         this.incluirRecurso("link", css);
 
         return true;
-    }
-
-    criarMetaDados() {
-        const metadados = [
-            { tipo: "meta", name: "viewport", content: "" },
-            { tipo: "meta", httpEquiv: "X-UA-Compatible", content: "IE=edge" },
-            { tipo: "meta", charset: "utf-8" },
-            {
-                tipo: "link",
-                rel: "shortcut icon",
-                href: this.getUrl("/midia/global/favicon.ico"),
-                type: "image/x-icon",
-            },
-            {
-                tipo: "link",
-                rel: "apple-touch-icon",
-                href: this.getConfig("iconApp"),
-            },
-            {
-                tipo: "meta",
-                name: "theme-color",
-                content: this.getConfig("corApp"),
-            },
-        ];
-
-        metadados.forEach((md) => {
-            const elemento = document.createElement(md.tipo);
-            this.adicionarAtributos(elemento, md);
-            document.querySelector("head").prepend(elemento);
-        });
-
-        document.querySelector("html").setAttribute("lang", "pt-br");
-    }
-
-    PWA() {
-        const link = document.createElement("link");
-        this.adicionarAtributos(link, {
-            rel: "manifest",
-            href: this.getUrl("/config/manifest.json"),
-        });
-        document.querySelector("head").prepend(link);
-
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker
-                .register(this.getUrl("/sw.js"))
-                .catch((err) => {
-                    console.error("Erro ao registrar o Service Worker: ", err);
-                });
-            window.addEventListener("beforeinstallprompt", (e) => {
-                deferredPrompt = e;
-                if (localStorage.getItem("exibeMsgInstall") !== "false") {
-                    this.mostrarBotaoInstalacao();
-                }
-            });
-        }
     }
 
     getUrl(url) {
@@ -366,5 +236,165 @@ class Predocs {
             .join("&");
 
         return `${url}?${queryParams}`;
+    }
+
+    _criarComponentesIniciais() {
+        Promise.all([
+            this.criarComponente(
+                "carregando",
+                "html",
+                "append",
+                ["/components/css/carregando.css"],
+                ["/components/js/carregando.js"]
+            ),
+            this.criarComponente(
+                "offline",
+                "html",
+                "append",
+                ["/components/css/offline.css"],
+                ["/components/js/offline.js"]
+            ),
+        ]);
+    }
+
+    _PWA() {
+        const link = document.createElement("link");
+        this.adicionarAtributos(link, {
+            rel: "manifest",
+            href: this.getUrl("/config/manifest.json"),
+        });
+        document.querySelector("head").prepend(link);
+
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+                .register(this.getUrl("/sw.js"))
+                .catch((err) => {
+                    console.error("Erro ao registrar o Service Worker: ", err);
+                });
+            window.addEventListener("beforeinstallprompt", (e) => {
+                deferredPrompt = e;
+                if (localStorage.getItem("exibeMsgInstall") !== "false") {
+                    this._mostrarBotaoInstalacao();
+                }
+            });
+        }
+    }
+
+    _mostrarBotaoInstalacao() {
+        let handleClickBotaoInstalacao = () => {
+            if (!deferredPrompt) {
+                console.error("O botão de instalação não está disponível");
+                return;
+            }
+
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice
+                .then(handleEscolhaUsuario)
+                .catch(handleErro);
+        };
+
+        let handleEscolhaUsuario = () => {
+            document
+                .querySelector("html")
+                .removeEventListener("click", handleClickBotaoInstalacao);
+
+            if (escolha.outcome === "accepted") {
+                console.log("Usuário aceitou instalar o app");
+            } else {
+                console.log("Usuário recusou instalar");
+            }
+
+            localStorage.setItem("exibeMsgInstall", false);
+            deferredPrompt = null;
+        };
+
+        let handleErro = (erro) => {
+            console.error(
+                "Ocorreu um erro ao processar a escolha do usuário:",
+                erro
+            );
+        };
+
+        document
+            .querySelector("html")
+            .addEventListener("click", handleClickBotaoInstalacao);
+    }
+
+    _criarMetaDados() {
+        const metadados = [
+            { tipo: "meta", name: "viewport", content: "" },
+            { tipo: "meta", httpEquiv: "X-UA-Compatible", content: "IE=edge" },
+            { tipo: "meta", charset: "utf-8" },
+            {
+                tipo: "link",
+                rel: "shortcut icon",
+                href: this.getUrl("/midia/global/favicon.ico"),
+                type: "image/x-icon",
+            },
+            {
+                tipo: "link",
+                rel: "apple-touch-icon",
+                href: this.getConfig("iconApp"),
+            },
+            {
+                tipo: "meta",
+                name: "theme-color",
+                content: this.getConfig("corApp"),
+            },
+        ];
+
+        metadados.forEach((md) => {
+            const elemento = document.createElement(md.tipo);
+            this.adicionarAtributos(elemento, md);
+            document.querySelector("head").prepend(elemento);
+        });
+
+        document.querySelector("html").setAttribute("lang", "pt-br");
+    }
+
+    _incluirDependenciasGlobais() {
+        const includes = JSON.parse(this.get("/config/includes.json"));
+
+        this.incluirRecurso("link", [
+            ...includes.stylesGlobais,
+            ...(this.styles || []),
+        ]);
+        this.incluirRecurso("script", [
+            ...includes.scriptsGlobais,
+            ...(this.scripts || []),
+        ]);
+
+        Promise.all(
+            includes.componentsGlobal.map((c) =>
+                this.criarComponente(
+                    c.component,
+                    c.element,
+                    c.local,
+                    c.css,
+                    c.js
+                )
+            )
+        );
+    }
+
+    _onloadBody(after) {
+        document.querySelector("body").onload = () => {
+            this.carregando = new Carregando(this);
+            this.offline = new Offline(this);
+
+            if (typeof after === "function") {
+                after();
+            }
+
+            this.carregando.hide();
+        };
+    }
+
+    _desabilitarAutocomplete() {
+        Array.from(
+            document.querySelectorAll("input:not([autocomplete])")
+        ).forEach((element) => {
+            element.setAttribute("autocomplete", "off");
+        });
     }
 }
