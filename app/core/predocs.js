@@ -1,5 +1,3 @@
-var deferredPrompt;
-
 class predocsHelper {
     _criarComponentesIniciais() {
         Promise.all([
@@ -21,25 +19,6 @@ class predocsHelper {
     }
 
     _PWA() {
-        let installApp = () => {
-            deferredPrompt.prompt();
-            // Aguarda a resposta do usuario
-            deferredPrompt.userChoice.then((escolha) => {
-                if (escolha.outcome === "accepted") {
-                    // Usuário aceitou instalar o app
-                } else {
-                    // Usuário recusou instalar
-                }
-
-                //zera as variaveis após exibição do botão para instalar
-                document
-                    .querySelector("html")
-                    .removeEventListener("click", installApp);
-                localStorage.setItem("exibeMsgInstall", false);
-                deferredPrompt = null;
-            });
-        };
-
         const link = document.createElement("link");
         this.adicionarAtributos(link, {
             rel: "manifest",
@@ -54,12 +33,7 @@ class predocsHelper {
                     console.error("Erro ao registrar o Service Worker: ", err);
                 });
             window.addEventListener("beforeinstallprompt", (e) => {
-                deferredPrompt = e;
-                if (localStorage.getItem("exibeMsgInstall") !== "false") {
-                    document
-                        .querySelector("html")
-                        .addEventListener("click", installApp);
-                }
+                this.deferredPrompt = e;
             });
         }
     }
@@ -99,25 +73,30 @@ class predocsHelper {
     _incluirDependenciasGlobais() {
         const includes = JSON.parse(this.get("/config/includes.json"));
 
-        this.incluirRecurso("link", [
+        const styles = [
             ...includes.stylesGlobais,
-            ...(this.styles || []),
-        ]);
-        this.incluirRecurso("script", [
+            ...this.recurso.styles,
+        ].filter((style) => !this.recurso.stylesBloqueados.includes(style));
+        const scripts = [
             ...includes.scriptsGlobais,
-            ...(this.scripts || []),
-        ]);
+            ...this.recurso.scripts,
+        ].filter((script) => !this.recurso.scriptsBloqueados.includes(script));
+
+        this.incluirRecurso("link", styles);
+        this.incluirRecurso("script", scripts);
 
         Promise.all(
-            includes.componentsGlobal.map((c) =>
-                this.criarComponente(
-                    c.component,
-                    c.element,
-                    c.local,
-                    c.css,
-                    c.js
-                )
-            )
+            includes.componentsGlobal.map((c) => {
+                if (!this.recurso.componentesBloqueados.includes(c.component)) {
+                    this.criarComponente(
+                        c.component,
+                        c.element,
+                        c.local,
+                        c.css,
+                        c.js
+                    );
+                }
+            })
         );
     }
 
@@ -157,6 +136,8 @@ class Predocs extends predocsHelper {
         stylesBloqueados: [],
         componentesBloqueados: [],
     };
+
+    deferredPrompt;
 
     constructor(params = {}) {
         super();
@@ -385,5 +366,22 @@ class Predocs extends predocsHelper {
             .join("&");
 
         return `${url}?${queryParams}`;
+    }
+
+    async installApp(aceitou = () => {}, recusou = () => {}) {
+        try {
+            await this.deferredPrompt.prompt();
+            const choice = await this.deferredPrompt.userChoice;
+
+            if (choice.outcome === "accepted") {
+                aceitou();
+            } else {
+                recusou();
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            this.deferredPrompt = null;
+        }
     }
 }

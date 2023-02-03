@@ -20,11 +20,8 @@
 						<br /><br />
 						<a href="#" class="btn" tipo="secundario">Login</a>
 						<br /><br />
-						<button id="BtnInstallPWA" onclick="Lis.installApp()" class="btn BtnInstallPWA"
+						<button id="BtnInstallPWA" onclick="docs.installApp()" class="btn BtnInstallPWA"
 							tipo="terciario">Instalar</button>
-						<br /><br />
-						<button onclick='localStorage.setItem("exibeMsgInstall", true); window.location.reload()'
-							class="btn" tipo="alerta">Limpar localStorage</button>
 						<br /><br />
 						<p id="msg"></p>
 					</div>
@@ -36,20 +33,17 @@
 	<script id="coreJs" src="../core/predocs.js"></script>
 	<script type="text/javascript">
 		let app = {
-			Ncomponents: ["nav"],
-			script: [],
-			Nscripts: [
-				"/framework/jquery-3.6.0.js",
-				"/framework/bootstrap-5.1.3-dist/js/bootstrap.js"
-			],
+			componentesBloqueados: ["nav"],
+			scripts: [],
+			scriptsBloqueados: [],
 			styles: ["/css/pages/index.css"],
-			Nstyles: ["/framework/bootstrap-5.1.3-dist/css/bootstrap.css"],
+			stylesBloqueados: [],
 		}
 
 		let docs = new Predocs(app);
 
 		let before = () => { docs.replaceTextInView("#app", docs.getConfig("app")); };
-		let after = () => {};
+		let after = () => { };
 
 		docs.init(before, after);
 	</script>
