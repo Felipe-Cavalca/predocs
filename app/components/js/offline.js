@@ -1,57 +1,45 @@
-//some com o body
-var body = document.querySelector("body");
-body.setAttribute("class", "scale-transition scale-out");
-body.setAttribute("style", "display: none;");
+class Offline extends Predocs {
+    constructor() {
+        super();
 
-var offline = document.querySelector("offline");
-offline.setAttribute("class", "scale-transition scale-in");
+        this.offline = document.querySelector("offline");
+        this.pagina = document.querySelector("body");
 
-/**
- * Esconde a tela de offline
- *
- * @return {void} - Função não tem retorno
- */
-Lis.offlineHide = function () {
-    Lis.carregandoShow();
+        this._showBody();
+        this._hideOffline();
+    }
 
-    const offline = document.querySelector("offline");
-    const pagina = document.querySelector("body");
+    _hideBody() {
+        this.pagina.setAttribute("class", "scale-transition scale-out");
+        this.offline.style.display = "none";
+    }
 
-    offline.classList.remove("scale-in");
-    offline.classList.add("scale-out");
-    setTimeout(function () {
-        offline.style.display = "none";
-        pagina.style.display = null;
-        setTimeout(function () {
-            pagina.classList.remove("scale-out");
-            pagina.classList.add("scale-in");
-        }, 200);
-    }, 500);
+    _showBody() {
+        this.pagina.setAttribute("class", "scale-transition scale-in");
+        this.offline.style.display = null;
+    }
 
-    Lis.carregandoHide();
-};
+    _hideOffline() {
+        this.offline.setAttribute("class", "scale-transition scale-out");
+        this.offline.style.display = "none";
+    }
 
-/**
- * Exibe a tela de offline
- *
- * @return {void} - Função não tem retorno
- */
-Lis.offlineShow = function () {
-    Lis.carregandoHide();
+    _showOffline() {
+        this.offline.setAttribute("class", "scale-transition scale-in");
+        this.offline.style.display = null;
+    }
 
-    const offline = document.querySelector("offline");
-    const pagina = document.querySelector("body");
+    hide() {
+        this._hideOffline();
+        setTimeout(() => {
+            this._showBody();
+        }, 500);
+    }
 
-    pagina.classList.remove("scale-in");
-    pagina.classList.add("scale-out");
-    setTimeout(function () {
-        pagina.style.display = "none";
-        offline.style.display = null;
-        setTimeout(function () {
-            offline.classList.remove("scale-out");
-            offline.classList.add("scale-in");
-        }, 200);
-    }, 500);
-};
-
-Lis.offlineHide();
+    show() {
+        this._hideBody();
+        setTimeout(() => {
+            this._showOffline();
+        }, 500);
+    }
+}
