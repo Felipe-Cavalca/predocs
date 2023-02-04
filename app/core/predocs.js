@@ -220,7 +220,13 @@ class Predocs extends predocsHelper {
             event.preventDefault();
             if (before() !== false) {
                 const form = event.target;
-                const data = new FormData(form);
+                const formdata = new FormData(form);
+                const data = {};
+
+                for (let [key, value] of formdata.entries()) {
+                    data[key] = value;
+                }
+
                 const resp =
                     form.method === "post"
                         ? this.post(
