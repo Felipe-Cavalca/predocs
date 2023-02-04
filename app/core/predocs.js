@@ -202,15 +202,16 @@ class Predocs extends predocsHelper {
         return undefined;
     }
 
-    post(url, dadosPost, paramsUrl = {}) {
+    post(url, dadosPost, paramsUrl = {}, json = true, assincrona = false) {
         const fullUrl = this.addParamsToUrl(this.getUrl(url), paramsUrl);
         try {
             const xhttp = new XMLHttpRequest();
-            xhttp.open("POST", fullUrl, false);
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.send(JSON.stringify(dadosPost));
+            xhttp.open("POST", fullUrl, assincrona);
+            xhttp.send(json ? JSON.stringify(dadosPost) : dadosPost);
             return xhttp.responseText;
-        } catch (e) {}
+        } catch (e) {
+            console.error(e);
+        }
 
         return undefined;
     }
@@ -219,25 +220,18 @@ class Predocs extends predocsHelper {
         document.querySelector(element).addEventListener("submit", (event) => {
             event.preventDefault();
             if (before() !== false) {
-                const form = event.target;
-                const formdata = new FormData(form);
-                const data = {};
-
-                for (let [key, value] of formdata.entries()) {
-                    data[key] = value;
+                let resp;
+                const data = new FormData(event.target);
+                if (document.querySelector(element).method == "post") {
+                    resp = JSON.parse(
+                        this.post(
+                            "/server" + document.querySelector(element).action.replace(location.origin, ""),
+                            data,
+                            {},
+                            false
+                        )
+                    );
                 }
-
-                const resp =
-                    form.method === "post"
-                        ? this.post(
-                              `/server${form.action.replace(
-                                  location.origin,
-                                  ""
-                              )}`,
-                              data,
-                              false
-                          )
-                        : null;
                 after(resp);
             }
         });
