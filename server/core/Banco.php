@@ -60,32 +60,34 @@ class Banco
 	 */
 	public function conexao(): bool
 	{
-		$this->conexao = $GLOBALS["_BANCO"]["conexao"];
-		$this->tipo = $GLOBALS["_BANCO"]["tipo"];
-
-		if (!empty($this->conexao))
-			return true;
-
-		$config = new config();
+		$config = new Config();
 		$config = $config->getConfigBanco();
+
+		if (!empty($GLOBALS["_BANCO"]["conexao"])) {
+			$this->conexao = $GLOBALS["_BANCO"]["conexao"];
+			$this->tipo = $GLOBALS["_BANCO"]["tipo"];
+			return true;
+		}
+
 		$this->tipo = $config["tipo"];
 
 		try {
-			switch ($this->tipo) {
-				case "mysql":
-					$this->conexao = new PDO($config["stringConn"], $config["credenciais"]["login"], $config["credenciais"]["senha"]);
-					break;
-				case "sqlite":
-				default:
-					$caminhoArquivo = explode(":", $config["stringConn"])[1];
-					$arquivo = new Arquivo(arquivo: $caminhoArquivo, novo: true);
-					if ($arquivo->criar() === false) {
-						new Log("Erro ao criar arquivo sqlite", "core/banco", "conexao");
-						return false;
-					}
-					$this->conexao = new PDO($config["stringConn"]);
-					break;
+			if ($this->tipo === "mysql") {
+				$this->conexao = new PDO(
+					$config["stringConn"],
+					$config["credenciais"]["login"],
+					$config["credenciais"]["senha"]
+				);
+			} else {
+				$caminhoArquivo = explode(":", $config["stringConn"])[1];
+				$arquivo = new Arquivo(arquivo: $caminhoArquivo, novo: true);
+				if (!$arquivo->criar()) {
+					new Log("Erro ao criar arquivo sqlite", "core/banco", "conexao");
+					return false;
+				}
+				$this->conexao = new PDO($config["stringConn"]);
 			}
+
 			$GLOBALS["_BANCO"]["conexao"] = $this->conexao;
 			$GLOBALS["_BANCO"]["tipo"] = $this->tipo;
 
@@ -106,45 +108,39 @@ class Banco
 	 */
 	public function insert(array $dados, string $tabela): bool|int
 	{
+		$erros = [];
 		if (empty($dados)) {
-			new Log("Sem dados para inserir", "core/banco", "insert");
-			return false;
+			$erros[] = "Sem dados para inserir";
 		}
-
 		if (empty($tabela)) {
-			new Log("Nenhuma tabela definida", "core/banco", "insert");
-			return false;
+			$erros[] = "Nenhuma tabela definida";
 		}
-
 		if (!$this->existeTabela($tabela)) {
-			new Log("Tabela {$tabela} inexistente", "core/banco", "insert");
+			$erros[] = "Tabela {$tabela} inexistente";
+		}
+		if (!empty($erros)) {
+			new Log(implode(", ", $erros), "core/banco", "insert");
 			return false;
 		}
 
-		//cria campos que são prenchidos pelo framework
+		// Adiciona campos criados e modificados
 		$campos = $this->detTabela(tabela: $tabela);
 		foreach ($campos as $campo) {
-			switch ($campo["nome"]) {
-				case "criado":
-				case "modificado":
-					$dados[$campo["nome"]] = date("Y-m-d H:m:s");
-					break;
+			if ($campo["nome"] === "criado" || $campo["nome"] === "modificado") {
+				$dados[$campo["nome"]] = date("Y-m-d H:m:s");
 			}
 		}
 
-		unset($campos);
-
-		//transfomra o array associativo em script sql
-		$campos = implode(", ", array_Keys($dados));
+		// Gera o script SQL
+		$campos = implode(", ", array_keys($dados));
 		$valores = "'" . implode("', '", $dados) . "'";
 		$query = "INSERT INTO {$tabela} ({$campos}) VALUES ({$valores})";
 
 		$retorno = $this->query(query: $query);
-
 		$this->logTabela($tabela, "INSERT", json_encode(["dados" => $dados]));
 
 		if ($retorno === false) {
-			new Log("Não doi possivel inserir os dados na base de dados", "core/banco", "insert");
+			new Log("Não foi possível inserir os dados na base de dados", "core/banco", "insert");
 			return false;
 		}
 
@@ -170,21 +166,21 @@ class Banco
 	{
 		$funcoes = new funcoes();
 
-		$empty = $funcoes->empty(["tabela"], $arr);
-		if ($empty["status"]) {
+		if ($funcoes->empty(["tabela"], $arr)["status"]) {
 			new Log("Tabela não definida para listar", "core/banco", "select");
 			return false;
 		}
-		if (!$this->existeTabela(tabela: $arr["tabela"])) {
+
+		if (!$this->existeTabela($arr["tabela"])) {
 			new Log("Tabela {$arr["tabela"]} não localizada para listar", "core/banco", "select");
 			return false;
 		}
 
 		$where = [];
 		if (isset($arr["igual"]))
-			$where[] = $this->where(where: $arr["igual"]);
+			$where[] = $this->where($arr["igual"]);
 		if (isset($arr["where"]))
-			$where[] = $this->where(where: $arr["where"]);
+			$where[] = $this->where($arr["where"]);
 		if (!empty($where))
 			$where = "WHERE " . implode(" ", $where);
 
@@ -197,10 +193,10 @@ class Banco
 
 		$query = [
 			"SELECT",
-			$selectHelper->campos(arr: $arr),
+			$selectHelper->campos($arr),
 			"FROM",
-			$selectHelper->tabela(arr: $arr),
-			$selectHelper->join(arr: $arr),
+			$selectHelper->tabela($arr),
+			$selectHelper->join($arr),
 			$where,
 			$order
 		];
@@ -227,13 +223,13 @@ class Banco
 			new Log("Nenhuma tabela definida para atualizar os dados", "core/banco", "update");
 			return false;
 		}
-		if (!$this->existeTabela(tabela: $tabela)) {
+		if (!$this->existeTabela($tabela)) {
 			new Log("Tabela {$tabela} inexistente", "core/banco", "update");
 			return false;
 		}
 
 		//cria campos que são prenchidos pelo framework
-		$campos = $this->detTabela(tabela: $tabela);
+		$campos = $this->detTabela($tabela);
 		foreach ($campos as $campo) {
 			switch ($campo["nome"]) {
 				case "modificado":
@@ -248,13 +244,13 @@ class Banco
 		}
 		$camposValores = implode(", ", $camposValores);
 
-		$dadosWhere = $this->where(where: $where);
+		$dadosWhere = $this->where($where);
 
 		$query = "UPDATE {$tabela} SET {$camposValores} WHERE {$dadosWhere}";
 
 		$this->logTabela($tabela, "UPDATE", json_encode(["dados" => $dados, "where" => $where]));
 
-		return $this->query(query: $query);
+		return $this->query($query);
 	}
 
 	/**
