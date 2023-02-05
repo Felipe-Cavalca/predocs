@@ -34,7 +34,13 @@ class install
     public function index($cache = "false"): string
     {
         $etapas = [];
-        //declara funções para instalação
+
+        $etapas["criaPastas"] = function() {
+            $funcoes = new funcoes();
+            $config = new Config();
+            $funcoes->criaPasta($config->getCaminho("storage"));
+            $funcoes->criaPasta($config->getCaminho("session"));
+        };
 
         $etapas["copiaConfigApp"] = function () {
             $config = new Config;
