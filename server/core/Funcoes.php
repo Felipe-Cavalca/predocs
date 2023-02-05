@@ -174,6 +174,9 @@ class funcoes
 		header("Content-Type: application/json");
 
 		$config = new Config();
+		$funcoes = new funcoes();
+		$funcoes->criaPasta($config->getCaminho("storage"));
+		$funcoes->criaPasta($config->getCaminho("session"));
 
 		session_save_path($config->getCaminho("session"));
 

@@ -35,13 +35,6 @@ class install
     {
         $etapas = [];
 
-        $etapas["criaPastas"] = function() {
-            $funcoes = new funcoes();
-            $config = new Config();
-            $funcoes->criaPasta($config->getCaminho("storage"));
-            $funcoes->criaPasta($config->getCaminho("session"));
-        };
-
         $etapas["copiaConfigApp"] = function () {
             $config = new Config;
             $funcoes = new funcoes;
