@@ -17,13 +17,13 @@ class funcoes
 		$this->configPHP();
 		$this->post();
 		$this->get();
-		$lis = $_GET["controller"] == "lis";
+		$predocs = $_GET["controller"] == "predocs";
 
-		$this->get(lis: $lis);
+		$this->get(predocs: $predocs);
 
 		if (empty($_GET["controller"])) return $this->returnStatusCode(404);
 
-		$controller = $this->incluiController(nomeController: $_GET["controller"], lis: $lis);
+		$controller = $this->incluiController(nomeController: $_GET["controller"], predocs: $predocs);
 
 		if (gettype($controller) === "integer") {
 			switch ($controller) {
@@ -208,7 +208,7 @@ class funcoes
 	 * @access public
 	 * @return void
 	 */
-	private function get($lis = false): void
+	private function get($predocs = false): void
 	{
 		$retorno = [
 			"_Pagina" => $_GET["_Pagina"] ?? "",
@@ -223,7 +223,7 @@ class funcoes
 			"param3"
 		];
 
-		$count = ($lis) ? 1 : 0;
+		$count = ($predocs) ? 1 : 0;
 		foreach ($params as $param) {
 			switch ($param) {
 				case "function":
@@ -261,16 +261,16 @@ class funcoes
 	 * @version 3.0.0
 	 * @access public
 	 * @param string $nome nome do controller
-	 * @param bool $lis Função da lis
+	 * @param bool $predocs Função da predocs
 	 * @return object|int obj para o controller, int com o status da importação
 	 * caso haja uma classe, retorna o mesmo
 	 * caso não haja - true e inclui o arquivo
 	 */
-	public function incluiController(string $nomeController, bool $lis = false): mixed
+	public function incluiController(string $nomeController, bool $predocs = false): mixed
 	{
 		$config = new Config;
 
-		$controllerFilePath = $lis ? "{$config->getCaminho("functions")}/{$nomeController}.php" : "{$config->getCaminho("controller")}/{$nomeController}Controller.php";
+		$controllerFilePath = $predocs ? "{$config->getCaminho("functions")}/{$nomeController}.php" : "{$config->getCaminho("controller")}/{$nomeController}Controller.php";
 		$controller = new Arquivo($controllerFilePath);
 
 		if (!$controller->existe()) {

@@ -8,7 +8,7 @@
 </head>
 <body>
     <script>
-        window.location.href = "server/lis/install";
+        window.location.href = "server/predocs/install";
     </script>
 </body>
 </html>

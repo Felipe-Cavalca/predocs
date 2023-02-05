@@ -19,7 +19,7 @@ class install
         $host = "$protocolo://{$_SERVER["HTTP_HOST"]}";
 
         //paga o caminho apartir de /
-        $this->caminho = explode("server/lis", $_SERVER["REDIRECT_URL"])[0];
+        $this->caminho = explode("server/predocs", $_SERVER["REDIRECT_URL"])[0];
 
         //pega a url que o sistema está rodando
         $this->url = $host . $this->caminho;

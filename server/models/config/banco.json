@@ -1,7 +1,7 @@
 {
     "instalado": false,
     "tipo": "sqlite",
-    "nome": "lis",
+    "nome": "predocs",
     "sqlite": {},
     "mysql": {
         "host": "localhost",

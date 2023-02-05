@@ -1,8 +1,8 @@
 {
-    "name": "Framework Lis",
-    "short_name": "Lis",
+    "name": "Framework predocs",
+    "short_name": "predocs",
     "description": "Um framework para desenvolvimento web",
-    "start_url": "http://localhost/lis/app/pages/index.html",
+    "start_url": "http://localhost/predocs/app/pages/index.html",
 
     "display": "standalone",
     "theme_color": "#c4c4c4",
@@ -11,7 +11,7 @@
     "shortcuts": [
         {
             "name": "Inicio",
-            "url": "http://localhost/lis/app/pages/index.html"
+            "url": "http://localhost/predocs/app/pages/index.html"
         }
     ],
 

@@ -11,7 +11,7 @@ function initVueDefault(e) {
     const pagina = {
         data() {
             return {
-                VarsApp: Lis.getConfig("app"),
+                VarsApp: predocs.getConfig("app"),
             };
         },
     };
