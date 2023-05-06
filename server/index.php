@@ -17,7 +17,7 @@ include_once("./core/FuncoesApp.php"); //funcoes da aplicação que está sendo 
 $funcoes = new funcoes();
 
 //inicia o framework e escreve sua saida
-$retorno = $funcoes->init() ?? "erro ao recuperar saida da função";
+$retorno = $funcoes->init() ?? "Não foi possivel recuperar a saida da função";
 
 switch (gettype($retorno)) {
 	case "array":
