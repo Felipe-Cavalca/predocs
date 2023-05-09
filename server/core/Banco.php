@@ -53,7 +53,7 @@ class Banco
 
 	/**
 	 * Efetua a conexão com o banco de dados
-	 * @version 2.1
+	 * @version 2.1.1
 	 * @access public
 	 * @return bool
 	 * A conexão sera salva na variavel $conexao e o tipo em $tipo
@@ -80,11 +80,7 @@ class Banco
 				);
 			} else {
 				$caminhoArquivo = explode(":", $config["stringConn"])[1];
-				$arquivo = new Arquivo(arquivo: $caminhoArquivo, novo: true);
-				if (!$arquivo->criar()) {
-					new Log("Erro ao criar arquivo sqlite", "core/banco", "conexao");
-					return false;
-				}
+				new Arquivo(arquivo: $caminhoArquivo, novo: true);
 				$this->conexao = new PDO($config["stringConn"]);
 			}
 
