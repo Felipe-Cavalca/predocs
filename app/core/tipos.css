@@ -22,10 +22,12 @@
     background-color: yellow;
 }
 
-[tipo="perigo"] {
+[tipo="perigo"],
+[tipo="erro"] {
     background-color: red;
 }
 
-[tipo="confirma"] {
+[tipo="confirma"],
+[tipo="sucesso"] {
     background-color: green;
 }
