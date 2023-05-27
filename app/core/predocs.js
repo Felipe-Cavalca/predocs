@@ -40,7 +40,7 @@ class predocsHelper {
 
     _criarMetaDados() {
         const metadados = [
-            { tipo: "meta", name: "viewport", content: "" },
+            { tipo: "meta", name: "viewport", content: "width=device-width, initial-scale=1.0" },
             { tipo: "meta", httpEquiv: "X-UA-Compatible", content: "IE=edge" },
             { tipo: "meta", charset: "utf-8" },
             {
