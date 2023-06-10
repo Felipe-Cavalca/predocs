@@ -1,35 +1,33 @@
 <?php
 
-$_BANCO = [
-	"tipo" => null,
-	"conexao" => null
-];
-
-//inclui os arquivos do core
-include_once("./core/Funcoes.php");
-include_once("./core/Arquivo.php");
-include_once("./core/Config.php");
-include_once("./core/Banco.php");
-include_once("./core/Storage.php");
-include_once("./core/Log.php");
-include_once("./core/FuncoesApp.php"); //funcoes da aplicação que está sendo desenvolvida
-
-$funcoes = new funcoes();
-
-//inicia o framework e escreve sua saida
-$retorno = $funcoes->init() ?? "Não foi possivel recuperar a saida da função";
-
-switch (gettype($retorno)) {
-	case "array":
-		echo json_encode($retorno);
-		break;
-	case "integer":
-	case "string":
-		echo json_encode(["retorno" => $retorno]);
-		break;
-	case "boolean":
-		echo json_encode(["status" => $retorno]);
-		break;
-	default:
-		echo $retorno;
+function incluirArquivosDoCore()
+{
+    include_once("./core/Funcoes.php");
+    include_once("./core/Arquivo.php");
+    include_once("./core/Config.php");
+    include_once("./core/Banco.php");
+    include_once("./core/Storage.php");
+    include_once("./core/Log.php");
+    include_once("./core/FuncoesApp.php");
 }
+
+function executarFramework()
+{
+    incluirArquivosDoCore();
+
+    $funcoes = new Funcoes();
+    $retorno = $funcoes->init() ?? "Não foi possível recuperar a saída da função";
+
+    if (is_array($retorno)) {
+        echo json_encode($retorno);
+    } elseif (is_integer($retorno) || is_string($retorno)) {
+        echo json_encode(["retorno" => $retorno]);
+    } elseif (is_bool($retorno)) {
+        echo json_encode(["status" => $retorno]);
+    } else {
+        echo $retorno;
+    }
+}
+
+// Chame a função para executar o código
+executarFramework();
