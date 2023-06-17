@@ -177,8 +177,11 @@ class Banco
 			$where[] = $this->where($arr["igual"]);
 		if (isset($arr["where"]))
 			$where[] = $this->where($arr["where"]);
-		if (!empty($where))
-			$where = "WHERE " . implode(" ", $where);
+        if (empty($where)) {
+            $where = "";
+        } else {
+            $where = "WHERE " . implode(" ", $where);
+        }
 
 		$order = "";
 		if (isset($arr["order"])) {
