@@ -1,22 +1,4 @@
 class predocsHelper {
-    _criarComponentesIniciais() {
-        Promise.all([
-            this.criarComponente(
-                "carregando",
-                "html",
-                "append",
-                ["/components/css/carregando.css"],
-                ["/components/js/carregando.js"]
-            ),
-            this.criarComponente(
-                "offline",
-                "html",
-                "append",
-                ["/components/css/offline.css"],
-                ["/components/js/offline.js"]
-            ),
-        ]);
-    }
 
     _PWA() {
         const link = document.createElement("link");
@@ -68,6 +50,13 @@ class predocsHelper {
         });
 
         document.querySelector("html").setAttribute("lang", "pt-br");
+
+
+        document.querySelector("body").setAttribute("class", "vertical-layout vertical-menu-modern dark-layout 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page");
+        document.querySelector("body").setAttribute("data-open", "click");
+        document.querySelector("body").setAttribute("data-menu", "vertical-menu-modern");
+        document.querySelector("body").setAttribute("data-col", "1-column");
+        document.querySelector("body").setAttribute("data-layout", "dark-layout");
     }
 
     _incluirDependenciasGlobais() {
@@ -102,14 +91,9 @@ class predocsHelper {
 
     _onloadBody(after) {
         document.querySelector("body").onload = () => {
-            this.carregando = new Carregando(this);
-            this.offline = new Offline(this);
-
             if (typeof after === "function") {
                 after();
             }
-
-            this.carregando.hide();
         };
     }
 
@@ -126,8 +110,6 @@ class predocsHelper {
 
 class Predocs extends predocsHelper {
     config = {};
-    carregando; // Classe do component de carregamento
-    offline; //Classe do component offline
 
     recurso = {
         scripts: [],
@@ -150,11 +132,12 @@ class Predocs extends predocsHelper {
     }
 
     init(before, after) {
+        this.incluirRecurso("script", ["/framework/jquery-3.6.0.js"]);
+            
         if (typeof before === "function") {
             before();
         }
 
-        this._criarComponentesIniciais();
         this._PWA();
         this._criarMetaDados();
         this._incluirDependenciasGlobais();
@@ -263,18 +246,11 @@ class Predocs extends predocsHelper {
     criarComponente(component, element, local, css = [], js = []) {
         let componentElement;
 
-        switch (component) {
-            case "carregando":
-            case "offline":
-                componentElement = document.createElement(component);
-                break;
-            default:
-                componentElement = document.createElement("section");
-                componentElement.setAttribute(
-                    "class",
-                    `component-${component}`
-                );
-        }
+        componentElement = document.createElement("section");
+        componentElement.setAttribute(
+            "class",
+            `component-${component}`
+        );
 
         switch (local) {
             case "append":
@@ -344,21 +320,24 @@ class Predocs extends predocsHelper {
         });
     }
 
-    incluirRecurso(tipo = "script", links = []) {
-        links.forEach((link) => {
-            const recurso = document.createElement(tipo);
-            if (tipo === "script") {
-                recurso.setAttribute("src", this.getUrl(link));
-                recurso.onload = () => {};
-            } else if (tipo === "link") {
-                recurso.setAttribute("rel", "stylesheet");
-                recurso.setAttribute("href", this.getUrl(link));
-            }
-            document
-                .querySelector(tipo === "script" ? "body" : "head")
-                .appendChild(recurso);
-        });
+    async incluirRecurso(tipo = "script", links = []) {
+        for (const link of links) {
+            await new Promise((resolve, reject) => {
+                const recurso = document.createElement(tipo);
+                if (tipo === "script") {
+                    recurso.setAttribute("src", this.getUrl(link));
+                    recurso.onload = resolve;
+                    recurso.onerror = reject;
+                } else if (tipo === "link") {
+                    recurso.setAttribute("rel", "stylesheet");
+                    recurso.setAttribute("href", this.getUrl(link));
+                    resolve();
+                }
+                document.querySelector(tipo === "script" ? "body" : "head").appendChild(recurso);
+            });
+        }
     }
+
 
     addParamsToUrl(url, params) {
         let queryParams = Object.entries(params)

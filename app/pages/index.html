@@ -2,51 +2,73 @@
 <html>
 
 <head>
-	<title>Login</title>
+    <title>Index</title>
 </head>
 
 <body>
-	<section id="app">
-		<center class="row mt-5">
-			<div class="col-12">
-				<div class="card">
-					<div class="card-header">
-						<h1><b>INDEX</b></h1>
-					</div>
-					<div class="card-body">
-						<h5 class="card-title">{{nome}}</h5>
-						<p class="card-text">Um framework para desenvolvimento web</p>
-						<a href="deslogado/cadastro.html" class="btn" tipo="primario">Cadastro</a>
-						<br /><br />
-						<a href="#" class="btn" tipo="secundario">Login</a>
-						<br /><br />
-						<button id="BtnInstallPWA" onclick="docs.installApp()" class="btn BtnInstallPWA"
-							tipo="terciario">Instalar</button>
-						<br /><br />
-						<p id="msg"></p>
-					</div>
-				</div>
-			</div>
-		</center>
-	</section>
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+            </div>
+            <div class="content-body">
+                <!-- Index start -->
+                <section class="row flexbox-container">
+                    <div class="col-xl-7 col-md-9 col-10  px-0">
+                        <div class="card bg-authentication mb-0">
+                            <div class="row m-0">
+                                <!-- left Index -->
+                                <div class="col-md-6 col-12 px-0">
+                                    <div class="card disable-rounded-right mb-0 p-2">
+                                        <div class="card-header pb-1">
+                                            <div class="card-title">
+                                                <h4 class="text-center mb-2">Bem Vindo ao {{nome}}</h4>
+                                            </div>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="card-body">
+                                                <br><br><br><br><br><br><br><br>
+                                                <button class="btn btn-primary glow position-relative w-100">
+                                                    Acessar minha conta
+                                                    <i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- right section image -->
+                                <div class="col-md-6 d-md-block d-none text-center align-self-center">
+                                    <img class="img-fluid" src="../midia/images/pages/forgot-password.png"
+                                        alt="branding logo" width="300">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- forgot password ends -->
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
 
-	<script id="coreJs" src="../core/predocs.js"></script>
-	<script type="text/javascript">
-		let app = {
-			componentesBloqueados: ["nav"],
-			scripts: [],
-			scriptsBloqueados: [],
-			styles: ["/css/pages/index.css"],
-			stylesBloqueados: [],
-		}
 
-		let docs = new Predocs(app);
+    <script id="coreJs" src="../core/predocs.js"></script>
+    <script type="text/javascript">
+        let app = {
+            componentesBloqueados: ["nav"],
+            scripts: [],
+            scriptsBloqueados: [],
+            styles: [],
+            stylesBloqueados: [],
+        }
 
-		let before = () => { docs.replaceTextInView("#app", docs.getConfig("app")); };
-		let after = () => { };
+        let docs = new Predocs(app);
 
-		docs.init(before, after);
-	</script>
+        let before = () => { docs.replaceTextInView("body", docs.getConfig("app")); };
+        let after = () => { };
+
+        docs.init(before, after);
+    </script>
 </body>
 
 </html>
