@@ -9,6 +9,7 @@
         "/framework/app-assets/js/core/app-menu.js",
         "/framework/app-assets/js/core/app.js",
         "/framework/app-assets/js/scripts/components.js",
+        "/framework/app-assets/vendors/js/extensions/sweetalert2.all.min.js",
         "/js/global/funcoes.js"
     ],
     "stylesGlobais": [
