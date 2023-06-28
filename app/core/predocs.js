@@ -53,11 +53,11 @@ class predocsHelper {
 
 
         if (document.querySelector("body").getAttribute("class") == null) {
-            document.querySelector("body").setAttribute("class", "vertical-layout vertical-menu-modern dark-layout 2-columns  navbar-sticky footer-static");
+            document.querySelector("body").setAttribute("class", "vertical-layout vertical-menu-modern dark-layout 1-column  navbar-sticky footer-static");
         }
         document.querySelector("body").setAttribute("data-open", "click");
         document.querySelector("body").setAttribute("data-menu", "vertical-menu-modern");
-        document.querySelector("body").setAttribute("data-col", "2-column");
+        document.querySelector("body").setAttribute("data-col", "1-column");
         document.querySelector("body").setAttribute("data-layout", "dark-layout");
     }
 
