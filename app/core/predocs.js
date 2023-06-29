@@ -50,31 +50,10 @@ class predocsHelper {
         });
 
         document.querySelector("html").setAttribute("lang", "pt-br");
-
-
-        if (document.querySelector("body").getAttribute("class") == null) {
-            document.querySelector("body").setAttribute("class", "vertical-layout vertical-menu-modern dark-layout 1-column  navbar-sticky footer-static");
-        }
-        document.querySelector("body").setAttribute("data-open", "click");
-        document.querySelector("body").setAttribute("data-menu", "vertical-menu-modern");
-        document.querySelector("body").setAttribute("data-col", "1-column");
-        document.querySelector("body").setAttribute("data-layout", "dark-layout");
     }
 
     _incluirDependenciasGlobais() {
         const includes = JSON.parse(this.get("/config/includes.json"));
-
-        const styles = [
-            ...includes.stylesGlobais,
-            ...this.recurso.styles,
-        ].filter((style) => !this.recurso.stylesBloqueados.includes(style));
-        const scripts = [
-            ...includes.scriptsGlobais,
-            ...this.recurso.scripts,
-        ].filter((script) => !this.recurso.scriptsBloqueados.includes(script));
-
-        this.incluirRecurso("link", styles);
-        this.incluirRecurso("script", scripts);
 
         Promise.all(
             includes.componentsGlobal.map((c) => {
@@ -114,10 +93,6 @@ class Predocs extends predocsHelper {
     config = {};
 
     recurso = {
-        scripts: [],
-        styles: [],
-        scriptsBloqueados: [],
-        stylesBloqueados: [],
         componentesBloqueados: [],
     };
 
@@ -126,10 +101,6 @@ class Predocs extends predocsHelper {
     constructor(params = {}) {
         super();
 
-        this.recurso.scripts = params.scripts || [];
-        this.recurso.styles = params.styles || [];
-        this.recurso.scriptsBloqueados = params.scriptsBloqueados || [];
-        this.recurso.stylesBloqueados = params.stylesBloqueados || [];
         this.recurso.componentesBloqueados = params.componentesBloqueados || [];
     }
 

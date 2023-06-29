@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Titulo</title>
+
+    <link rel="stylesheet" type="text/css" href="/app/framework/app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="/app/framework/app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/app/framework/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="/app/framework/app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="/app/framework/app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="/app/framework/app-assets/css/themes/dark-layout.css">
+
+    <!-- Inicio Style da pagina -->
+    <!-- Fim Style da pagina -->
+
+</head>
+
+<body data-layout="dark-layout">
+
+    <div class="app-content content">
+        <h1>{{nome}}</h1>
+    </div>
+
+    <script src="/app/framework/app-assets/vendors/js/vendors.min.js"></script>
+    <script src="/app/framework/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
+    <script src="/app/framework/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
+    <script src="/app/framework/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
+    <script src="/app/framework/app-assets/js/core/app-menu.js"></script>
+    <script src="/app/framework/app-assets/js/core/app.js"></script>
+    <script src="/app/framework/app-assets/js/scripts/components.js"></script>
+    
+    <script id="coreJs" src="../core/predocs.js"></script>
+    <script type="text/javascript">
+        let app = {
+            componentesBloqueados: [],
+        }
+
+        let docs = new Predocs(app);
+
+        let before = () => { docs.replaceTextInView("body", docs.getConfig("app")); };
+        let after = () => { };
+
+        docs.init(before, after);
+    </script>
+
+    <!-- Inicio Scripts da pagina -->
+    <!-- Fim Scripts da pagina -->
+
+</body>
+
+</html>
