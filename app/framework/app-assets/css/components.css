@@ -190,7 +190,7 @@ html body p {
 }
 
 html body.bg-full-screen-image {
-  background: url(../../app-assets/images/pages/auth-bg.jpg) no-repeat center center;
+  background: url(/app/midia/images/pages/auth-bg.jpg) no-repeat center center;
   background-size: cover;
 }
 

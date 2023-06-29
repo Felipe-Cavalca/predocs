@@ -214,7 +214,7 @@ $(document).ready(function () {
         hollow: {
           margin: -5,
           size: '85%',
-          image: '../../../app-assets/images/cards/face-regular-24.png',
+          image: '..//app/midia/images/cards/face-regular-24.png',
           imageWidth: 32,
           imageHeight: 32,
           imageClipped: false,
