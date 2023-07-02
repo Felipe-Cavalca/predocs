@@ -1,36 +1,15 @@
 {
-    "scriptsGlobais": [
-        "/framework/jquery-3.6.0.js",
-        "/framework/app-assets/vendors/js/vendors.min.js",
-        "/framework/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js",
-        "/framework/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js",
-        "/framework/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js",
-        "/framework/app-assets/js/scripts/configs/vertical-menu-dark.js",
-        "/framework/app-assets/js/core/app-menu.js",
-        "/framework/app-assets/js/core/app.js",
-        "/framework/app-assets/js/scripts/components.js",
-        "/framework/app-assets/vendors/js/extensions/sweetalert2.all.min.js",
-        "/js/global/funcoes.js"
-    ],
-    "stylesGlobais": [
-        "/framework/app-assets/vendors/css/vendors.min.css",
-        "/framework/app-assets/css/bootstrap.css",
-        "/framework/app-assets/css/bootstrap-extended.css",
-        "/framework/app-assets/css/colors.css",
-        "/framework/app-assets/css/components.css",
-        "/framework/app-assets/css/themes/dark-layout.css",
-        "/framework/app-assets/css/themes/semi-dark-layout.css",
-        "/framework/app-assets/css/core/menu/menu-types/vertical-menu.css"
-    ],
     "componentsGlobal": [
         {
             "component": "nav",
             "element": "body",
             "local": "prepend",
             "css": [
+                "/framework/app-assets/css/core/menu/menu-types/vertical-menu.css",
                 "/components/css/nav.css"
             ],
             "js": [
+                "/framework/app-assets/js/scripts/configs/vertical-menu-dark.js",
                 "/components/js/nav.js"
             ]
         }
