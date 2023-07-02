@@ -111,9 +111,9 @@ class Predocs extends predocsHelper {
             before();
         }
 
+        this._incluirDependenciasGlobais();
         this._PWA();
         this._criarMetaDados();
-        this._incluirDependenciasGlobais();
         this._onloadBody(after);
         this._desabilitarAutocomplete();
     }
