@@ -475,7 +475,7 @@ class Banco
 			$queryTabelaLog = "CREATE TABLE IF NOT EXISTS {$tabela}_log (
 				`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				`acao` varchar(255) NOT NULL,
-				`query` varchar(255),
+				`query` LONGTEXT,
 				`ip` varchar(255),
 				`criado` datetime
 			);";
