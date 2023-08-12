@@ -336,4 +336,9 @@ class Predocs extends predocsHelper {
             this.deferredPrompt = null;
         }
     }
+
+    getParamUrl($param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get($param);
+    }
 }
