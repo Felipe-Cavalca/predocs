@@ -7,6 +7,10 @@ class funcoes
 {
 
     /**
+     *  ======= Funções do framework =======
+     */
+
+    /**
      * funcao para analizar a request de um usuario
      * @version 3.1.0
      * @access public
@@ -49,116 +53,6 @@ class funcoes
         } else {
             return $this->returnStatusCode(500);
         }
-    }
-
-    /**
-     * Função para listar os arquivos de uma pasta
-     * @version 1
-     * @access public
-     * @param string $pasta caminho da lista de pastas
-     * @return array array com os nomes dos arquivos/pastas de dentro do diretorio
-     */
-    public function listarArquivos(string $pasta = '/'): array
-    {
-        $diretorio = dir($pasta);
-        $arquivos = [];
-        while ($arquivo = $diretorio->read()) {
-            $arquivos[] = $arquivo;
-        }
-        $diretorio->close();
-        return $arquivos;
-    }
-
-    /**
-     * Função para listar arquivos recursivamente de uma pasta
-     * @version 1
-     * @access public
-     * @author https://gist.github.com/sistematico/08c5240f5c647cf3f650f395448c69e9
-     * Modificado para o framework
-     * @param string $pasta caminho da lista de arquivos
-     * @return array array com o nome dos arquivos do diretorio
-     */
-    public function listarArquivosRecursivos(string $pasta): array
-    {
-        if (empty($pasta))
-            return [];
-
-        if (!is_dir($pasta))
-            return [];
-
-        $scan = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($pasta));
-        $arquivos = $retorno = [];
-
-        foreach ($scan as $arquivo) {
-            if (!$arquivo->isDir()) {
-                $arquivos[] = $arquivo->getPathname();
-            }
-        }
-        shuffle($arquivos);
-
-        foreach ($arquivos as &$valor) {
-            $retorno[] = $valor;
-        }
-
-        return $retorno;
-    }
-
-    /**
-     * Valida se campos existem em um array
-     * @version 2
-     * @access public
-     * @param array $indices nome dos campos a serem verificados
-     * @param array $array array a ser verificado
-     * @return array ["status" => bool, "msg" => string]
-     */
-    public function isset(array $indices = [], array $array = []): array
-    {
-        $array = $array ?: $_POST;
-        $indicesFaltantes = array_diff($indices, array_keys($array));
-        if (!empty($indicesFaltantes)) {
-            return [
-                "status" => false,
-                "msg" => "Indices faltantes: " . implode(", ", $indicesFaltantes)
-            ];
-        }
-        return [
-            "status" => true,
-            "msg" => "Todos os índices existem"
-        ];
-    }
-
-    /**
-     * Valida se indices de um array não estão vazios
-     * @version 1.1.0
-     * @access public
-     * @param array $indices nome dos indices a serem verificados
-     * @param array $array array a ser verificado
-     * @return ["status" => bool, "msg" => string]
-     */
-    public function empty(array $indices = [], array $array = []): array
-    {
-        $array = $array ?: $_POST;
-        foreach ($indices as $indice) {
-            if (empty($array[$indice])) {
-                return ["status" => true, "msg" => "Campo '{$indice}' está vazio"];
-            }
-        }
-
-        return ["status" => false, "msg" => "Todos os campos estão ok"];
-    }
-
-    /**
-     * Valida se uma pasta existe, caso não exista cria a mesma
-     * @version 1
-     * @access public
-     * @param string $caminho - caminho até a pasta
-     * @param int $permission - permissão da pasta
-     * @return bool
-     */
-    public function criaPasta(string $path, int $permission = 0777): bool
-    {
-        if (!is_dir($path)) return mkdir($path, $permission, true);
-        return false;
     }
 
     /**
@@ -290,6 +184,120 @@ class funcoes
         }
 
         return $obj;
+    }
+
+    /**
+     *  ======= Funções do globais =======
+     */
+
+    /**
+     * Função para listar os arquivos de uma pasta
+     * @version 1
+     * @access public
+     * @param string $pasta caminho da lista de pastas
+     * @return array array com os nomes dos arquivos/pastas de dentro do diretorio
+     */
+    public function listarArquivos(string $pasta = '/'): array
+    {
+        $diretorio = dir($pasta);
+        $arquivos = [];
+        while ($arquivo = $diretorio->read()) {
+            $arquivos[] = $arquivo;
+        }
+        $diretorio->close();
+        return $arquivos;
+    }
+
+    /**
+     * Função para listar arquivos recursivamente de uma pasta
+     * @version 1
+     * @access public
+     * @author https://gist.github.com/sistematico/08c5240f5c647cf3f650f395448c69e9
+     * Modificado para o framework
+     * @param string $pasta caminho da lista de arquivos
+     * @return array array com o nome dos arquivos do diretorio
+     */
+    public function listarArquivosRecursivos(string $pasta): array
+    {
+        if (empty($pasta))
+            return [];
+
+        if (!is_dir($pasta))
+            return [];
+
+        $scan = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($pasta));
+        $arquivos = $retorno = [];
+
+        foreach ($scan as $arquivo) {
+            if (!$arquivo->isDir()) {
+                $arquivos[] = $arquivo->getPathname();
+            }
+        }
+        shuffle($arquivos);
+
+        foreach ($arquivos as &$valor) {
+            $retorno[] = $valor;
+        }
+
+        return $retorno;
+    }
+
+    /**
+     * Valida se campos existem em um array
+     * @version 2
+     * @access public
+     * @param array $indices nome dos campos a serem verificados
+     * @param array $array array a ser verificado
+     * @return array ["status" => bool, "msg" => string]
+     */
+    public function isset(array $indices = [], array $array = []): array
+    {
+        $array = $array ?: $_POST;
+        $indicesFaltantes = array_diff($indices, array_keys($array));
+        if (!empty($indicesFaltantes)) {
+            return [
+                "status" => false,
+                "msg" => "Indices faltantes: " . implode(", ", $indicesFaltantes)
+            ];
+        }
+        return [
+            "status" => true,
+            "msg" => "Todos os índices existem"
+        ];
+    }
+
+    /**
+     * Valida se indices de um array não estão vazios
+     * @version 1.1.0
+     * @access public
+     * @param array $indices nome dos indices a serem verificados
+     * @param array $array array a ser verificado
+     * @return ["status" => bool, "msg" => string]
+     */
+    public function empty(array $indices = [], array $array = []): array
+    {
+        $array = $array ?: $_POST;
+        foreach ($indices as $indice) {
+            if (empty($array[$indice])) {
+                return ["status" => true, "msg" => "Campo '{$indice}' está vazio"];
+            }
+        }
+
+        return ["status" => false, "msg" => "Todos os campos estão ok"];
+    }
+
+    /**
+     * Valida se uma pasta existe, caso não exista cria a mesma
+     * @version 1
+     * @access public
+     * @param string $caminho - caminho até a pasta
+     * @param int $permission - permissão da pasta
+     * @return bool
+     */
+    public function criaPasta(string $path, int $permission = 0777): bool
+    {
+        if (!is_dir($path)) return mkdir($path, $permission, true);
+        return false;
     }
 }
 
