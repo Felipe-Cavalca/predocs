@@ -15,6 +15,11 @@ function executarFramework()
 {
     incluirArquivosDoCore();
 
+    if (isset($_SERVER["HTTP_TEST"])) {
+        $banco = new Banco();
+        $banco->inicio();
+    }
+
     $funcoes = new Funcoes();
     $retorno = $funcoes->init() ?? "Não foi possível recuperar a saída da função";
 
@@ -26,6 +31,13 @@ function executarFramework()
         echo json_encode(["status" => $retorno]);
     } else {
         echo $retorno;
+    }
+
+    $banco = new Banco();
+    if (isset($_SERVER["HTTP_TEST"])) {
+        $banco->reverter();
+    }else{
+        $banco->salvar();
     }
 }
 
