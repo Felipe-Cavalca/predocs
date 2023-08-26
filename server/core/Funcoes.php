@@ -135,8 +135,9 @@ class funcoes
 
     /**
      * Função para retornar o status code de erro
-     * @version 1.0.0
+     * @version 1.1.0
      * @access public
+     * @param int $codigo Codido da resposta
      * @return array
      */
     public function returnStatusCode($codigo)
@@ -146,7 +147,8 @@ class funcoes
             401 => ["status" => false, "msg" => "Acesso negado"],
             500 => ["status" => false, "msg" => "Erro interno"]
         ];
-        http_response_code(array_key_exists($codigo, $codes) ? $codigo : 500);
+        $codigo = array_key_exists($codigo, $codes) ? $codigo : 500;
+        $this->setStatusCode($codigo);
         return $codes[$codigo];
     }
 
@@ -189,6 +191,18 @@ class funcoes
     /**
      *  ======= Funções do globais =======
      */
+
+    /**
+     * Função para setar o status code de retorno
+     * @version 1.0.0
+     * @access public
+     * @param int $code Codigo da resposta
+     * @return void
+     */
+    public function setStatusCode($code)
+    {
+        http_response_code($code);
+    }
 
     /**
      * Função para listar os arquivos de uma pasta
