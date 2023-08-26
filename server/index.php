@@ -19,7 +19,7 @@ function executarFramework()
     $banco->inicio();
 
     $funcoes = new Funcoes();
-    $retorno = $funcoes->init() ?? "Não foi possível recuperar a saída da função";
+    $retorno = $funcoes->init() ?? $funcoes->setStatusCode(204);
 
     if (is_array($retorno)) {
         echo json_encode($retorno);
