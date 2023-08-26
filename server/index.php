@@ -35,6 +35,9 @@ function executarFramework()
 
     $banco = new Banco();
     if (isset($_SERVER["HTTP_TEST"])) {
+        if(http_response_code() == 200){
+            $funcoes->setStatusCode(202);
+        }
         $banco->reverter();
     }else{
         $banco->salvar();
