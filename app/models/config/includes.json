@@ -13,5 +13,13 @@
                 "/components/js/nav.js"
             ]
         }
+    ],
+    "cssFiles": [
+        "/app/framework/app-assets/vendors/css/vendors.min.css",
+        "/app/framework/app-assets/css/bootstrap.css",
+        "/app/framework/app-assets/css/bootstrap-extended.css",
+        "/app/framework/app-assets/css/colors.css",
+        "/app/framework/app-assets/css/components.css",
+        "/app/framework/app-assets/css/themes/dark-layout.css"
     ]
 }
