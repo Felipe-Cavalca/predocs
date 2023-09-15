@@ -120,8 +120,6 @@ class Predocs extends predocsHelper {
     }
 
     init(before, after) {
-        this.incluirRecurso("script", ["/framework/jquery-3.6.0.js"]);
-
         if (typeof before === "function") {
             before();
         }
