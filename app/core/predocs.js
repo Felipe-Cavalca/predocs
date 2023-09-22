@@ -144,40 +144,20 @@ class Predocs extends predocsHelper {
         return "Navegador";
     }
 
-    get(url, params = {}, cache = true) {
-        const fullUrl = this.addParamsToUrl(this.getUrl(url), params);
-
-        if (!navigator.onLine) {
-            if (cache) {
-                return localStorage.getItem(`GET-${fullUrl}`);
-            }
-            return undefined;
-        }
-
-        try {
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", fullUrl, false);
-            xhr.send();
-
-            if (xhr.status === 200) {
-                if (cache) {
-                    localStorage.setItem(`GET-${fullUrl}`, xhr.responseText);
-                }
-                return xhr.responseText;
-            }
-        } catch (e) {
-            console.error(e);
-        }
-
-        return undefined;
+    get(url, params = {}) {
+        return this.request(url, {}, params, "GET")
     }
 
-    post(url, dadosPost, paramsUrl = {}, json = true, assincrona = false) {
-        const fullUrl = this.addParamsToUrl(this.getUrl(url), paramsUrl);
+    post(url, dadosPost, paramsUrl = {}, aguardaResposta = true) {
+        return this.request(url, dadosPost, paramsUrl, "POST", aguardaResposta);
+    }
+
+    request(url, dados, param, method, aguardaResposta = true) {
+        const fullUrl = this.addParamsToUrl(this.getUrl(url), param);
         try {
             const xhttp = new XMLHttpRequest();
-            xhttp.open("POST", fullUrl, assincrona);
-            xhttp.send(json ? JSON.stringify(dadosPost) : dadosPost);
+            xhttp.open(method, fullUrl, !aguardaResposta); // false = aguarda retorno
+            xhttp.send(JSON.stringify(dados));
             return xhttp.responseText;
         } catch (e) {
             console.error(e);
@@ -187,24 +167,31 @@ class Predocs extends predocsHelper {
     }
 
     form(element, before, after) {
-        document.querySelector(element).addEventListener("submit", (event) => {
+        document.querySelector(element).addEventListener("submit", async (event) => {
             event.preventDefault();
             if (before() !== false) {
-                let resp;
                 const data = new FormData(event.target);
-                if (document.querySelector(element).method == "post") {
-                    resp = JSON.parse(
-                        this.post(
-                            "/server" + document.querySelector(element).action.replace(location.origin, ""),
-                            data,
-                            {},
-                            false
-                        )
+                const formDataObject = {};
+
+                data.forEach((value, key) => {
+                    formDataObject[key] = value;
+                });
+
+                try {
+                    const resp = await this.request(
+                        "/server" + document.querySelector(element).action.replace(location.origin, ""),
+                        formDataObject,
+                        {},
+                        document.querySelector(element).getAttribute('metodo')
                     );
+                    const jsonResponse = JSON.parse(resp);
+                    after(jsonResponse);
+                } catch (error) {
+                    console.error(error);
                 }
-                after(resp);
             }
         });
+
         return true;
     }
 
