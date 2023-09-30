@@ -91,4 +91,4 @@ Estamos entusiasmados com o futuro do Predocs e planejamos adicionar muitos recu
 
 ## Licença
 
-Este projeto é licenciado sob [LICENSE](LICENSE.md).
+Este projeto é licenciado sob [LICENSE](LICENSE).
