@@ -1,1 +1,4 @@
-/* Seu css aqui */
+body {
+    background-color: var(--cor-fundo) !important;
+    color: var(--cor-texto) !important;
+}
