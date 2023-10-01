@@ -1,4 +1,10 @@
-nav {
-	background-color: var(--cor-fundo-nav) !important;
-	color: var(--cor-texto-nav) !important;
+nav{
+    margin-bottom: 10px;
+    background-color: var(--cor-fundo-nav) !important;
+    color: var(--cor-texto-nav) !important;
+}
+
+nav div .offcanvas{
+    background-color: var(--cor-fundo-nav) !important;
+    color: var(--cor-texto-nav) !important;
 }

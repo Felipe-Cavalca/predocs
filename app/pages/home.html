@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Página Inicial</title>
+</head>
+
+<body>
+    <div class="content">
+        <h1>Bem-vindo ao Meu Site</h1>
+        <p>Este é um site com uma navbar lateral que recolhe em telas menores.</p>
+    </div>
+
+    <script id="coreJs" src="../core/predocs.js"></script>
+    <script type="text/javascript">
+        const appConfig = {
+            // componentesBloqueados: ["nav"]
+        };
+
+        const before = () => {
+            docs.replaceTextInView("body", docs.getConfig("app"));
+        };
+
+        const after = () => { };
+
+        const docs = new Predocs(appConfig);
+        docs.init(before, after);
+
+    </script>
+</body>
+
+</html>
