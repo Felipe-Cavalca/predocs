@@ -2,91 +2,40 @@
 <html>
 
 <head>
-    <title>Index</title>
+    <title>Página Inicial</title>
 </head>
 
-<body
-    class="vertical-layout vertical-menu-modern dark-layout 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page"
-    data-open="click" data-menu="vertical-menu-modern" data-col="1-column" data-layout="dark-layout">
-
-    <!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-            </div>
-            <div class="content-body">
-                <!-- Index start -->
-                <section class="row flexbox-container">
-                    <div class="col-xl-7 col-md-9 col-10  px-0">
-                        <div class="card bg-authentication mb-0">
-                            <div class="row m-0">
-                                <!-- left Index -->
-                                <div class="col-md-6 col-12 px-0">
-                                    <div class="card disable-rounded-right mb-0 p-2">
-                                        <div class="card-header pb-1">
-                                            <div class="card-title">
-                                                <h4 class="text-center mb-2">Bem Vindo ao {{nome}}</h4>
-                                            </div>
-                                        </div>
-                                        <div class="card-content">
-                                            <div class="card-body">
-                                                <br><br><br><br><br><br><br><br>
-                                                <a href="login.html">
-                                                    <button class="btn btn-primary glow position-relative w-100">
-                                                        Acessar minha conta
-                                                        <i id="icon-arrow" class="bx bx-right-arrow-alt"></i>
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- right section image -->
-                                <div class="col-md-6 d-md-block d-none text-center align-self-center">
-                                    <img class="img-fluid" src="../midia/images/pages/forgot-password.png"
-                                        alt="branding logo" width="300">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- forgot password ends -->
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 offset-md-1" id="conteudo">
+                <!-- O conteúdo será inserido aqui -->
             </div>
         </div>
     </div>
-    <!-- END: Content-->
 
-
-    <!-- inicio Framework -->
     <script id="coreJs" src="../core/predocs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <script type="text/javascript">
-        let app = {
+        const appConfig = {
             componentesBloqueados: ["nav"]
-        }
+        };
 
-        let docs = new Predocs(app);
-
-        let before = () => {
+        const before = () => {
             docs.replaceTextInView("body", docs.getConfig("app"));
         };
-        let after = () => { };
 
+        const after = () => {
+            const converter = new showdown.Converter();
+            const markdownText = docs.get("/../README.md");
+            const htmlText = converter.makeHtml(markdownText);
+            document.getElementById("conteudo").innerHTML = htmlText;
+        };
+
+        const docs = new Predocs(appConfig);
         docs.init(before, after);
+
     </script>
-    <!-- Fim framework -->
-    
-    <!-- inicio scripts -->
-    <script src="/app/framework/jquery-3.6.0.js"></script>
-    <script src="/app/framework/app-assets/vendors/js/vendors.min.js"></script>
-    <script src="/app/framework/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
-    <script src="/app/framework/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
-    <script src="/app/framework/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
-    <script src="/app/framework/app-assets/js/core/app-menu.js"></script>
-    <script src="/app/framework/app-assets/js/core/app.js"></script>
-    <script src="/app/framework/app-assets/js/scripts/components.js"></script>
-    <!-- fim scripts -->
-    
 </body>
 
 </html>

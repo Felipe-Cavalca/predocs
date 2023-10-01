@@ -85,6 +85,20 @@ class predocsHelper {
         });
     }
 
+    _incluirDependenciasJS() {
+        const jsFiles = JSON.parse(this.get("/config/includes.json")).jsFiles;
+
+        // Função para adicionar as tags <script> ao <body>
+        let body = document.body;
+
+        jsFiles.forEach(function (jsFile) {
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = jsFile;
+            body.appendChild(script);
+        });
+    }
+
     _onloadBody(after) {
         document.querySelector("body").onload = () => {
             if (typeof after === "function") {
@@ -120,14 +134,16 @@ class Predocs extends predocsHelper {
     }
 
     init(before, after) {
+        this._incluirDependenciasCss();
+        this._incluirDependenciasJS();
+        this._incluirComponentsGlobais();
+        this._criarMetaDados();
+        this._PWA();
+
         if (typeof before === "function") {
             before();
         }
 
-        this._incluirDependenciasCss();
-        this._incluirComponentsGlobais();
-        this._criarMetaDados();
-        this._PWA();
         this._onloadBody(after);
         this._desabilitarAutocomplete();
     }
