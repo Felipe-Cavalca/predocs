@@ -182,27 +182,54 @@ class Predocs extends predocsHelper {
         return undefined;
     }
 
-    form(element, before, after) {
-        document.querySelector(element).addEventListener("submit", async (event) => {
+    form(formSelector, beforeSubmit, afterSubmit, createLoading = true) {
+
+        if (createLoading) {
+            this.criarComponente("loading-form", formSelector, "lado");
+        }
+
+        document.querySelector(formSelector).addEventListener("submit", async (event) => {
+            var formElement = document.querySelector(formSelector);
+            var loadingElement = document.querySelector(formSelector + " + .component-loading-form .loading");
+            var successElement = document.querySelector(formSelector + " + .component-loading-form .sucesso");
+            var errorElement = document.querySelector(formSelector + " + .component-loading-form .erro");
+
             event.preventDefault();
-            if (before() !== false) {
-                const data = new FormData(event.target);
+
+            if (createLoading) {
+                formElement.style.display = "none";
+                loadingElement.style.display = "block";
+            }
+
+            if (beforeSubmit() !== false) {
+                const formData = new FormData(formElement);
                 const formDataObject = {};
 
-                data.forEach((value, key) => {
+                formData.forEach((value, key) => {
                     formDataObject[key] = value;
                 });
 
                 try {
-                    const resp = await this.request(
-                        "/server" + document.querySelector(element).action.replace(location.origin, ""),
+                    const response = await this.request(
+                        "/server" + formElement.action.replace(location.origin, ""),
                         formDataObject,
                         {},
-                        document.querySelector(element).getAttribute('metodo')
+                        formElement.getAttribute('metodo')
                     );
-                    const jsonResponse = JSON.parse(resp);
-                    after(jsonResponse);
+                    const jsonResponse = JSON.parse(response);
+                    let resposta = afterSubmit(jsonResponse);
+
+                    if (createLoading) {
+                        successElement.style.display = "block";
+                        loadingElement.style.display = "none";
+                        successElement.textContent = resposta;
+                    }
                 } catch (error) {
+                    debugger;
+                    if (createLoading) {
+                        errorElement.style.display = "block";
+                        loadingElement.style.display = "none";
+                    }
                     console.error(error);
                 }
             }
@@ -244,8 +271,13 @@ class Predocs extends predocsHelper {
 
         switch (local) {
             case "append":
+            case "final":
                 document.querySelector(element).append(componentElement);
                 break;
+            case "lado":
+                document.querySelector(element).parentElement.append(componentElement);
+                break;
+            case "incio":
             case "prepend":
             default:
                 document.querySelector(element).prepend(componentElement);
