@@ -225,7 +225,6 @@ class Predocs extends predocsHelper {
                         successElement.textContent = resposta;
                     }
                 } catch (error) {
-                    debugger;
                     if (createLoading) {
                         errorElement.style.display = "block";
                         loadingElement.style.display = "none";
