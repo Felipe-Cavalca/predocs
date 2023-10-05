@@ -239,10 +239,12 @@ class Predocs extends predocsHelper {
     }
 
     montaSelect = (element, options) => {
-        options.forEach(({ value, text }) => {
+        options.forEach(({ value, text, selected, disabled }) => {
             const option = document.createElement("option");
             option.value = value || text;
             option.textContent = text;
+            option.disabled = disabled ?? false;
+            option.selected = selected ?? false;
             document.querySelector(element).appendChild(option);
         });
         return true;
