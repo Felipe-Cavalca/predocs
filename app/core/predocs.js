@@ -182,53 +182,67 @@ class Predocs extends predocsHelper {
         return undefined;
     }
 
-    form(formSelector, beforeSubmit, afterSubmit, createLoading = true) {
+    createFormDataObject(formData) {
+        const formDataObject = {};
+        formData.forEach((value, key) => {
+            formDataObject[key] = value;
+        });
+        return formDataObject;
+    }
 
-        if (createLoading) {
-            this.criarComponente("loading-form", formSelector, "lado");
+    async submitForm(formElement, onSuccess, onError) {
+        try {
+            const formData = new FormData(formElement);
+            const formDataObject = this.createFormDataObject(formData);
+
+            const response = await this.request(
+                "/server" + formElement.action.replace(location.origin, ""),
+                formDataObject,
+                {},
+                formElement.getAttribute('metodo')
+            );
+
+            const jsonResponse = JSON.parse(response);
+            const resposta = onSuccess(jsonResponse);
+            return resposta;
+        } catch (error) {
+            onError(error);
+            throw error;
         }
+    }
 
+    form(formSelector, beforeSubmit, afterSubmit, createLoading = true) {
+        if (createLoading) {
+            this.criarComponente("loading-form", formSelector, "lado", ["/components/css/loading-form.css"], ["/components/js/loading-form.js"]);
+        }
+        
         document.querySelector(formSelector).addEventListener("submit", async (event) => {
-            var formElement = document.querySelector(formSelector);
-            var loadingElement = document.querySelector(formSelector + " + .component-loading-form .loading");
-            var successElement = document.querySelector(formSelector + " + .component-loading-form .sucesso");
-            var errorElement = document.querySelector(formSelector + " + .component-loading-form .erro");
-
             event.preventDefault();
-
+            const formElement = document.querySelector(formSelector);
+            
             if (createLoading) {
-                formElement.style.display = "none";
-                loadingElement.style.display = "block";
+                var loadingForm = new LoadingForm(formSelector);
             }
-
+            
             if (beforeSubmit() !== false) {
-                const formData = new FormData(formElement);
-                const formDataObject = {};
-
-                formData.forEach((value, key) => {
-                    formDataObject[key] = value;
-                });
-
+                await loadingForm.showLoading();
+                await this.delay(500);
                 try {
-                    const response = await this.request(
-                        "/server" + formElement.action.replace(location.origin, ""),
-                        formDataObject,
-                        {},
-                        formElement.getAttribute('metodo')
+                    const resposta = await this.submitForm(
+                        formElement,
+                        afterSubmit,
+                        (error) => {
+                            if (createLoading) {
+                                loadingForm.showError();
+                            }
+                            console.error(error);
+                        }
                     );
-                    const jsonResponse = JSON.parse(response);
-                    let resposta = afterSubmit(jsonResponse);
 
                     if (createLoading) {
-                        successElement.style.display = "block";
-                        loadingElement.style.display = "none";
-                        successElement.textContent = resposta;
+                        loadingForm.showSuccess(resposta);
                     }
                 } catch (error) {
-                    if (createLoading) {
-                        errorElement.style.display = "block";
-                        loadingElement.style.display = "none";
-                    }
                     console.error(error);
                 }
             }
@@ -390,5 +404,11 @@ class Predocs extends predocsHelper {
     getParamUrl($param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get($param);
+    }
+
+    delay(ms) {
+        return new Promise(resolve => {
+            setTimeout(resolve, ms);
+        });
     }
 }

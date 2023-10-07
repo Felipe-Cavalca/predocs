@@ -1,0 +1,10 @@
+.component-loading-form .loading,
+.component-loading-form .sucesso,
+.component-loading-form .erro,
+.component-loading-form .btnVoltar {
+    display: none;
+}
+.component-loading-form .sucesso,
+.component-loading-form .erro{
+    color: black;
+}
