@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Index</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 offset-md-1" id="conteudo">
+                <!-- O conteúdo será inserido aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script id="coreJs" src="../app/core/predocs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+    <script type="text/javascript">
+        const appConfig = {
+            componentesBloqueados: ["nav"]
+        };
+
+        const before = () => {
+            docs.replaceTextInView("body", docs.getConfig("app"));
+        };
+
+        const after = () => {
+            const converter = new showdown.Converter();
+            const markdownText = docs.get(docs.getParamUrl("page") ?? "index.md");
+            const htmlText = converter.makeHtml(markdownText);
+            document.getElementById("conteudo").innerHTML = htmlText;
+
+            //substituindo links na versão web
+            let html = document.querySelector("#conteudo").innerHTML;
+            html = html.replace(
+                new RegExp(`/docs/archives/`, "g"),
+                "?page=archives/"
+            );
+            html = html.replace(
+                new RegExp(`/docs/index.md`, "g"),
+                "?page=index.md"
+            );
+            document.querySelector("#conteudo").innerHTML = html;
+        };
+
+        const docs = new Predocs(appConfig);
+        docs.init(before, after);
+
+    </script>
+</body>
+
+</html>
