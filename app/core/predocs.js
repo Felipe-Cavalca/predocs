@@ -28,7 +28,7 @@ class predocsHelper {
             {
                 tipo: "link",
                 rel: "shortcut icon",
-                href: this.getUrl("/midia/global/favicon.ico"),
+                href: this.getUrl("/assets/global/favicon.ico"),
                 type: "image/x-icon",
             },
             {
