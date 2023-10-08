@@ -313,6 +313,24 @@ class funcoes
         if (!is_dir($path)) return mkdir($path, $permission, true);
         return false;
     }
+
+    /**
+     * Função para pegar as urls da documentação
+     * @version 1
+     * @access public
+     * @return array
+     */
+    public function getLinksDocs(){
+        $config = new Config();
+
+        $urls = $config->getConfig()["docs"];
+        $function = $_GET["controller"] . "/" . $_GET["function"] . ".md";
+
+        return [
+            "web" => $urls["web"] . $function,
+            "markdown" => $urls["markdown"] . $function 
+        ];
+    }
 }
 
 /**

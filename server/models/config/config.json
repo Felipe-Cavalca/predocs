@@ -1,0 +1,6 @@
+{
+    "docs": {
+        "web": "/docs/?page=markdown/endpoints/",
+        "markdown": "/docs/markdown/endpoints/"
+    }
+}
