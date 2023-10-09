@@ -1,13 +1,3 @@
-##forçar alteração de http para https
-#RewriteEngine On
-#RewriteCond %{HTTPS} !on
-#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
-
-#forçando utf-8
-<FilesMatch ".(htm|html|css|js)$">
-AddDefaultCharset UTF-8
-</FilesMatch>
-
 # Mudando arquivo inicio do servidor
 DirectoryIndex index.php
 
