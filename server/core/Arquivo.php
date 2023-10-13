@@ -17,7 +17,7 @@ class Arquivo
      * @param bool $novo Geração de um novo arquivo
      * @return void
      */
-    public function __construct(string $arquivo, bool $novo = false): void
+    public function __construct(string $arquivo, bool $novo = false)
     {
         $this->path = $arquivo;
         if ($novo) {
@@ -28,7 +28,7 @@ class Arquivo
     /**
      * Função para apagar os dados do arquivo após não usar a classe
      */
-    public function __destruct(): void
+    public function __destruct()
     {
         $this->path = null;
     }
