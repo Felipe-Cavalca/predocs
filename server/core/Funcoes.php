@@ -3,7 +3,7 @@
 /**
  * Funções para gerenciamento do framework
  */
-class funcoes
+class Funcoes
 {
 
     /**
@@ -25,7 +25,9 @@ class funcoes
 
         $this->get(predocs: $predocs);
 
-        if (empty($_GET["controller"])) return $this->returnStatusCode(404);
+        if (empty($_GET["controller"])) {
+            return $this->returnStatusCode(404);
+        }
 
         $controller = $this->incluiController(nomeController: $_GET["controller"], predocs: $predocs);
 
@@ -79,8 +81,6 @@ class funcoes
         ini_set("display_errors", "1");
 
         session_start();
-
-        return;
     }
 
     /**
@@ -93,7 +93,6 @@ class funcoes
     {
         $json = json_decode(file_get_contents('php://input'), true);
         $_POST = (is_array($json) ? $json : $_POST);
-        return;
     }
 
     /**
@@ -119,18 +118,15 @@ class funcoes
 
         $count = ($predocs) ? 1 : 0;
         foreach ($params as $param) {
-            switch ($param) {
-                case "function":
-                    $retorno[$param] = empty($url[$count]) ? "index" : $url[$count];
-                    break;
-                default:
-                    $retorno[$param] = isset($url[$count]) ? $url[$count] : null;
+            if ($param == "function") {
+                $retorno[$param] = empty($url[$count]) ? "index" : $url[$count];
+            } else {
+                $retorno[$param] = isset($url[$count]) ? $url[$count] : null;
             }
             $count++;
         }
 
         $_GET = $retorno;
-        return;
     }
 
     /**
@@ -230,11 +226,9 @@ class funcoes
      */
     public function listarArquivosRecursivos(string $pasta): array
     {
-        if (empty($pasta))
+        if (empty($pasta) || !is_dir($pasta)) {
             return [];
-
-        if (!is_dir($pasta))
-            return [];
+        }
 
         $scan = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($pasta));
         $arquivos = $retorno = [];
@@ -307,7 +301,9 @@ class funcoes
      */
     public function criaPasta(string $path, int $permission = 0777): bool
     {
-        if (!is_dir($path)) return mkdir($path, $permission, true);
+        if (!is_dir($path)) {
+            return mkdir($path, $permission, true);
+        }
         return false;
     }
 
@@ -317,7 +313,8 @@ class funcoes
      * @access public
      * @return array
      */
-    public function getLinksDocs(){
+    public function getLinksDocs()
+    {
         $config = new Config();
 
         $urls = $config->getConfig()["docs"];
@@ -325,7 +322,7 @@ class funcoes
 
         return [
             "web" => $urls["web"] . $function,
-            "markdown" => $urls["markdown"] . $function 
+            "markdown" => $urls["markdown"] . $function
         ];
     }
 }
