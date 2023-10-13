@@ -35,8 +35,6 @@ class Funcoes
             switch ($controller) {
                 case 404:
                     return $this->returnStatusCode(404);
-                case 401:
-                    return $this->returnStatusCode(401);
                 case 200:
                     if (function_exists($_GET["function"])) {
                         return call_user_func($_GET["function"], $_GET["param1"], $_GET["param2"], $_GET["param3"]);
@@ -172,13 +170,7 @@ class Funcoes
             return 200;
         }
 
-        $obj = new $nomeController();
-
-        if (method_exists($obj, "__autorizado") && !$obj->__autorizado($_GET["function"])) {
-            return 401;
-        }
-
-        return $obj;
+        return new $nomeController();
     }
 
     /**

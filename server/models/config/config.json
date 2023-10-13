@@ -8,10 +8,6 @@
             "status": false,
             "msg": "A função solicitada não foi encontrada"
         },
-        "401": {
-            "status": false,
-            "msg": "Acesso negado"
-        },
         "500": {
             "status": false,
             "msg": "Erro interno"
