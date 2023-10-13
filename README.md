@@ -76,7 +76,6 @@ Se você deseja contribuir para o desenvolvimento do Predocs, aqui está como vo
 
 Estamos ansiosos para receber suas contribuições!
 
-
 ## Política de Segurança
 
 Para informações sobre como relatar vulnerabilidades, consulte nossa [Política de Segurança](SECURITY.md).
