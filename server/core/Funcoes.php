@@ -142,11 +142,8 @@ class funcoes
      */
     public function returnStatusCode($codigo)
     {
-        $codes = [
-            404 => ["status" => false, "msg" => "A função solicitada não foi encontrada"],
-            401 => ["status" => false, "msg" => "Acesso negado"],
-            500 => ["status" => false, "msg" => "Erro interno"]
-        ];
+        $config = new Config;
+        $codes = $config->getConfig()["messageReturnStatusCode"];
         $codigo = array_key_exists($codigo, $codes) ? $codigo : 500;
         $this->setStatusCode($codigo);
         return $codes[$codigo];
