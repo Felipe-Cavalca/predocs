@@ -168,7 +168,7 @@ class Arquivo
      */
     public function adicionar(string|array $conteudo): bool
     {
-        if ($this->getExt()) {
+        if ($this->getExt() == "json") {
             return $this->escrever(conteudo: array_merge($this->ler(), $conteudo));
         } else {
             return $this->escrever(conteudo: $this->ler() . $conteudo);
