@@ -4,6 +4,7 @@ class Banco
 {
     public $conexao;
     public $tipo;
+    private $nomeArquivo = "core/banco";
 
     /**
      * Inicia a classe
@@ -15,7 +16,6 @@ class Banco
     public function __construct()
     {
         $this->conexao();
-        return;
     }
 
     /**
@@ -26,7 +26,9 @@ class Banco
      */
     public function inicio(): bool
     {
-        return $this->conexao->beginTransaction();
+        if ($this->conexao) {
+            return $this->conexao->beginTransaction();
+        }
     }
 
     /**
@@ -37,7 +39,9 @@ class Banco
      */
     public function reverter(): bool
     {
-        return $this->conexao->rollback();
+        if ($this->conexao) {
+            return $this->conexao->rollback();
+        }
     }
 
     /**
@@ -51,7 +55,9 @@ class Banco
         if (isset($_SERVER["HTTP_TEST"])) {
             return true;
         }
-        return $this->conexao->commit();
+        if ($this->conexao) {
+            return $this->conexao->commit();
+        }
     }
 
     /**
@@ -92,7 +98,7 @@ class Banco
 
             return true;
         } catch (Exception $e) {
-            new Log("Erro ao se conectar a base de dados " . $e, "core/banco", "conexao");
+            new Log("Erro ao se conectar a base de dados " . $e, $this->nomeArquivo, "conexao");
             return false;
         }
     }
@@ -118,7 +124,7 @@ class Banco
             $erros[] = "Tabela {$tabela} inexistente";
         }
         if (!empty($erros)) {
-            new Log(implode(", ", $erros), "core/banco", "insert");
+            new Log(implode(", ", $erros), $this->nomeArquivo, "insert");
             return false;
         }
 
@@ -139,7 +145,7 @@ class Banco
         $this->logTabela($tabela, "INSERT", json_encode(["dados" => $dados]));
 
         if ($retorno === false) {
-            new Log("Não foi possível inserir os dados na base de dados", "core/banco", "insert");
+            new Log("Não foi possível inserir os dados na base de dados", $this->nomeArquivo, "insert");
             return false;
         }
 
@@ -166,20 +172,22 @@ class Banco
         $funcoes = new funcoes();
 
         if ($funcoes->empty(["tabela"], $arr)["status"]) {
-            new Log("Tabela não definida para listar", "core/banco", "select");
+            new Log("Tabela não definida para listar", $this->nomeArquivo, "select");
             return false;
         }
 
         if (!$this->existeTabela($arr["tabela"])) {
-            new Log("Tabela {$arr["tabela"]} não localizada para listar", "core/banco", "select");
+            new Log("Tabela {$arr["tabela"]} não localizada para listar", $this->nomeArquivo, "select");
             return false;
         }
 
         $where = [];
-        if (isset($arr["igual"]))
+        if (isset($arr["igual"])) {
             $where[] = $this->where($arr["igual"]);
-        if (isset($arr["where"]))
+        }
+        if (isset($arr["where"])) {
             $where[] = $this->where($arr["where"]);
+        }
         if (empty($where)) {
             $where = "";
         } else {
@@ -218,25 +226,23 @@ class Banco
     public function update(string $tabela, array $dados, $where): bool
     {
         if (empty($dados)) {
-            new Log("Sem dados para atualizar", "core/banco", "update");
+            new Log("Sem dados para atualizar", $this->nomeArquivo, "update");
             return false;
         }
         if (empty($tabela)) {
-            new Log("Nenhuma tabela definida para atualizar os dados", "core/banco", "update");
+            new Log("Nenhuma tabela definida para atualizar os dados", $this->nomeArquivo, "update");
             return false;
         }
         if (!$this->existeTabela($tabela)) {
-            new Log("Tabela {$tabela} inexistente", "core/banco", "update");
+            new Log("Tabela {$tabela} inexistente", $this->nomeArquivo, "update");
             return false;
         }
 
         //cria campos que são prenchidos pelo framework
         $campos = $this->detTabela($tabela);
         foreach ($campos as $campo) {
-            switch ($campo["nome"]) {
-                case "modificado":
-                    $dados[$campo["nome"]] = date("Y-m-d H:m:s");
-                    break;
+            if ($campo["nome"] == "modificado") {
+                $dados[$campo["nome"]] = date("Y-m-d H:m:s");
             }
         }
 
@@ -266,19 +272,19 @@ class Banco
     public function delete(string $tabela, $where): bool
     {
         if (empty($tabela)) {
-            new log("Nenhuma tabela definida para deletar dados", "core/banco", "delete");
+            new log("Nenhuma tabela definida para deletar dados", $this->nomeArquivo, "delete");
             return false;
         }
 
         if (!$this->existeTabela(tabela: $tabela)) {
-            new Log("Tabela {$tabela} inexistente", "core/banco", "delete");
+            new Log("Tabela {$tabela} inexistente", $this->nomeArquivo, "delete");
             return false;
         }
 
         $query = "DELETE FROM {$tabela} WHERE {$this->where($where)}";
 
         if ($this->query(query: $query) === false) {
-            new Log("Erro ao executar script de delete", "core/banco", "delete");
+            new Log("Erro ao executar script de delete", $this->nomeArquivo, "delete");
             return false;
         }
 
@@ -300,10 +306,13 @@ class Banco
      */
     public function query(string $query): bool|array|int|PDOStatement
     {
-        if (!$this->conexao())
+        if (!$this->conexao()) {
             return false;
+        }
 
-        if ($this->tipo == "sqlite") $query = $this->sqlite($query);
+        if ($this->tipo == "sqlite") {
+            $query = $this->sqlite($query);
+        }
 
         switch (strtoupper(explode(" ", $query)[0])) {
             case "SELECT":
@@ -346,7 +355,7 @@ class Banco
     function sqlite(string $query): string
     {
         $query = str_replace("AUTO_INCREMENT", "AUTOINCREMENT", $query);
-        $query = preg_replace("/int(\([a-zA-Z0-9]{1,}\))/", "INTEGER", $query);
+        $query = preg_replace("/\bINT\b(\([a-zA-Z0-9]{1,}\))?/", "INTEGER", $query);
         switch (strtoupper(explode(" ", $query)[0])) {
             case "DESC":
                 $query = str_replace("DESC ", "PRAGMA table_info(", $query) . ");";
@@ -368,13 +377,14 @@ class Banco
 
         if (is_array($where)) {
             foreach ($where as $key => $val) {
-                if (is_integer($val) || is_bool($val))
+                if (is_integer($val) || is_bool($val)) {
                     $dadosWhere[] = "{$key} = {$val}";
-                else
+                } else {
                     $dadosWhere[] = "{$key} = '{$val}'";
+                }
             }
             return implode(" AND ", $dadosWhere);
-        } else if (is_string($where)) {
+        } elseif (is_string($where)) {
             return $where;
         }
     }
@@ -388,8 +398,9 @@ class Banco
      */
     public function detTabela(string $tabela): array
     {
-        if (!in_array($tabela, $this->getTabelas()))
+        if (!in_array($tabela, $this->getTabelas())) {
             return [];
+        }
 
         if ($this->tipo == "mysql") {
             $campos = [];
@@ -403,11 +414,12 @@ class Banco
                 ];
             }
             return $campos;
-        } else if ($this->tipo == "sqlite") {
+        } elseif ($this->tipo == "sqlite") {
             $campos = [];
             foreach ($this->query(query: "PRAGMA table_info ('{$tabela}')") as $campo) {
-                if ($campo["type"] == "INTEGER")
+                if ($campo["type"] == "INTEGER") {
                     $campo["type"] = "int(11)";
+                }
                 $campos[] = [
                     "nome" => $campo["name"],
                     "tipo" => $campo["type"],
@@ -438,11 +450,12 @@ class Banco
                 }
             }
             return $retorno;
-        } else if ($this->tipo == "sqlite") {
+        } elseif ($this->tipo == "sqlite") {
             $retorno = [];
             foreach ($this->query(query: "SELECT * FROM sqlite_master WHERE type='table'") as $tabela) {
-                if ($tabela["name"] != "sqlite_sequence")
+                if ($tabela["name"] != "sqlite_sequence") {
                     $retorno[] = $tabela["name"];
+                }
             }
             return $retorno;
         } else {
@@ -476,7 +489,7 @@ class Banco
 
         if (!$this->existeTabela($tabela . "_log")) {
             $queryTabelaLog = "CREATE TABLE IF NOT EXISTS {$tabela}_log (
-				`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+				`id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				`acao` varchar(255) NOT NULL,
 				`query` LONGTEXT,
 				`ip` varchar(255),
@@ -517,11 +530,13 @@ class SelectHelper
     {
         $as = $this->alias($arr);
 
-        if (isset($arr["join"]))
+        if (isset($arr["join"])) {
             $as = null;
+        }
 
-        if (!empty($as))
+        if (!empty($as)) {
             $as = "$as.";
+        }
 
         //define os campos que serão listados
         $campos = [];
@@ -560,8 +575,9 @@ class SelectHelper
     public function alias($arr): string
     {
         //verifica o alias
-        if (isset($arr["as"]))
+        if (isset($arr["as"])) {
             return $arr["as"];
+        }
 
         return "";
     }
