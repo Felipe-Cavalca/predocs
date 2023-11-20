@@ -6,42 +6,34 @@
 class Log extends Arquivo
 {
     /**
-     * Função para escrever algo no storage
+     * Construtor da classe Log.
      *
-     * Para funções dentro de controller é necessario apenas o primeiro parametro
-     * @version 2
-     * @access public
-     * @param string $mensagem mensagem que será adicionada no log
-     * @param string $controller arquivo que está executando
-     * @param string $function função que está executando
-     * @return void
+     * @param string $mensagem Mensagem a ser registrada no log.
+     * @param string $controller Arquivo em execução.
+     * @param string $function Função em execução.
      */
     public function __construct(string $mensagem = "", string $controller = "", string $function = "")
     {
-        if (empty($controller))
-            $controller = $_GET["controller"];
-
-        if (empty($function))
-            $function = $_GET["function"];
+        $controller = $controller ?: $_GET["controller"];
+        $function = $function ?: $_GET["function"];
 
         $this->escreveLog("{$controller} - {$function} : {$mensagem}");
-
-        return;
     }
 
     /**
-     * Função para criar e escrever no arquivo de log
-     * @version 1
-     * @access private
-     * @param string $mensagem Mensagem que será escrita no log
+     * Escreve a mensagem no arquivo de log.
+     *
+     * @param string $mensagem Mensagem a ser registrada no log.
      */
     private function escreveLog(string $mensagem)
     {
         $config = new Config;
         $dia = date("Y/m/d");
         $hora = date("H:i:s");
-        parent::__construct("{$config->getCaminho("log")}/{$dia}.log");
-        parent::criar();
-        parent::adicionar("{$dia} {$hora} - {$mensagem}\r\n");
+        $caminhoLog = "{$config->getCaminho("log")}/{$dia}.log";
+
+        $log = new self($caminhoLog);
+        $log->criar();
+        $log->adicionar("{$dia} {$hora} - {$mensagem}\r\n");
     }
 }
