@@ -3,7 +3,7 @@
 /**
  * Classe para manipulação de logs
  */
-class Log extends Arquivo
+class Log
 {
 
     /**
@@ -37,8 +37,8 @@ class Log extends Arquivo
         $hora = date("H:i:s");
         $caminhoLog = Config::getCaminho("log") . "/{$dia}.log";
 
-        $log = new self($caminhoLog);
-        $log->criar();
-        $log->adicionar("{$dia} {$hora} - {$controller} - {$function} : {$mensagem}\r\n");
+        $arquivoLog = new Arquivo($caminhoLog);
+        $arquivoLog->criar();
+        $arquivoLog->adicionar("{$dia} {$hora} - {$controller} - {$function} : {$mensagem}\r\n");
     }
 }
