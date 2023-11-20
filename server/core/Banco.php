@@ -5,7 +5,7 @@ class Banco
     public $conexao;
     public $tipo;
     private  $nomeArquivo = "core/banco";
-    private static $instance;
+    private static ?Banco $instance = null;
 
     /**
      * Construtor privado da classe.
@@ -15,6 +15,23 @@ class Banco
     public function __construct()
     {
         $this->conexao();
+    }
+
+    // Impedir a clonagem da instância
+    private function __clone()
+    {
+    }
+
+    /**
+     * Destrutor da classe que fecha a conexão com o banco de dados quando o objeto é destruído.
+     * Isso garante que os recursos sejam liberados ao finalizar o uso do objeto.
+     */
+    public function __destruct()
+    {
+        // Fecha a conexão com o banco de dados quando o objeto é destruído
+        if ($this->conexao) {
+            $this->conexao = null; // Define a conexão como nula para liberar os recursos
+        }
     }
 
     /**
