@@ -153,7 +153,8 @@ class Banco
             } else {
                 // Cria uma nova conexão PDO para outro tipo de banco de dados.
                 $caminhoArquivo = explode(":", $config["stringConn"])[1];
-                new Arquivo(arquivo: $caminhoArquivo, novo: true);
+                $arquivo = new Arquivo(arquivo: $caminhoArquivo, novo: true);
+                $arquivo->criar();
                 $this->conexao = new PDO($config["stringConn"]);
             }
 
