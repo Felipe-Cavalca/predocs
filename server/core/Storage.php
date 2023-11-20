@@ -15,7 +15,6 @@ class Storage extends Arquivo
      */
     public function __construct(string $arquivo, bool $novo = false)
     {
-        $config = new Config();
-        parent::__construct("{$config->getCaminho("storage")}/{$arquivo}", $novo);
+        parent::__construct(Config::getCaminho("storage") . "/{$arquivo}", $novo);
     }
 }

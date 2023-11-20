@@ -11,95 +11,85 @@ class Funcoes
      */
 
     /**
-     * funcao para analizar a request de um usuario
-     * @version 3.1.0
-     * @access public
-     * @return mixed
+     * Analisa a requisição de um usuário e realiza o roteamento para os controllers e suas respectivas funções.
+     *
+     * @return mixed Retorna a saída da função chamada ou o código de status da resposta.
      */
-    public function init(): mixed
+    public static function init(): mixed
     {
-        $this->configPHP();
-        $this->post();
-        $this->get();
+        static::configPHP();
+        static::post();
+        static::get();
         $predocs = $_GET["controller"] == "predocs";
 
-        $this->get(predocs: $predocs);
+        static::get($predocs);
 
         if (empty($_GET["controller"])) {
-            return $this->returnStatusCode(404);
+            return static::returnStatusCode(404);
         }
 
-        $controller = $this->incluiController(nomeController: $_GET["controller"], predocs: $predocs);
+        $controller = static::incluiController($_GET["controller"], $predocs);
 
         if (gettype($controller) === "integer") {
             switch ($controller) {
                 case 404:
-                    return $this->returnStatusCode(404);
+                    return static::returnStatusCode(404);
                 case 200:
                     if (function_exists($_GET["function"])) {
                         return call_user_func($_GET["function"], $_GET["param1"], $_GET["param2"], $_GET["param3"]);
                     } else {
-                        return $this->returnStatusCode(404);
+                        return static::returnStatusCode(404);
                     }
                 default:
-                    return $this->returnStatusCode(500);
+                    return static::returnStatusCode(500);
             }
         } elseif (gettype($controller) === "object") {
             if (method_exists($controller, $_GET["function"])) {
                 return call_user_func([$controller, $_GET["function"]], $_GET["param1"], $_GET["param2"], $_GET["param3"]);
             } else {
-                return $this->returnStatusCode(404);
+                return static::returnStatusCode(404);
             }
         } else {
-            return $this->returnStatusCode(500);
+            return static::returnStatusCode(500);
         }
     }
 
     /**
-     * Função para setar as config do php
-     * @version 1.1
-     * @access public
-     * @return void
+     * Configura as definições do PHP, incluindo headers, caminhos de pastas e configurações de sessão.
      */
-    private function configPHP(): void
+    private static function configPHP(): void
     {
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Headers: *");
         header("Content-Type: application/json");
 
-        $config = new Config();
-        $funcoes = new funcoes();
-        $funcoes->criaPasta($config->getCaminho("storage"));
-        $funcoes->criaPasta($config->getCaminho("session"));
+        static::criarPasta(Config::getCaminho("storage"));
+        static::criarPasta(Config::getCaminho("session"));
 
-        session_save_path($config->getCaminho("session"));
+        session_save_path(Config::getCaminho("session"));
 
         ini_set("memory_limit", "5G");
-
         ini_set("display_errors", "1");
 
         session_start();
     }
 
     /**
-     * Função para validar se os dados estão vindo via json ou form-encode
-     * @version 1
-     * @access public
-     * @return void
+     * Valida o tipo de requisição e atualiza a variável $_POST conforme necessário.
      */
-    private function post(): void
+    private static function post(): void
     {
         $json = json_decode(file_get_contents('php://input'), true);
         $_POST = (is_array($json) ? $json : $_POST);
     }
 
     /**
-     * Função para organizar os dados do get
-     * @version 3.2.1
-     * @access public
+     * Organiza os parâmetros da URL e atualiza a variável $_GET com os valores obtidos.
+     *
+     * @param bool $predocs Define se a função pertence aos predocs.
      * @return void
      */
-    private function get($predocs = false): void
+    private static function get(bool $predocs = false): void
     {
         $retorno = [
             "_Pagina" => $_GET["_Pagina"] ?? "",
@@ -128,36 +118,31 @@ class Funcoes
     }
 
     /**
-     * Função para retornar o status code de erro
-     * @version 1.1.0
-     * @access public
-     * @param int $codigo Codido da resposta
-     * @return array
+     * Retorna o código de status correspondente à resposta do erro.
+     *
+     * @param int $codigo Código da resposta de erro.
+     * @return mixed Retorna a mensagem associada ao código de status do erro.
      */
-    public function returnStatusCode($codigo)
+    public static function returnStatusCode(int $codigo): mixed
     {
-        $config = new Config;
-        $codes = $config->getConfig()["messageReturnStatusCode"];
+        $codes = Config::getConfig()["messageReturnStatusCode"];
         $codigo = array_key_exists($codigo, $codes) ? $codigo : 500;
-        $this->setStatusCode($codigo);
+        static::setStatusCode($codigo);
         return $codes[$codigo];
     }
 
     /**
-     * inclui um controller
-     * @version 3.0.0
-     * @access public
-     * @param string $nome nome do controller
-     * @param bool $predocs Função da predocs
-     * @return object|int obj para o controller, int com o status da importação
-     * caso haja uma classe, retorna o mesmo
-     * caso não haja - true e inclui o arquivo
+     * Inclui um controller e retorna o objeto do controller se existir ou o status da importação.
+     *
+     * @param string $nomeController Nome do controller.
+     * @param bool $predocs Indica se é uma função da predocs.
+     * @return mixed Retorna o objeto para o controller se existir ou o status da importação.
+     *               - Se não existir, retorna 404.
+     *               - Se a classe não existir, retorna 200 e inclui o arquivo.
      */
-    public function incluiController(string $nomeController, bool $predocs = false): mixed
+    public static function incluiController(string $nomeController, bool $predocs = false): mixed
     {
-        $config = new Config;
-
-        $controllerFilePath = $predocs ? "{$config->getCaminho("functions")}/{$nomeController}.php" : "{$config->getCaminho("controller")}/{$nomeController}Controller.php";
+        $controllerFilePath = $predocs ? Config::getCaminho("functions") . "/{$nomeController}.php" : Config::getCaminho("controller") . "/{$nomeController}Controller.php";
         $controller = new Arquivo($controllerFilePath);
 
         if (!$controller->existe()) {
@@ -178,45 +163,42 @@ class Funcoes
      */
 
     /**
-     * Função para setar o status code de retorno
-     * @version 1.0.0
-     * @access public
-     * @param int $code Codigo da resposta
+     * Define o código de status HTTP da resposta.
+     *
+     * @param int $code Código da resposta HTTP.
      * @return void
      */
-    public function setStatusCode($code)
+    public static function setStatusCode(int $code): void
     {
         http_response_code($code);
     }
 
     /**
-     * Função para listar os arquivos de uma pasta
-     * @version 1
-     * @access public
-     * @param string $pasta caminho da lista de pastas
-     * @return array array com os nomes dos arquivos/pastas de dentro do diretorio
+     * Lista os arquivos de um diretório específico.
+     *
+     * @param string $pasta Caminho do diretório (padrão é '/').
+     * @return array Array com os nomes dos arquivos/pastas dentro do diretório.
      */
-    public function listarArquivos(string $pasta = '/'): array
+    public static function listarArquivos(string $pasta = '/'): array
     {
         $diretorio = dir($pasta);
         $arquivos = [];
+
         while ($arquivo = $diretorio->read()) {
             $arquivos[] = $arquivo;
         }
+
         $diretorio->close();
         return $arquivos;
     }
 
     /**
-     * Função para listar arquivos recursivamente de uma pasta
-     * @version 1
-     * @access public
-     * @author https://gist.github.com/sistematico/08c5240f5c647cf3f650f395448c69e9
-     * Modificado para o framework
-     * @param string $pasta caminho da lista de arquivos
-     * @return array array com o nome dos arquivos do diretorio
+     * Lista os arquivos de forma recursiva a partir de um determinado diretório.
+     *
+     * @param string $pasta Caminho do diretório para listar os arquivos.
+     * @return array Array com o nome dos arquivos do diretório.
      */
-    public function listarArquivosRecursivos(string $pasta): array
+    public static function listarArquivosRecursivos(string $pasta): array
     {
         if (empty($pasta) || !is_dir($pasta)) {
             return [];
@@ -240,82 +222,44 @@ class Funcoes
     }
 
     /**
-     * Valida se campos existem em um array
-     * @version 2
-     * @access public
-     * @param array $indices nome dos campos a serem verificados
-     * @param array $array array a ser verificado
-     * @return array ["status" => bool, "msg" => string]
+     * Verifica se a pasta existe e, se não existir, cria-a.
+     *
+     * @param string $path Caminho até a pasta.
+     * @param int $permission Permissão da pasta (padrão é 0777).
+     * @return bool Retorna true se a pasta já existir ou for criada com sucesso, senão false.
      */
-    public function isset(array $indices = [], array $array = []): array
+    public static function criarPasta(string $path, int $permission = 0777): bool
     {
-        $array = $array ?: $_POST;
-        $indicesFaltantes = array_diff($indices, array_keys($array));
-        if (!empty($indicesFaltantes)) {
-            return [
-                "status" => false,
-                "msg" => "Indices faltantes: " . implode(", ", $indicesFaltantes)
-            ];
+        // Verifica se a pasta não existe
+        if (!is_dir($path)) {
+            // Tenta criar a pasta com a permissão fornecida
+            return mkdir($path, $permission, true);
         }
-        return [
-            "status" => true,
-            "msg" => "Todos os índices existem"
-        ];
+        // Se a pasta já existe, retorna true
+        return true;
     }
 
     /**
-     * Valida se indices de um array não estão vazios
-     * @version 1.1.0
-     * @access public
-     * @param array $indices nome dos indices a serem verificados
-     * @param array $array array a ser verificado
-     * @return ["status" => bool, "msg" => string]
+     * Obtém as URLs da documentação com base nos parâmetros da requisição atual.
+     *
+     * @return array Retorna um array contendo as URLs para a documentação.
      */
-    public function empty(array $indices = [], array $array = []): array
+    public static function getLinksDocs(): array
     {
-        $array = $array ?: $_POST;
-        foreach ($indices as $indice) {
-            if (empty($array[$indice])) {
-                return ["status" => true, "msg" => "Campo '{$indice}' está vazio"];
+        $urls = [];
+
+        if (isset($_GET['controller']) && isset($_GET['function'])) {
+            $function = $_GET['controller'] . "/" . $_GET['function'] . ".md";
+
+            $docs = Config::getConfig()["docs"];
+
+            if (isset($docs["web"], $docs["markdown"])) {
+                $urls["web"] = $docs["web"] . $function;
+                $urls["markdown"] = $docs["markdown"] . $function;
             }
         }
 
-        return ["status" => false, "msg" => "Todos os campos estão ok"];
-    }
-
-    /**
-     * Valida se uma pasta existe, caso não exista cria a mesma
-     * @version 1
-     * @access public
-     * @param string $caminho - caminho até a pasta
-     * @param int $permission - permissão da pasta
-     * @return bool
-     */
-    public function criaPasta(string $path, int $permission = 0777): bool
-    {
-        if (!is_dir($path)) {
-            return mkdir($path, $permission, true);
-        }
-        return false;
-    }
-
-    /**
-     * Função para pegar as urls da documentação
-     * @version 1
-     * @access public
-     * @return array
-     */
-    public function getLinksDocs()
-    {
-        $config = new Config();
-
-        $urls = $config->getConfig()["docs"];
-        $function = $_GET["controller"] . "/" . $_GET["function"] . ".md";
-
-        return [
-            "web" => $urls["web"] . $function,
-            "markdown" => $urls["markdown"] . $function
-        ];
+        return $urls;
     }
 }
 

@@ -35,8 +35,7 @@ class Log extends Arquivo
 
         $dia = date("Y/m/d");
         $hora = date("H:i:s");
-        $config = new Config;
-        $caminhoLog = "{$config->getCaminho("log")}/{$dia}.log";
+        $caminhoLog = Config::getCaminho("log") . "/{$dia}.log";
 
         $log = new self($caminhoLog);
         $log->criar();
