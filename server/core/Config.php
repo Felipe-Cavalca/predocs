@@ -1,126 +1,112 @@
 <?php
 
-//classe de config extende a classe arquivo para que consiga ler os arquivos de configuração
 class Config
 {
-	/**
-	 * Função para pegar o caminho do arquivo json do ambiente em que o servidor está rodando
-	 * @version 1
-	 * @access public
-	 * @param string $nome do arquivo de config
-	 * @return Arquivo objeto arquivo
-	 */
-	public function fileConfig(string $arquivo = ""): Arquivo
-	{
-		$arquivoConfig = new Arquivo("{$this->getCaminho("config")}/{$arquivo}.json");
-		if ($arquivoConfig->existe() !== false)
-			return $arquivoConfig;
+    /**
+     * Retorna um objeto Arquivo com base no nome do arquivo passado.
+     *
+     * @param string $arquivo Nome do arquivo de configuração.
+     * @return Arquivo Objeto Arquivo.
+     */
+    public static function fileConfig(string $arquivo = ""): Arquivo
+    {
+        $arquivoConfig = new Arquivo(static::getCaminho("config") . "/{$arquivo}.json");
 
-		$modelo = new Arquivo("{$this->getCaminho("model/config")}/{$arquivo}.json");
-		$arquivoConfig->criar();
-		$arquivoConfig->escrever(conteudo: $modelo->ler());
-		return $arquivoConfig;
-	}
+        if ($arquivoConfig->existe() !== false) {
+            return $arquivoConfig;
+        }
 
-	/**
-	 * Pegar as variaveis da base de dados
-	 * @version 1
-	 * @access public
-	 * @return array config de conexao
-	 */
-	public function getConfigBanco(): array
-	{
-		$config = $this->fileConfig(arquivo: "banco")->ler();
+        $modelo = new Arquivo(static::getCaminho("model/config") . "/{$arquivo}.json");
+        $arquivoConfig->criar();
+        $arquivoConfig->escrever($modelo->ler());
 
-		$retorno["tipo"] = $config["tipo"];
-		$retorno["nome"] = $config["nome"];
-		$retorno["instalado"] = $config["instalado"];
-		switch ($config["tipo"]) {
-			case "mysql":
-				$retorno["credenciais"] = $config["mysql"]["credenciais"];
-				$retorno["stringConn"] = "mysql:host={$config["mysql"]["host"]}:{$config["mysql"]["porta"]};dbname={$config["nome"]}";
-				break;
-			case "sqlite":
-			default:
-				$retorno["stringConn"] = "sqlite:{$this->getCaminho("sqlite")}/{$config["nome"]}.db";
-				break;
-		}
-		return $retorno;
-	}
+        return $arquivoConfig;
+    }
 
-	/**
-	 * Salvar variaveis da base de dados
-	 * @version 1
-	 * @access public
-	 * @param array $config configurações a serem salvas
-	 * @return bool
-	 */
-	public function setConfigBanco(array $configs): bool
-	{
-		return $this->fileConfig("banco")->adicionar($configs);
-	}
+    /**
+     * Retorna um array com as configurações do banco de dados.
+     *
+     * @return array Array com as configurações do banco.
+     */
+    public static function getConfigBanco(): array
+    {
+        $config = static::fileConfig("banco")->ler();
 
-	/**
-	 * Função para pegar as configurações de cache
-	 * @version 1
-	 * @access public
-	 * @return array|string array com os dados de cache
-	 */
-	public function getConfigCache(): array|string
-	{
-		return $this->fileConfig("cache")->ler();
-	}
+        $retorno["tipo"] = $config["tipo"];
+        $retorno["nome"] = $config["nome"];
+        $retorno["instalado"] = $config["instalado"];
 
-	/**
-	 * Função para pegar as configurações
-	 * @version 1
-	 * @access public
-	 * @return array|string array com os dados de config
-	 */
-	public function getConfig(): array
-	{
-		return $this->fileConfig("config")->ler();
-	}
+        switch ($config["tipo"]) {
+            case "mysql":
+                $retorno["credenciais"] = $config["mysql"]["credenciais"];
+                $retorno["stringConn"] = "mysql:host={$config["mysql"]["host"]}:{$config["mysql"]["porta"]};dbname={$config["nome"]}";
+                break;
+            case "sqlite":
+            default:
+                $retorno["stringConn"] = "sqlite:" . static::getCaminho("sqlite") . "/{$config["nome"]}.db";
+                break;
+        }
 
-	/**
-	 * Função para pegar o caminho até a pasta de ambiente
-	 * @version 1
-	 * @access public
-	 * @return string
-	 */
-	public function ambiente(): string
-	{
-		return $_SERVER["HTTP_HOST"];
-	}
+        return $retorno;
+    }
 
-	/**
-	 * Função para pegar o caminho até um diretori
-	 * @version 1.1.0
-	 * @access public
-	 * @param string $tipo nome da pasta que será exibida
-	 * @return string caminho até a pasta selecionada
-	 */
-	public function getCaminho(string $tipo = ""): string
-	{
-		switch ($tipo) {
-			case "controller":
-				return "./controllers";
-			case "model/config":
-				return "./models/config";
-			case "log":
-			case "config":
-			case "storage":
-			case "session":
-				return "./data/{$this->ambiente()}/{$tipo}";
-			case "sqlite":
-				return "./data/{$this->ambiente()}/database";
-			case "app":
-				return "./../app";
-			case "sql":
-			case "functions":
-			case "includes":
-			default:
-				return "./{$tipo}";
-		}
-	}
+    /**
+     * Retorna as configurações de cache.
+     *
+     * @return array|string Array com os dados de cache.
+     */
+    public static function getConfigCache(): array|string
+    {
+        return static::fileConfig("cache")->ler();
+    }
+
+    /**
+     * Retorna as configurações gerais.
+     *
+     * @return array Array com os dados de configuração.
+     */
+    public static function getConfig(): array
+    {
+        return static::fileConfig("config")->ler();
+    }
+
+    /**
+     * Retorna o nome do ambiente.
+     *
+     * @return string Nome do ambiente.
+     */
+    public static function ambiente(): string
+    {
+        return $_SERVER["HTTP_HOST"];
+    }
+
+    /**
+     * Retorna o caminho para o diretório especificado.
+     *
+     * @param string $tipo Nome do diretório desejado.
+     * @return string Caminho até o diretório especificado.
+     */
+    public static function getCaminho(string $tipo = ""): string
+    {
+        switch ($tipo) {
+            case "controller":
+                return "./controllers";
+            case "model/config":
+                return "./models/config";
+            case "log":
+            case "config":
+            case "storage":
+            case "session":
+                return "./data/" . static::ambiente() . "/{$tipo}";
+            case "sqlite":
+                return "./data/" . static::ambiente() . "/database";
+            case "app":
+                return "./../app";
+            case "sql":
+            case "functions":
+            case "includes":
+            default:
+                return "./{$tipo}";
+        }
+    }
 }

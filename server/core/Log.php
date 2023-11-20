@@ -5,8 +5,12 @@
  */
 class Log extends Arquivo
 {
+
     /**
      * Construtor da classe Log.
+     *
+     * [ATENÇÃO]: Este construtor será removido em versões futuras.
+     * Utilize o método estático registrar() para adicionar mensagens no log.
      *
      * @param string $mensagem Mensagem a ser registrada no log.
      * @param string $controller Arquivo em execução.
@@ -14,26 +18,28 @@ class Log extends Arquivo
      */
     public function __construct(string $mensagem = "", string $controller = "", string $function = "")
     {
-        $controller = $controller ?: $_GET["controller"];
-        $function = $function ?: $_GET["function"];
-
-        $this->escreveLog("{$controller} - {$function} : {$mensagem}");
+        $this->registrar(mensagem: $mensagem, controller: $controller, function: $function);
     }
 
     /**
-     * Escreve a mensagem no arquivo de log.
+     * Registra uma mensagem no arquivo de log.
      *
      * @param string $mensagem Mensagem a ser registrada no log.
+     * @param string $controller Arquivo em execução.
+     * @param string $function Função em execução.
      */
-    private function escreveLog(string $mensagem)
+    public static function registrar(string $mensagem = "", string $controller = "", string $function = "")
     {
-        $config = new Config;
+        $controller = $controller ?: $_GET["controller"];
+        $function = $function ?: $_GET["function"];
+
         $dia = date("Y/m/d");
         $hora = date("H:i:s");
+        $config = new Config;
         $caminhoLog = "{$config->getCaminho("log")}/{$dia}.log";
 
         $log = new self($caminhoLog);
         $log->criar();
-        $log->adicionar("{$dia} {$hora} - {$mensagem}\r\n");
+        $log->adicionar("{$dia} {$hora} - {$controller} - {$function} : {$mensagem}\r\n");
     }
 }

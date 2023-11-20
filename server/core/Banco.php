@@ -114,8 +114,7 @@ class Banco
      */
     public function conexao(): bool
     {
-        $config = new Config();
-        $config = $config->getConfigBanco();
+        $config = Config::getConfigBanco();
 
         if (!empty($GLOBALS["_BANCO"]["conexao"])) {
             // Se uma conexão já existe, reutiliza essa conexão e seu tipo.
@@ -148,7 +147,7 @@ class Banco
             return true;
         } catch (Exception $e) {
             // Em caso de erro, registra o erro no log e retorna falso.
-            new Log("Erro ao se conectar à base de dados " . $e, $this->nomeArquivo, "conexao");
+            Log::registrar("Erro ao se conectar à base de dados " . $e, $this->nomeArquivo, "conexao");
             return false;
         }
     }
@@ -181,7 +180,7 @@ class Banco
         }
         if (!empty($erros)) {
             // Registra os erros no log e retorna falso.
-            new Log(implode(", ", $erros), $this->nomeArquivo, "insert");
+            Log::registrar(implode(", ", $erros), $this->nomeArquivo, "insert");
             return false;
         }
 
@@ -206,7 +205,7 @@ class Banco
 
         if ($retorno === false) {
             // Registra no log em caso de falha na inserção e retorna falso.
-            new Log("Não foi possível inserir os dados na base de dados", $this->nomeArquivo, "insert");
+            Log::registrar("Não foi possível inserir os dados na base de dados", $this->nomeArquivo, "insert");
             return false;
         }
 
@@ -231,12 +230,12 @@ class Banco
     public function select(array $arr = []): array|false
     {
         if (empty($arr["tabela"])) {
-            new Log("Tabela não definida para listar", $this->nomeArquivo, "select");
+            Log::registrar("Tabela não definida para listar", $this->nomeArquivo, "select");
             return false;
         }
 
         if (!$this->existeTabela($arr["tabela"])) {
-            new Log("Tabela {$arr["tabela"]} não encontrada para listar", $this->nomeArquivo, "select");
+            Log::registrar("Tabela {$arr["tabela"]} não encontrada para listar", $this->nomeArquivo, "select");
             return false;
         }
 
@@ -273,19 +272,19 @@ class Banco
     {
         // Verifica se há dados a serem atualizados
         if (empty($dados)) {
-            new Log("Sem dados para atualizar", $this->nomeArquivo, "update");
+            Log::registrar("Sem dados para atualizar", $this->nomeArquivo, "update");
             return false;
         }
 
         // Verifica se foi especificada a tabela
         if (empty($tabela)) {
-            new Log("Nenhuma tabela definida para atualizar os dados", $this->nomeArquivo, "update");
+            Log::registrar("Nenhuma tabela definida para atualizar os dados", $this->nomeArquivo, "update");
             return false;
         }
 
         // Verifica se a tabela existe
         if (!$this->existeTabela($tabela)) {
-            new Log("Tabela {$tabela} inexistente", $this->nomeArquivo, "update");
+            Log::registrar("Tabela {$tabela} inexistente", $this->nomeArquivo, "update");
             return false;
         }
 
@@ -328,13 +327,13 @@ class Banco
     {
         // Verifica se foi especificada a tabela
         if (empty($tabela)) {
-            new Log("Nenhuma tabela definida para deletar dados", $this->nomeArquivo, "delete");
+            Log::registrar("Nenhuma tabela definida para deletar dados", $this->nomeArquivo, "delete");
             return false;
         }
 
         // Verifica se a tabela existe
         if (!$this->existeTabela($tabela)) {
-            new Log("Tabela {$tabela} inexistente", $this->nomeArquivo, "delete");
+            Log::registrar("Tabela {$tabela} inexistente", $this->nomeArquivo, "delete");
             return false;
         }
 
@@ -343,7 +342,7 @@ class Banco
 
         // Executa a query de DELETE e verifica se ocorreu algum erro
         if ($this->query($query) === false) {
-            new Log("Erro ao executar script de delete", $this->nomeArquivo, "delete");
+            Log::registrar("Erro ao executar script de delete", $this->nomeArquivo, "delete");
             return false;
         }
 
@@ -406,7 +405,7 @@ class Banco
             }
         } catch (PDOException $e) {
             // Registra os erros no log em caso de falha na execução da consulta
-            new Log("Erro ao executar a consulta: " . $e->getMessage(), $this->nomeArquivo, "query");
+            Log::registrar("Erro ao executar a consulta: " . $e->getMessage(), $this->nomeArquivo, "query");
             return false;
         }
     }
