@@ -442,7 +442,7 @@ class Banco
         $query = str_replace("AUTO_INCREMENT", "AUTOINCREMENT", $query);
 
         // Substitui INT por INTEGER
-        $query = preg_replace("/\bINT\b(\([a-zA-Z0-9]+\))?/", "INTEGER$1", $query);
+        $query = preg_replace("/\bINT\b(\([a-zA-Z0-9]{1,}\))?/i", "INTEGER", $query);
 
         // Converte DESC para PRAGMA table_info() no SQLite
         $queryType = strtoupper(explode(" ", $query)[0]);
