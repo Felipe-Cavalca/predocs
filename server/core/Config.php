@@ -102,8 +102,8 @@ class Config
         switch ($tipo) {
             case "controller":
                 return "./controllers";
-            case "model/config":
-                return "./models/config";
+            case "install/config":
+                return "./install/config";
             case "log":
             case "config":
             case "storage":
