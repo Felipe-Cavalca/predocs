@@ -51,6 +51,17 @@ class Config
     }
 
     /**
+     * Salvar as alterações feitas nas configurações do banco
+     *
+     * @param array $configs Array de configurações com os dados de configuração do banco
+     * @return bool
+     */
+    public static function setConfigBanco(array $configs): bool
+    {
+        return static::fileConfig("banco")->adicionar($configs);
+    }
+
+    /**
      * Retorna as configurações de cache.
      *
      * @return array|string Array com os dados de cache.
