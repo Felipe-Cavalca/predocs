@@ -52,7 +52,7 @@ class Install
         try {
             Log::registrar("Copiando config do app");
             // Define os caminhos para os diretórios originais e de destino
-            $caminhoOriginal = Config::getCaminho("app") . "/models/config/";
+            $caminhoOriginal = Config::getCaminho("app") . "/install/config/";
             $caminhoConfig = Config::getCaminho("app") . "/config/";
 
             // Obtém a lista de arquivos do diretório original
@@ -89,7 +89,7 @@ class Install
         try {
             Log::registrar("Editando configurações do app");
             // Define os caminhos para o arquivo original e de destino
-            $caminhoOriginal = Config::getCaminho("app") . "/models/config/app.json";
+            $caminhoOriginal = Config::getCaminho("app") . "/install/config/app.json";
             $caminhoConfig = Config::getCaminho("app") . "/config/app.json";
 
             // Cria instâncias de Arquivo para origem e destino com permissão de escrita
@@ -126,7 +126,7 @@ class Install
         try {
             Log::registrar("Editando manifesto");
             // Define os caminhos para o arquivo original e de destino
-            $caminhoOriginal = Config::getCaminho("app") . "/models/config/manifest.json";
+            $caminhoOriginal = Config::getCaminho("app") . "/install/config/manifest.json";
             $caminhoConfig = Config::getCaminho("app") . "/config/manifest.json";
 
             // Cria instâncias de Arquivo para origem e destino com permissão de escrita
