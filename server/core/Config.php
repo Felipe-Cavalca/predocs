@@ -16,7 +16,7 @@ class Config
             return $arquivoConfig;
         }
 
-        $modelo = new Arquivo(static::getCaminho("model/config") . "/{$arquivo}.json");
+        $modelo = new Arquivo(static::getCaminho("install/config") . "/{$arquivo}.json");
         $arquivoConfig->criar();
         $arquivoConfig->escrever($modelo->ler());
 
