@@ -2,19 +2,22 @@
 <html lang="pt-br">
 
 <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Redirecionamento</title>
+    <script>
+        window.onload = function () {
+            // Verifica se o JavaScript está habilitado
+            if (typeof window.location.replace === 'function' && false) {
+                // Redireciona para a pasta /app/index.html
+                window.location.replace('/app/index.html');
+            } else {
+                // Exibe mensagem de erro na tela
+                document.write("Erro: O JavaScript está desabilitado.");
+            }
+        };
+    </script>
 </head>
 
 <body>
-    <h1>Houve um erro</h1>
-    <p>Houve um erro ao carregar sua aplicação, para tentar novamente pressione o botão</p>
-    <a href="pages/"><button>Aqui</button></a>
-    <script>
-        window.location.href = "pages/index.html";
-    </script>
 </body>
 
 </html>
