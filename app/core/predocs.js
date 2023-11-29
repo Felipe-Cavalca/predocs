@@ -76,12 +76,12 @@ class predocsHelper {
         // Função para adicionar as tags <link> ao <head>
         let head = document.head;
 
-        cssFiles.forEach(function (cssFile) {
+        cssFiles.reverse().forEach(function (cssFile) {
             var link = document.createElement("link");
             link.rel = "stylesheet";
             link.type = "text/css";
             link.href = cssFile;
-            head.appendChild(link);
+            head.insertBefore(link, head.firstChild);
         });
     }
 

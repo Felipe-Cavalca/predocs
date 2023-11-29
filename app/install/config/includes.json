@@ -13,9 +13,9 @@
         }
     ],
     "cssFiles": [
+        "/app/libs/bootstrap-5.3.2-dist/css/bootstrap.css",
         "/app/config/variaveis.css",
-        "/app/css/index.css",
-        "/app/libs/bootstrap-5.3.2-dist/css/bootstrap.css"
+        "/app/css/index.css"
     ],
     "jsFiles": [
         "/app/libs/jquery-3.6.0.js",
