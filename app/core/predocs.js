@@ -199,7 +199,7 @@ class Predocs extends predocsHelper {
                 "/server" + formElement.action.replace(location.origin, ""),
                 formDataObject,
                 {},
-                formElement.getAttribute('metodo')
+                formElement.getAttribute('method')
             );
 
             const jsonResponse = JSON.parse(response);
