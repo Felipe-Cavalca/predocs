@@ -6,9 +6,8 @@
     <script>
         window.onload = function () {
             // Verifica se o JavaScript está habilitado
-            if (typeof window.location.replace === 'function' && false) {
-                // Redireciona para a pasta /app/index.html
-                window.location.replace('/app/index.html');
+            if (typeof window.location.replace === 'function') {
+                window.location.replace('./pages/');
             } else {
                 // Exibe mensagem de erro na tela
                 document.write("Erro: O JavaScript está desabilitado.");
