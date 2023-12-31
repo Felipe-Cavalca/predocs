@@ -1,0 +1,9 @@
+<?php
+
+// Auto load composer
+use includes\composer\vendor\autoload;
+
+$command = "%CD%/includes/composer/vendor/bin/phpunit --bootstrap %CD%/includes/composer/vendor/autoload.php tests";
+$output = shell_exec($command);
+echo $output;
+
