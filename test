@@ -3,7 +3,25 @@
 // Auto load composer
 use includes\composer\vendor\autoload;
 
-$command = "%CD%/includes/composer/vendor/bin/phpunit --bootstrap %CD%/includes/composer/vendor/autoload.php tests";
+$command = "%CD%/includes/composer/vendor/bin/phpunit";
+
+$props = [
+    "--bootstrap %CD%/includes/composer/vendor/autoload.php",
+    "--colors",
+    "--display-deprecations",
+    "--display-errors",
+    "--display-notices",
+    "--display-warnings",
+];
+
+if(isset($argv[1]) && $argv[1] == "log") {
+    $props[] = "--log-events-verbose-text testResult.log";
+}
+
+while ($prop = array_pop($props)) {
+    $command .= " " . $prop;
+}
+$command .= " tests";
+
 $output = shell_exec($command);
 echo $output;
-
