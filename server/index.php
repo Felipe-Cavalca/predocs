@@ -6,10 +6,12 @@
 enum CaminhosPredocs: string
 {
     case RAIZ = __DIR__ . "/";
-    case CONTROLLER = "Controllers/";
-    case CORE = "Core2/";
-    case DADOS = "Dados/";
-    case MODEL = "Model/";
+    case CORE = "Core/";
+
+    public function  __get($path): string
+    {
+        return $this->$path;
+    }
 }
 
 /**
