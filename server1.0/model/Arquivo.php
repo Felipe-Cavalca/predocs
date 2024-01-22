@@ -1,5 +1,24 @@
 <?php
 
+/**
+ * Classe para manipulação de arquivos.
+ *
+ * @package server\model
+ * @version 1.0.0
+ *
+ * @property string $caminho Caminho do arquivo.
+ * @property bool $temporaria Se o arquivo é temporário.
+ * @property-read string $nome Nome do arquivo.
+ * @property-read string $extensao Extensão do arquivo.
+ * @property-read int $tamanho Tamanho do arquivo.
+ * @property-read int $permissao Permissão do arquivo.
+ * @property string $conteudo Conteúdo do arquivo.
+ * @property-read string $hashMd5 Hash MD5 do arquivo.
+ * @property-read int $modificado Data de modificação do arquivo.
+ * @property-read int $acessado Data de acesso do arquivo.
+ * @property-read int $criado Data de criação do arquivo.
+ * @property-read string $mimeType Mime type do arquivo.
+ */
 class Arquivo
 {
     // Props

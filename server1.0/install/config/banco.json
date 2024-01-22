@@ -1,0 +1,17 @@
+{
+    "predocs": {
+        "tipo": "sqlite",
+        "sqlite":{}
+    },
+    "predocs2": {
+        "tipo": "mysql",
+        "mysql": {
+            "host": "localhost",
+            "porta": "3306",
+            "credenciais": {
+                "login": "root",
+                "senha": ""
+            }
+        }
+    }
+}
