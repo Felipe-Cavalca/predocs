@@ -1,8 +1,8 @@
-# Predocs - Um Framework Web Simplificado
+# Predocs - Um Framework Web
 
 ## Visão Geral
 
-O Predocs é um framework para desenvolvimento web voltado para programadores que desejam criar aplicativos web com facilidade. Ele simplifica a conexão com bancos de dados e oferece uma arquitetura simplificada para agilizar o desenvolvimento.
+O Predocs é um framework para desenvolvimento web voltado para programadores que desejam criar aplicativos web com facilidade. Ele simplifica a conexão com bancos de dados e oferece uma arquitetura para agilizar o desenvolvimento.
 
 ## Requisitos de Sistema
 
@@ -10,7 +10,7 @@ Antes de começar, certifique-se de que seu ambiente de desenvolvimento atenda a
 
 - **PHP:** Versão 8 ou superior.
 - **Servidor Web:** Recomendamos o uso de um servidor Apache (por exemplo, XAMPP ou WAMP).
-- **Conhecimento Básico:** É útil ter conhecimento básico de HTML, CSS, JavaScript e SQL.
+- **Conhecimento Básico:** É útil ter conhecimento básico de HTML, CSS, JavaScript, PHP e SQL.
 
 ## Instalação
 
@@ -21,7 +21,7 @@ Siga estas etapas para configurar e executar o Predocs no seu ambiente local:
 2. **Clone o Repositório:** Abra o terminal e execute o seguinte comando para clonar o repositório do Predocs no diretório raiz do seu servidor web:
 
     ```shell
-    git clone https://github.com/seu-usuario/predocs.git
+    git clone https://github.com/felipe-cavalca/predocs.git
     ```
 
 3. **Inicie o Servidor Apache:** Inicie seu servidor web.
@@ -41,7 +41,7 @@ Se você deseja contribuir para o desenvolvimento do Predocs, aqui está como vo
 2. **Clone o Fork para o Seu Ambiente de Desenvolvimento:** Abra o terminal e execute o seguinte comando para clonar seu fork em seu ambiente local:
 
     ```shell
-    git clone https://github.com/seu-usuario/predocs.git
+    git clone https://github.com/felipe-cavalca/predocs.git
     ```
 
 3. **Crie uma Branch para Sua Contribuição:** Crie uma nova branch para suas alterações. Por exemplo, se você está adicionando um novo recurso, você pode fazer o seguinte:
