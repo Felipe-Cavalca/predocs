@@ -1,8 +1,5 @@
 <?php
 
-// Auto load composer
-use includes\composer\vendor\autoload;
-
 $command = "%CD%/includes/composer/vendor/bin/phpunit";
 
 $props = [
