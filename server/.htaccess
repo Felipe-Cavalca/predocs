@@ -5,7 +5,7 @@ DirectoryIndex index.php
 RewriteEngine On
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?_Pagina=$1
+RewriteRule ^(.*)$ index.php?_PagePredocs=$1 [QSA]
 
 #bloqueando listagem de diretorios
 Options -Indexes
