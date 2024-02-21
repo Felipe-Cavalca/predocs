@@ -8,8 +8,8 @@
 <body>
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-10 offset-md-1" id="conteudo">
-                <!-- O conteúdo será inserido aqui -->
+            <div class="col-md-10 offset-md-1" id="content">
+                <!-- Conteudo do md aparecera aqui -->
             </div>
         </div>
     </div>
@@ -17,24 +17,17 @@
     <script id="coreJs" src="../core/predocs.js"></script>
     <script src="../libs/showdown_2.1.0.min.js"></script>
     <script type="text/javascript">
-        const appConfig = {
-            componentesBloqueados: ["nav"]
+        const before = (preDocs) => {
         };
 
-        const before = () => {
-            docs.replaceTextInView("body", docs.getConfig("app"));
-        };
-
-        const after = () => {
+        const after = (preDocs) => {
             const converter = new showdown.Converter();
-            const markdownText = docs.get("/../README.md");
+            const markdownText = preDocs.requestGet("/../README.md");
             const htmlText = converter.makeHtml(markdownText);
-            document.getElementById("conteudo").innerHTML = htmlText;
+            document.getElementById("content").innerHTML = htmlText;
         };
 
-        const docs = new Predocs(appConfig);
-        docs.init(before, after);
-
+        let preDocs = new Predocs(before, after);
     </script>
 </body>
 
