@@ -8,13 +8,6 @@
         "/app/libs/jquery-3.6.0.js",
         "/app/libs/bootstrap-5.3.2-dist/js/bootstrap.js"
     ],
-    "componentsGlobal": [
-        {
-            "component": "nav",
-            "element": "body",
-            "local": "prepend"
-        }
-    ],
     "metaData": {
         "meta": [
             {
