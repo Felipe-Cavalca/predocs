@@ -81,6 +81,7 @@ class DomPredocs {
     }
 };
 
+// Classe principal do framework
 class Predocs {
 
     // Classe para manipulação de elementos do dom
@@ -92,14 +93,10 @@ class Predocs {
     // Arquivo de configuração
     #jsonIncludes = null;
 
-    // Lista de componentes padrões que serão bloqueados
-    #blockComponents = [];
-
     // Prompt para instalação do PWA
     deferredPrompt
 
-    constructor(before, after, blockComponents = []) {
-        this.#blockComponents = blockComponents;
+    constructor(before, after) {
 
         if (typeof before === "function") {
             before(this);
@@ -107,7 +104,7 @@ class Predocs {
 
         this.#includeDefaultCss();
         this.#includeDefaultJs();
-        this.#includeDefaultComponents();
+        this.#includeComponents();
         this.#includeMetaDataAndLink();
         this.#applyPWA();
 
@@ -121,6 +118,10 @@ class Predocs {
             this.#configApp = JSON.parse(this.requestGet("/config/app.json"));
         }
         return this.#configApp;
+    }
+
+    get listComponents() {
+        return JSON.parse(this.requestGet("/config/components.json"));
     }
 
     get #includes() {
@@ -161,7 +162,25 @@ class Predocs {
         });
     }
 
-    #includeDefaultComponents() {
+    #includeComponents() {
+        const components = this.listComponents;
+        const pathComponent = this.#getUrl("/components");
+        const strConstrutorComponent = this.requestGet(this.#getUrl("/core") + "/createComponent.js");
+
+        for (let name in components) {
+            let componentData = components[name];
+
+            let htmlComponent = this.requestGet(`${pathComponent}/${name}.html`);
+            let nameComponent = name + "ComponentHtml";
+            let nameElement = "p" - componentData.tag;
+
+            let strClassComponent = strConstrutorComponent;
+            strClassComponent = strClassComponent.replaceAll(/[\r\n]+/g, ' ');
+            strClassComponent = strClassComponent.replaceAll("__nameComponent__", nameComponent);
+            strClassComponent = strClassComponent.replaceAll("__html__", htmlComponent);
+            strClassComponent = strClassComponent.replaceAll("__nameElement__", nameElement);
+            eval(strClassComponent);
+        }
     }
 
     #includeMetaDataAndLink() {
