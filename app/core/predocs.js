@@ -1,403 +1,206 @@
-class predocsHelper {
+// Classe pra menipulação de elementos do dom
+class DomPredocs {
 
-    _PWA() {
-        const link = document.createElement("link");
-        this.adicionarAtributos(link, {
-            rel: "manifest",
-            href: this.getUrl("/config/manifest.json"),
-        });
-        document.querySelector("head").prepend(link);
+    get head() {
+        return document.head;
+    }
 
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker
-                .register(this.getUrl("/sw.js"))
-                .catch((err) => {
-                    console.error("Erro ao registrar o Service Worker: ", err);
-                });
-            window.addEventListener("beforeinstallprompt", (e) => {
-                this.deferredPrompt = e;
-            });
+    get body() {
+        return document.body;
+    }
+
+    set meta(valor) {
+        let elem = this.createElement("meta", valor);
+        this.insertBefore(elem, this.head);
+    }
+
+    set link(valor) {
+        let elem = this.createElement("link", valor);
+        this.insertBefore(elem, this.head);
+    }
+
+    getAttribute(elem, attr) {
+        return elem.getAttribute(attr);
+    }
+
+    getElement(selector) {
+        let elements = document.querySelectorAll(selector);
+        if (elements.length === 1) {
+            return elements[0];
         }
+        return elements;
     }
 
-    _criarMetaDados() {
-        const metadados = [
-            { tipo: "meta", name: "viewport", content: "width=device-width, initial-scale=1.0" },
-            { tipo: "meta", httpEquiv: "X-UA-Compatible", content: "IE=edge" },
-            { tipo: "meta", charset: "utf-8" },
-            {
-                tipo: "link",
-                rel: "shortcut icon",
-                href: this.getUrl("/assets/global/favicon.ico"),
-                type: "image/x-icon",
-            },
-            {
-                tipo: "link",
-                rel: "apple-touch-icon",
-                href: this.getConfig("iconApp"),
-            },
-            {
-                tipo: "meta",
-                name: "theme-color",
-                content: this.getConfig("corApp"),
-            },
-        ];
-
-        metadados.forEach((md) => {
-            const elemento = document.createElement(md.tipo);
-            this.adicionarAtributos(elemento, md);
-            document.querySelector("head").prepend(elemento);
-        });
-
-        document.querySelector("html").setAttribute("lang", "pt-br");
+    setHtml(elem, html) {
+        elem.innerHTML = html;
     }
 
-    _incluirComponentsGlobais() {
-        const includes = JSON.parse(this.get("/config/includes.json"));
-
-        Promise.all(
-            includes.componentsGlobal.map((c) => {
-                if (!this.recurso.componentesBloqueados.includes(c.component)) {
-                    this.criarComponente(
-                        c.component,
-                        c.element,
-                        c.local,
-                        c.css,
-                        c.js
-                    );
-                }
-            })
-        );
-    }
-
-    _incluirDependenciasCss() {
-        const cssFiles = JSON.parse(this.get("/config/includes.json")).cssFiles;
-
-        // Função para adicionar as tags <link> ao <head>
-        let head = document.head;
-
-        cssFiles.reverse().forEach(function (cssFile) {
-            var link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.type = "text/css";
-            link.href = cssFile;
-            head.insertBefore(link, head.firstChild);
-        });
-    }
-
-    _incluirDependenciasJS() {
-        const jsFiles = JSON.parse(this.get("/config/includes.json")).jsFiles;
-
-        // Função para adicionar as tags <script> ao <body>
-        let body = document.body;
-
-        jsFiles.forEach(function (jsFile) {
-            var script = document.createElement("script");
-            script.type = "text/javascript";
-            script.src = jsFile;
-            body.appendChild(script);
-        });
-    }
-
-    _onloadBody(after) {
-        document.querySelector("body").onload = () => {
-            if (typeof after === "function") {
-                after();
-            }
-        };
-    }
-
-    _desabilitarAutocomplete() {
+    disableAutoComplete() {
         Array.from(
             document.querySelectorAll("input:not([autocomplete])")
         ).forEach((element) => {
-            this.adicionarAtributos(element, {
+            element = this.addAtributes(element, {
                 autocomplete: "off",
             });
         });
     }
-}
 
-class Predocs extends predocsHelper {
-    config = {};
-
-    recurso = {
-        componentesBloqueados: [],
-    };
-
-    deferredPrompt;
-
-    constructor(params = {}) {
-        super();
-
-        this.recurso.componentesBloqueados = params.componentesBloqueados || [];
+    insertBefore(newNode, referenceNode) {
+        referenceNode.insertBefore(newNode, referenceNode.firstChild);
     }
 
-    init(before, after) {
-        this._incluirDependenciasCss();
-        this._incluirDependenciasJS();
-        this._incluirComponentsGlobais();
-        this._criarMetaDados();
-        this._PWA();
+    insertChild(newNode, parentNode) {
+        parentNode.appendChild(newNode);
+    }
+
+    createElement(tagName, attributes) {
+        let element = document.createElement(tagName);
+        element = this.addAtributes(element, attributes);
+        return element;
+    }
+
+    addAtributes(element, attributes) {
+        for (let key in attributes) {
+            element.setAttribute(key, attributes[key]);
+        }
+        return element;
+    }
+
+    addEvent(element, event, callback) {
+        element.addEventListener(event, callback);
+    }
+
+    registerServiceWorker(sw) {
+        navigator.serviceWorker.register(sw)
+            .then(registration => {
+                console.log("Service Worker registrado com sucesso:", registration);
+            })
+            .catch(err => {
+                console.warn("Registro do Service Worker falhou:", err);
+            });
+    }
+};
+
+class Predocs {
+
+    // Classe para manipulação de elementos do dom
+    #dom = new DomPredocs();
+
+    // Configurações do app
+    #configApp = null;
+
+    // Arquivo de configuração
+    #jsonIncludes = null;
+
+    // Lista de componentes padrões que serão bloqueados
+    #blockComponents = [];
+
+    // Prompt para instalação do PWA
+    deferredPrompt
+
+    constructor(before, after, blockComponents = []) {
+        this.#blockComponents = blockComponents;
 
         if (typeof before === "function") {
-            before();
+            before(this);
         }
 
-        this._onloadBody(after);
-        this._desabilitarAutocomplete();
-    }
+        this.#includeDefaultCss();
+        this.#includeDefaultJs();
+        this.#includeDefaultComponents();
+        this.#includeMetaDataAndLink();
+        this.#applyPWA();
 
-    getModoExecucao() {
-        const suportaModoStandalone = window.matchMedia(
-            "(display-mode: standalone)"
-        ).matches;
-        if (document.referrer.startsWith("android-app://")) {
-            return "PWA";
-        } else if (navigator.standalone || suportaModoStandalone) {
-            return "Standalone";
+        if (typeof after === "function") {
+            after(this);
         }
-        return "Navegador";
     }
 
-    get(url, params = {}) {
-        return this.request(url, {}, params, "GET")
-    }
-
-    post(url, dadosPost, paramsUrl = {}, aguardaResposta = true) {
-        return this.request(url, dadosPost, paramsUrl, "POST", aguardaResposta);
-    }
-
-    request(url, dados, param, method, aguardaResposta = true) {
-        const fullUrl = this.addParamsToUrl(this.getUrl(url), param);
-        try {
-            const xhttp = new XMLHttpRequest();
-            xhttp.open(method, fullUrl, !aguardaResposta); // false = aguarda retorno
-            xhttp.send(JSON.stringify(dados));
-            return xhttp.responseText;
-        } catch (e) {
-            console.error(e);
+    get configApp() {
+        if (this.#configApp === null) {
+            this.#configApp = JSON.parse(this.requestGet("/config/app.json"));
         }
-
-        return undefined;
+        return this.#configApp;
     }
 
-    createFormDataObject(formData) {
-        const formDataObject = {};
-        formData.forEach((value, key) => {
-            formDataObject[key] = value;
+    get #includes() {
+        if (this.#jsonIncludes === null) {
+            this.#jsonIncludes = JSON.parse(this.requestGet("/config/includes.json"));
+        }
+        return this.#jsonIncludes;
+    }
+
+    #includeDefaultCss() {
+        let $this = this;
+        let head = this.#dom.head;
+        let cssFiles = this.#includes.cssFiles;
+
+        cssFiles.forEach(function (cssFile) {
+            let attrs = {
+                rel: "stylesheet",
+                type: "text/css",
+                href: cssFile
+            };
+            let elem = $this.#dom.createElement("link", attrs);
+            $this.#dom.insertBefore(elem, head);
         });
-        return formDataObject;
     }
 
-    async submitForm(formElement, onSuccess, onError) {
-        try {
-            const formData = new FormData(formElement);
-            const formDataObject = this.createFormDataObject(formData);
+    #includeDefaultJs() {
+        let $this = this;
+        let body = this.#dom.body;
+        let jsFiles = this.#includes.jsFiles;
 
-            const response = await this.request(
-                "/server" + formElement.action.replace(location.origin, ""),
-                formDataObject,
-                {},
-                formElement.getAttribute('method')
-            );
-
-            const jsonResponse = JSON.parse(response);
-            const resposta = onSuccess(jsonResponse);
-            return resposta;
-        } catch (error) {
-            onError(error);
-            throw error;
-        }
+        jsFiles.forEach(function (jsFile) {
+            let attrs = {
+                type: "text/javascript",
+                src: jsFile
+            };
+            let elem = $this.#dom.createElement("script", attrs);
+            $this.#dom.insertChild(elem, body);
+        });
     }
 
-    form(formSelector, beforeSubmit, afterSubmit, createLoading = true) {
-        if (createLoading) {
-            this.criarComponente("loading-form", formSelector, "lado", ["/components/css/loading-form.css"], ["/components/js/loading-form.js"]);
-        }
-        
-        document.querySelector(formSelector).addEventListener("submit", async (event) => {
-            event.preventDefault();
-            const formElement = document.querySelector(formSelector);
-            
-            if (createLoading) {
-                var loadingForm = new LoadingForm(formSelector);
-            }
-            
-            if (beforeSubmit() !== false) {
-                await loadingForm.showLoading();
-                await this.delay(500);
-                try {
-                    const resposta = await this.submitForm(
-                        formElement,
-                        afterSubmit,
-                        (error) => {
-                            if (createLoading) {
-                                loadingForm.showError();
-                            }
-                            console.error(error);
-                        }
-                    );
+    #includeDefaultComponents() {
+    }
 
-                    if (createLoading) {
-                        loadingForm.showSuccess(resposta);
-                    }
-                } catch (error) {
-                    console.error(error);
-                }
-            }
+    #includeMetaDataAndLink() {
+        let $this = this;
+        let metaData = this.#includes.metaData;
+
+        metaData.meta.forEach(function (meta) {
+            $this.#dom.meta = meta;
         });
 
-        return true;
+        metaData.link.forEach(function (link) {
+            $this.#dom.link = link;
+        });
     }
 
-    montaSelect = (element, options) => {
-        options.forEach(({ value, text, selected, disabled }) => {
-            const option = document.createElement("option");
-            option.value = value || text;
-            option.textContent = text;
-            option.disabled = disabled ?? false;
-            option.selected = selected ?? false;
-            document.querySelector(element).appendChild(option);
-        });
-        return true;
-    };
+    #applyPWA() {
+        let manifest = {
+            rel: "manifest",
+            href: this.#getUrl("/config/manifest.json")
+        };
+        this.#dom.link = manifest;
 
-    replaceTextInView(elemSelector, replacements) {
-        let html = document.querySelector(elemSelector).innerHTML;
-        Object.keys(replacements).forEach((key) => {
-            html = html.replace(
-                new RegExp(`{{${key}}}`, "g"),
-                replacements[key]
-            );
-        });
-        document.querySelector(elemSelector).innerHTML = html;
-        return true;
-    }
-
-    criarComponente(component, element, local, css = [], js = []) {
-        let componentElement;
-
-        componentElement = document.createElement("section");
-        componentElement.setAttribute(
-            "class",
-            `component-${component}`
-        );
-
-        switch (local) {
-            case "append":
-            case "final":
-                document.querySelector(element).append(componentElement);
-                break;
-            case "lado":
-                document.querySelector(element).parentElement.append(componentElement);
-                break;
-            case "incio":
-            case "prepend":
-            default:
-                document.querySelector(element).prepend(componentElement);
+        if ("serviceWorker" in navigator) {
+            this.#dom.registerServiceWorker(this.#getUrl("/sw.js"));
         }
-
-        componentElement.innerHTML = this.get(
-            `/components/html/${component}.html`
-        );
-        this.incluirRecurso("script", js);
-        this.incluirRecurso("link", css);
-
-        return true;
     }
 
-    getUrl(url) {
+    #getUrl(url) {
         if (url.startsWith("/server")) {
-            return this.getConfig("servidor") + url.replace("/server/", "");
+            return this.configApp.server + url.replace("/server/", "");
         } else {
-            return url.startsWith("/")
-                ? `${document
-                    .querySelector("#coreJs")
-                    .src.replace("/core/predocs.js", "")}${url}`
-                : url;
-        }
-    }
-
-    getConfig(tipo) {
-        if (!this.config[tipo]) {
-            switch (tipo) {
-                case "app":
-                    this.config[tipo] = JSON.parse(
-                        this.get("/config/app.json")
-                    );
-                    break;
-                case "servidor":
-                    this.config[tipo] = JSON.parse(
-                        this.get("/config/app.json")
-                    ).server;
-                    break;
-                case "iconApp":
-                    this.config[tipo] = JSON.parse(
-                        this.get("/config/manifest.json")
-                    ).icons[0].src;
-                    break;
-                case "corApp":
-                    this.config[tipo] = JSON.parse(
-                        this.get("/config/manifest.json")
-                    ).theme_color;
-                    break;
-                default:
-                    break;
+            if (url.startsWith("/")) {
+                let elem = this.#dom.getElement("#coreJs");
+                let src = this.#dom.getAttribute(elem, "src");
+                let raiz = src.replace("/core/predocs.js", "");
+                return raiz + url;
             }
-        }
-        return this.config[tipo];
-    }
 
-    adicionarAtributos(elemento, atributos) {
-        Object.entries(atributos).forEach(([chave, valor]) => {
-            if (chave !== "tipo") {
-                elemento.setAttribute(chave, valor);
-            }
-        });
-    }
-
-    async incluirRecurso(tipo = "script", links = []) {
-        for (const link of links) {
-            await new Promise((resolve, reject) => {
-                const recurso = document.createElement(tipo);
-                if (tipo === "script") {
-                    recurso.setAttribute("src", this.getUrl(link));
-                    recurso.onload = resolve;
-                    recurso.onerror = reject;
-                } else if (tipo === "link") {
-                    recurso.setAttribute("rel", "stylesheet");
-                    recurso.setAttribute("href", this.getUrl(link));
-                    resolve();
-                }
-                document.querySelector(tipo === "script" ? "body" : "head").appendChild(recurso);
-            });
-        }
-    }
-
-
-    addParamsToUrl(url, params) {
-        let queryParams = Object.entries(params)
-            .map(([key, value]) => `${key}=${value}`)
-            .join("&");
-
-        return `${url}?${queryParams}`;
-    }
-
-    async installApp(aceitou = () => { }, recusou = () => { }) {
-        try {
-            await this.deferredPrompt.prompt();
-            const choice = await this.deferredPrompt.userChoice;
-
-            if (choice.outcome === "accepted") {
-                aceitou();
-            } else {
-                recusou();
-            }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            this.deferredPrompt = null;
+            return url;
         }
     }
 
@@ -406,9 +209,80 @@ class Predocs extends predocsHelper {
         return urlParams.get($param);
     }
 
-    delay(ms) {
-        return new Promise(resolve => {
-            setTimeout(resolve, ms);
+    #addParamsToUrl(url, params) {
+        if (params === undefined) {
+            return url;
+        }
+
+        let urlParams = new URLSearchParams(params);
+        return url + "?" + urlParams.toString();
+    }
+
+    requestGet(url, params) {
+        return this.request(url, {}, params, "GET");
+    }
+
+    requestPost(url, data, params, awaitResponse = true) {
+        return this.request(url, data, params, "POST", awaitResponse);
+    }
+
+    request(url, data, params, method, awaitResponse = true) {
+        const fullUrl = this.#addParamsToUrl(this.#getUrl(url), params);
+        try {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open(method, fullUrl, !awaitResponse); // false = aguarda retorno
+            xhttp.send(JSON.stringify(data));
+            return xhttp.responseText;
+        } catch (e) {
+            console.error(e);
+        }
+
+        return undefined;
+    }
+
+    form(formSelector, beforeSubmit, afterSubmit) {
+        const form = this.#dom.getElement(formSelector);
+        this.#dom.addEvent(form, "submit", async (event) => {
+            event.preventDefault();
+            let beforeResult = true;
+
+            if (typeof beforeSubmit === 'function') {
+                beforeResult = beforeSubmit();
+            }
+
+            if (beforeResult !== false) {
+                const action = "/server" + form.action.replace(location.origin, "");
+                const method = this.#dom.getAttribute(form, "method");
+                const formData = new FormData(form);
+                const formDataObject = Object.fromEntries(formData);
+                const response = await this.request(action, formDataObject, {}, method, true);
+
+                if (typeof afterSubmit === 'function') {
+                    afterSubmit(response);
+                }
+            }
         });
+    }
+
+    createOptionsInSelect(elem, options) {
+        options.forEach(attrOption => {
+            console.log(attrOption);
+            let option = this.#dom.createElement("option", attrOption);
+            option.textContent = attrOption.textContent;
+            this.#dom.insertChild(option, elem);
+        });
+    }
+
+    replaceTextInElement(elemSelector, replacements) {
+        let elem = this.#dom.getElement(elemSelector);
+        let html = elem.innerHTML;
+        Object.keys(replacements).forEach((key) => {
+            html = html.replace(
+                new RegExp(`{{${key}}}`, "g"),
+                replacements[key]
+            );
+        });
+        this.#dom.setHtml(elem, html);
+        return true;
     }
 }
