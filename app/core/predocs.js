@@ -172,7 +172,7 @@ class Predocs {
 
             let htmlComponent = this.requestGet(`${pathComponent}/${name}.html`);
             let nameComponent = name + "ComponentHtml";
-            let nameElement = "p" - componentData.tag;
+            let nameElement = "p-" + componentData.tag;
 
             let strClassComponent = strConstrutorComponent;
             strClassComponent = strClassComponent.replaceAll(/[\r\n]+/g, ' ');
