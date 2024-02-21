@@ -6,24 +6,17 @@
 </head>
 
 <body>
-    <section>
-        <!-- O conteúdo será inserido aqui -->
-    </section>
+    <!-- O conteúdo será inserido aqui -->
 
     <script id="coreJs" src="../core/predocs.js"></script>
     <script type="text/javascript">
-        const appConfig = {
-            componentesBloqueados: ["nav"]
-        };
-
         const before = () => {
-            docs.replaceTextInView("body", docs.getConfig("app"));
-        };
-
-        const after = () => { };
-
-        const docs = new Predocs(appConfig);
-        docs.init(before, after);
+            console.log('Antes de tudo');
+        }
+        const after = () => {
+            console.log('Depois de tudo');
+        }
+        const docs = new Predocs();
     </script>
 </body>
 

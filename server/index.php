@@ -1,52 +1,34 @@
 <?php
 
-class IndexPreDocs
-{
-    public static function incluirArquivosDoCore()
-    {
-        include_once("./core/Funcoes.php");
-        include_once("./core/Arquivo.php");
-        include_once("./core/Config.php");
-        include_once("./core/Banco.php");
-        include_once("./core/Storage.php");
-        include_once("./core/Log.php");
-        include_once("./core/FuncoesApp.php");
-    }
+namespace Predocs;
 
-    public static function executarFramework()
-    {
-        static::incluirArquivosDoCore();
+use Predocs\Core\Predocs;
 
-        // Crie instâncias dos objetos necessários
-        $banco = new Banco();
+/**
+ * Função responsável por importar classes do sistema.
+ *
+ * @param string $className O nome da classe a ser importada.
+ * @return bool Retorna true se a classe foi importada com sucesso, caso contrário retorna false.
+ */
+spl_autoload_register(
+    function (string $className): bool {
 
-        // Inicie o banco
-        $banco->inicio();
+        $folders = explode("\\", $className);
+        $folders = array_slice($folders, 1);
+        $folders = implode(DIRECTORY_SEPARATOR, $folders);
 
-        // Executa a função init()
-        $retorno = Funcoes::init() ?? Funcoes::setStatusCode(204);
+        $file = __DIR__ . DIRECTORY_SEPARATOR . $folders . ".php";
 
-        // Trate o retorno
-        if (is_array($retorno)) {
-            print json_encode($retorno);
-        } elseif (is_int($retorno) || is_string($retorno)) {
-            print json_encode(["retorno" => $retorno]);
-        } elseif (is_bool($retorno)) {
-            print json_encode(["status" => $retorno]);
-        } else {
-            print $retorno;
+        if (!file_exists($file)) {
+            return false;
         }
 
-        // Verifique a condição e reverta ou salve o banco
-        if (isset($_SERVER["HTTP_TEST"])) {
-            if (http_response_code() == 200) {
-                Funcoes::setStatusCode(202);
-            }
-            $banco->reverter();
-        } else {
-            $banco->salvar();
-        }
+        include_once $file;
+        return true;
     }
-}
+);
 
-IndexPreDocs::executarFramework();
+/**
+ * Este arquivo é o ponto de entrada para o servidor.
+ */
+print new Predocs();
