@@ -22,7 +22,7 @@ Bem-vindo à documentação da API Predocs - sua plataforma de documentação si
 
 ## Erros e Mensagens de Erro
 
-- [Método Não Permitido (Method Not Allowed)](/docs/archives/errors/method_not_allowed.md)
+- [Método Não Permitido (Method Not Allowed)](/docs/markdown/errors/method_not_allowed.md)
 - [Codigo2](erro2.md)
 - [Codigo3](erro3.md)
 
