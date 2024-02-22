@@ -27,7 +27,7 @@ final class Settings
 
     protected static function getEnv(string $param): mixed
     {
-        return getenv($param) ?: $_ENV[$param] ?: $_SERVER[$param];
+        return getenv($param) ?: $_ENV[$param] ?: $_SERVER[$param] ?: null;
     }
 
     private static function setEnvironmentVariables(string $path): void

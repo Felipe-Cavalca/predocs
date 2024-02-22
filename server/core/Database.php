@@ -40,9 +40,9 @@ class Database
             case "mysql":
             default:
                 return new PDO(
-                    "mysql:host={$dataConn["host"]};dbname=predocs;charset=utf8",
-                    "root",
-                    "root"
+                    "mysql:host={$dataConn["host"]}:{$dataConn["port"]};dbname={$dataConn["database"]};charset=utf8",
+                    $dataConn["username"],
+                    $dataConn["password"]
                 );
         }
     }
