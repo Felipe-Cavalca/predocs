@@ -186,6 +186,11 @@ class Predocs {
     #includeMetaDataAndLink() {
         let $this = this;
         let metaData = this.#includes.metaData;
+        let html = this.#dom.getElement("html");
+
+        this.#dom.addAtributes(html, {
+            lang: "pt-br"
+        });
 
         metaData.meta.forEach(function (meta) {
             $this.#dom.meta = meta;
