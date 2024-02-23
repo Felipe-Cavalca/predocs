@@ -35,7 +35,7 @@ final class Predocs
     private function sanitizeGet(): void
     {
         $get = $_GET;
-        $url = explode("/", $get["_PagePredocs"]);
+        $url = explode("/", $get["_PagePredocs"] ?? "");
 
         $this->controller = count($url) == 2 ? $url[0] : $this->controller;
         $this->action = count($url) == 2 ? $url[1] : $url[0];
