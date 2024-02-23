@@ -1,0 +1,15 @@
+<?php
+
+namespace DatabasePredocs;
+
+include_once "getDatabase.php";
+
+$structurePath = __DIR__ . '/structure/';
+$files = scandir($structurePath);
+
+foreach ($files as $file) {
+    if ($file !== '.' && $file !== '..') {
+        $sql = file_get_contents($structurePath . '/' . $file);
+        $database->run($sql);
+    }
+}
