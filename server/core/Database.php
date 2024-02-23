@@ -47,7 +47,7 @@ class Database
         }
     }
 
-    private function where(array $conditions): string
+    public function where(array $conditions): string
     {
         $where = [];
         foreach (array_keys($conditions) as $field) {
