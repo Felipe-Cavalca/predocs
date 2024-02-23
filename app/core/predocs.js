@@ -170,13 +170,18 @@ class Predocs {
         for (let name in components) {
             let componentData = components[name];
 
-            let htmlComponent = this.requestGet(`${pathComponent}/${name}.html`);
+            let htmlComponent = this.requestGet(`${pathComponent}/${componentData.html}.html`);
             let nameComponent = name + "ComponentHtml";
-            let nameElement = "c-" + componentData.tag;
+            let nameElement = "c-" + name;
             let jsComponent = "";
+            let cssComponent = "";
 
             if (componentData.js) {
                 jsComponent = this.requestGet(`${pathComponent}/${componentData.js}.js`);
+            }
+
+            if (componentData.css) {
+                cssComponent = this.requestGet(`${pathComponent}/${componentData.css}.css`);
             }
 
             let strClassComponent = strConstrutorComponent;
@@ -185,6 +190,7 @@ class Predocs {
             strClassComponent = strClassComponent.replaceAll("__html__", htmlComponent);
             strClassComponent = strClassComponent.replaceAll("__nameElement__", nameElement);
             strClassComponent = strClassComponent.replaceAll("__script__", jsComponent);
+            strClassComponent = strClassComponent.replaceAll("__css__", cssComponent);
             eval(strClassComponent);
         }
     }
