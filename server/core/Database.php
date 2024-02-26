@@ -18,6 +18,7 @@ class Database
 {
     private static PDO $conn;
     private static Settings $settings;
+    private static string $driver;
 
     public function __construct()
     {
@@ -27,6 +28,10 @@ class Database
 
         if (empty(self::$conn)) {
             self::$conn = $this->conn();
+        }
+
+        if (empty(self::$driver)) {
+            self::$driver = self::$settings->getSettingsDatabase()["driver"];
         }
     }
 
@@ -111,6 +116,12 @@ class Database
 
     public function insert(string $table, array $data): bool
     {
+        if ($this->existField($table, "created")) {
+            $data["created"] = date("Y-m-d H:i:s");
+        }
+        if ($this->existField($table, "modified")) {
+            $data["modified"] = date("Y-m-d H:i:s");
+        }
         $fields = array_keys($data);
         $sql = "INSERT INTO {$table} (" . implode(", ", $fields) . ") VALUES (:" . implode(", :", $fields) . ")";
         return $this->run($sql, $data);
@@ -118,6 +129,10 @@ class Database
 
     public function update(string $table, array $data, array $where): bool
     {
+        if ($this->existField($table, "modified")) {
+            $data["modified"] = date("Y-m-d H:i:s");
+        }
+
         $sql = "UPDATE {$table} SET ";
 
         $fields = [];
@@ -138,5 +153,79 @@ class Database
         $whereStr = $this->where($where);
         $sql = "DELETE FROM {$table} WHERE {$whereStr}";
         return $this->run($sql, $where);
+    }
+
+    public function getDetTable(string $table): array
+    {
+        if (!in_array($table, $this->getTables())) {
+            return [];
+        }
+
+        $fields = [];
+
+        switch (static::$driver) {
+            case "sqlite":
+                $query = $this->list("PRAGMA table_info('{$table}')");
+                foreach ($query as $field) {
+                    if ($field["type"] == "INTEGER") {
+                        $field["type"] = "int(11)";
+                    }
+                    $fields[] = [
+                        "name" => $field["name"],
+                        "type" => $field["type"],
+                        "null" => !$field["notnull"],
+                        "default" => $field["dflt_value"],
+                        "pk" => $field["pk"] == 1
+                    ];
+                }
+            case "mysql":
+            default:
+                $query = $this->list("DESC {$table}");
+                foreach ($query as $field) {
+                    $fields[] = [
+                        "name" => $field["Field"],
+                        "type" => $field["Type"],
+                        "null" => $field["Null"] == "YES",
+                        "default" => $field["Default"],
+                        "pk" => $field["Extra"] == "auto_increment"
+                    ];
+                }
+        }
+
+        return $fields;
+    }
+
+    public function getTables(): array
+    {
+        $tables = [];
+
+        switch (static::$driver) {
+            case "sqlite":
+                $query = $this->list("SELECT * FROM sqlite_master WHERE type='table'");
+                foreach ($query as $table) {
+                    if ($table["name"] != "sqlite_sequence") {
+                        $tables[] = $table["name"];
+                    }
+                }
+                break;
+            case "mysql":
+            default:
+                $query = $this->list("SHOW TABLES");
+                $tables = array_column($query, 'Tables_in_' . self::$settings->getSettingsDatabase()["database"]);
+                break;
+        }
+
+        return $tables;
+    }
+
+    public function existTable(string $table): bool
+    {
+        return in_array($table, $this->getTables());
+    }
+
+    public function existField(string $table, string $field): bool
+    {
+        $fields = array_column($this->getDetTable($table), "name");
+        return in_array($field, $fields);
     }
 }
