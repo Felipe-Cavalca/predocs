@@ -227,7 +227,8 @@ class Predocs {
 
     #getUrl(url) {
         if (url.startsWith("/server")) {
-            return this.configApp.server + url.replace("/server/", "");
+            const domain = window.location.hostname;
+            return "https://" + domain + "/" + url
         } else {
             if (url.startsWith("/")) {
                 let elem = this.#dom.getElement("#coreJs");
