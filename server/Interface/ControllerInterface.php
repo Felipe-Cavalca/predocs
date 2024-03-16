@@ -9,12 +9,10 @@ namespace Predocs\Interface;
  *
  * @package Predocs\Rules
  * @author Felipe dos S. Cavalca
- * @version 1.0.0
+ * @version 1.1.0
  * @since 1.0.0
  */
 interface ControllerInterface
 {
     public function __construct();
-
-    public function __call(string $metodo, array $arguments);
 }
