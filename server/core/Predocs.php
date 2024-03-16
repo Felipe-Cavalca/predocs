@@ -3,6 +3,7 @@
 namespace Predocs\Core;
 
 use Predocs\Attributes\Method;
+use Predocs\Attributes\RequiredFields;
 use Predocs\Enum\Path;
 use Predocs\Class\HttpError;
 
@@ -91,13 +92,18 @@ final class Predocs
     private function validateMethod(object $controller, string $action): void
     {
         $methodReflection = new \ReflectionMethod($controller, $action);
+
         $attributeMethod = $methodReflection->getAttributes("Predocs\Attributes\Method");
         if ($attributeMethod) {
             $methods = $attributeMethod[0]->getArguments();
             Method::validateMethod($methods);
         }
 
-
+        $attributeRequiredFields = $methodReflection->getAttributes("Predocs\Attributes\RequiredFields");
+        if ($attributeRequiredFields) {
+            $requiredFields = $attributeRequiredFields[0]->getArguments();
+            RequiredFields::validateRequiredFields($requiredFields);
+        }
     }
 
     private function runAction(object $controller, string $action): mixed

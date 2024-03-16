@@ -42,6 +42,16 @@ class HttpError extends \Error
         $this->return = "Erro interno do servidor";
     }
 
+    public function e400($params)
+    {
+        $this->statusCode = 400;
+        $this->return = [
+            "status" => 400,
+            "message" => "Requisição inválida",
+            "errors" => $params
+        ];
+    }
+
     public function e404()
     {
         $this->statusCode = 404;
@@ -62,5 +72,10 @@ class HttpError extends \Error
     public function methodNotAllowed()
     {
         $this->e405();
+    }
+
+    public function badRequest($params)
+    {
+        $this->e400($params);
     }
 }
