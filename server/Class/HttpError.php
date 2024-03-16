@@ -17,9 +17,9 @@ class HttpError extends \Error
     private int $statusCode;
     private array|string $return;
 
-    public function __construct(string $error)
+    public function __construct(string $error, array $params = [])
     {
-        $this->$error();
+        $this->$error($params);
         $this->code = $this->statusCode;
         $this->message = $this->getMessage();
 
