@@ -12,24 +12,29 @@ class RequiredFields
     {
         $fields = $fields[0];
 
-        foreach ($fields as $key => $type) {
-            if (!isset($_POST[$key])) {
-                throw new HttpError("badRequest", [
-                    "error" =>  "Campo obrigatório",
-                    "fieldName" => $key,
-                    "type" => $type,
-                    "message" => "O campo $key é obrigatório"
-                ]);
-            }
+        foreach ($fields as $key => $params) {
+            static::existField($key);
+            static::validateType($key, $params);
+        }
+    }
 
-            if (gettype($_POST[$key]) != $type) {
-                throw new HttpError("badRequest", [
-                    "error" =>  "Tipo inválido",
-                    "fieldName" => $key,
-                    "type" => $type,
-                    "message" => "O campo $key deve ser um $type"
-                ]);
-            }
+    private static function existField($field)
+    {
+        if (!isset($_POST[$field])) {
+            throw new HttpError("badRequest", [
+                "error" =>  "Campo não encontrado",
+                "fieldName" => $field,
+            ]);
+        }
+    }
+
+    private static function validateType($field, $params)
+    {
+        if (!filter_var($_POST[$field], $params)) {
+            throw new HttpError("badRequest", [
+                "error" =>  "Campo inválido",
+                "fieldName" => $field,
+            ]);
         }
     }
 }

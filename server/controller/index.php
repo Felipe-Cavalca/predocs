@@ -13,8 +13,8 @@ class Index implements ControllerInterface
 
     #[Method("POST", "PUT")]
     #[RequiredFields([
-        "email" => "string",
-        "numero" => "integer"
+        "email" => FILTER_VALIDATE_EMAIL,
+        "numero" => FILTER_VALIDATE_INT,
     ])]
     public function index()
     {
