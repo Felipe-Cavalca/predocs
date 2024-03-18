@@ -13,6 +13,10 @@ class RequiredFields
         $fields = $fields[0];
 
         foreach ($fields as $key => $params) {
+            if(is_int($key)) {
+                $key = $params;
+                $params = FILTER_DEFAULT;
+            }
             static::existField($key);
             static::validateType($key, $params);
         }
