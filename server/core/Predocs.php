@@ -6,6 +6,7 @@ use Predocs\Attributes\Method;
 use Predocs\Attributes\RequiredFields;
 use Predocs\Enum\Path;
 use Predocs\Class\HttpError;
+use ReflectionMethod;
 
 /**
  * Classe Predocs
@@ -59,8 +60,10 @@ final class Predocs
         try {
             $this->validateController($this->controller);
             $objController = $this->loadController($this->controller);
+            $methodReflection = new ReflectionMethod($this->controller, $this->action);
             $this->validateAction($objController, $this->action);
-            $this->validateMethod($objController, $this->action);
+            $this->validateMethod($methodReflection);
+            $this->validateRequiredFields($methodReflection);
             return $this->runAction($objController, $this->action);
         } catch (HttpError $th) {
             http_response_code($th->getCode());
@@ -89,16 +92,17 @@ final class Predocs
         }
     }
 
-    private function validateMethod(object $controller, string $action): void
+    private function validateMethod(ReflectionMethod $methodReflection): void
     {
-        $methodReflection = new \ReflectionMethod($controller, $action);
-
         $attributeMethod = $methodReflection->getAttributes("Predocs\Attributes\Method");
         if ($attributeMethod) {
             $methods = $attributeMethod[0]->getArguments();
             Method::validateMethod($methods);
         }
+    }
 
+    private function validateRequiredFields(ReflectionMethod $methodReflection): void
+    {
         $attributeRequiredFields = $methodReflection->getAttributes("Predocs\Attributes\RequiredFields");
         if ($attributeRequiredFields) {
             $requiredFields = $attributeRequiredFields[0]->getArguments();
