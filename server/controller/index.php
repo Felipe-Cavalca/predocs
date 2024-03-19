@@ -11,7 +11,7 @@ class Index implements ControllerInterface
 {
     use Controller;
 
-    #[Method("POST", "PUT")]
+    #[Method(["GET", "POST"])]
     #[RequiredFields([
         "email" => FILTER_VALIDATE_EMAIL,
         "numero" => FILTER_VALIDATE_INT,

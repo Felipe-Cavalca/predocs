@@ -60,10 +60,9 @@ final class Predocs
         try {
             $this->validateController($this->controller);
             $objController = $this->loadController($this->controller);
-            $methodReflection = new ReflectionMethod($this->controller, $this->action);
             $this->validateAction($objController, $this->action);
-            $this->validateMethod($methodReflection);
-            $this->validateRequiredFields($methodReflection);
+            $reflectionMethod = new ReflectionMethod($objController, $this->action);
+            $this->validadeAttributes($reflectionMethod);
             return $this->runAction($objController, $this->action);
         } catch (HttpError $th) {
             http_response_code($th->getCode());
@@ -92,21 +91,14 @@ final class Predocs
         }
     }
 
-    private function validateMethod(ReflectionMethod $methodReflection): void
+    private function validadeAttributes(ReflectionMethod $reflectionMethod): void
     {
-        $attributeMethod = $methodReflection->getAttributes("Predocs\Attributes\Method");
-        if ($attributeMethod) {
-            $methods = $attributeMethod[0]->getArguments();
-            Method::validateMethod($methods);
-        }
-    }
-
-    private function validateRequiredFields(ReflectionMethod $methodReflection): void
-    {
-        $attributeRequiredFields = $methodReflection->getAttributes("Predocs\Attributes\RequiredFields");
-        if ($attributeRequiredFields) {
-            $requiredFields = $attributeRequiredFields[0]->getArguments();
-            RequiredFields::validateRequiredFields($requiredFields);
+        $attributes = $reflectionMethod->getAttributes();
+        foreach ($attributes as $attribute) {
+            $attribute = $attribute->newInstance();
+            if ($attribute instanceof Method) {
+                return;
+            }
         }
     }
 
