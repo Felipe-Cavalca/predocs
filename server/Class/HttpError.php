@@ -47,6 +47,7 @@ class HttpError extends \Error
         $this->statusCode = 400;
         $this->return = [
             "status" => 400,
+            "statusCode" => 400,
             "message" => "Requisição inválida",
             "errors" => $params
         ];
@@ -56,6 +57,8 @@ class HttpError extends \Error
     {
         $this->statusCode = 404;
         $this->return = [
+            "status" => false,
+            "statusCode" => 404,
             "message" => "Página não encontrada"
         ];
     }
@@ -64,7 +67,8 @@ class HttpError extends \Error
     {
         $this->statusCode = 405;
         $this->return = [
-            "status" => 405,
+            "status" => false,
+            "statusCode" => 405,
             "message" => "Método não suportado"
         ];
     }
