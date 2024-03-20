@@ -5,7 +5,7 @@ services:
       context: ../
       dockerfile: Docker/Dockerfile.predocs
     volumes:
-      - ../:/usr/share/nginx/html
+      - ../:/var/www/html
     ports:
       - "8080:80"
 
