@@ -4,8 +4,8 @@
   "service": "predocs",
   "workspaceFolder": "/var/www/html",
   "forwardPorts": [
-    8080, // Local port - PreDocs
-    3000, // Frontend
-    8000 // Backend
+    7000, // Local port - PreDocs
+    8000, // Frontend
+    9000 // Backend
   ]
 }

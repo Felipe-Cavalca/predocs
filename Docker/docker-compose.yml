@@ -7,7 +7,7 @@ services:
     volumes:
       - ../:/var/www/html
     ports:
-      - "8080:80"
+      - "7000:80"
 
   frontend:
     build:
@@ -16,7 +16,7 @@ services:
     volumes:
       - ../app/:/usr/share/nginx/html
     ports:
-      - "3000:80"
+      - "8000:80"
 
   server:
     build:
@@ -25,7 +25,7 @@ services:
     volumes:
       - ../server/:/var/www/html
     ports:
-      - "8000:80"
+      - "9000:80"
 
   bd:
     build:
