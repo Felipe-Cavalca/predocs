@@ -1,12 +1,12 @@
 {
     "cssFiles": [
-        "/app/config/variaveis.css",
-        "/app/css/index.css",
-        "/app/libs/bootstrap-5.3.2-dist/css/bootstrap.css"
+        "/config/variaveis.css",
+        "/css/index.css",
+        "/libs/bootstrap-5.3.2-dist/css/bootstrap.css"
     ],
     "jsFiles": [
-        "/app/libs/jquery-3.6.0.js",
-        "/app/libs/bootstrap-5.3.2-dist/js/bootstrap.js"
+        "/libs/jquery-3.6.0.js",
+        "/libs/bootstrap-5.3.2-dist/js/bootstrap.js"
     ],
     "metaData": {
         "meta": [
@@ -29,7 +29,7 @@
         "link": [
             {
                 "rel": "shortcut icon",
-                "href": "/app/assets/global/favicon.ico",
+                "href": "/assets/global/favicon.ico",
                 "type": "image/x-icon"
             }
         ]
