@@ -1,3 +1,14 @@
 # Dockerfile.predocs
-FROM nginx
-COPY . /usr/share/nginx/html
+FROM php:8.3-apache
+
+COPY ./ /var/www/html
+
+# instalando os módulos necessários
+RUN a2enmod rewrite
+RUN service apache2 restart
+
+# instalando git
+RUN apt-get update && apt-get install -y git
+
+# Liberando perimssão para a pasta
+RUN chmod -R 777 /var/www/html
