@@ -14,7 +14,7 @@ services:
       context: ../
       dockerfile: Docker/Dockerfile.frontend
     volumes:
-      - ../app/:/usr/share/nginx/html
+      - ../app/:/usr/local/apache2/htdocs
     ports:
       - "8000:80"
 
