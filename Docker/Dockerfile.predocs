@@ -1,0 +1,3 @@
+# Dockerfile.predocs
+FROM nginx
+COPY . /usr/share/nginx/html

@@ -1,0 +1,7 @@
+# Dockerfile.server
+FROM php:8.3-apache
+COPY ./server /var/www/html
+
+# instalando os modulos necessarios
+RUN a2enmod rewrite
+RUN service apache2 restart

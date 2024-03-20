@@ -1,0 +1,38 @@
+version: '3'
+services:
+  predocs:
+    build:
+      context: ../
+      dockerfile: Docker/Dockerfile.predocs
+    volumes:
+      - ../:/usr/share/nginx/html
+    ports:
+      - "8080:80"
+
+  frontend:
+    build:
+      context: ../
+      dockerfile: Docker/Dockerfile.frontend
+    volumes:
+      - ../app/:/usr/share/nginx/html
+    ports:
+      - "3000:80"
+
+  server:
+    build:
+      context: ../
+      dockerfile: Docker/Dockerfile.server
+    volumes:
+      - ../:/var/www/html
+    ports:
+      - "8000:80"
+
+  bd:
+    build:
+      context: ../
+      dockerfile: Docker/Dockerfile.bd
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
