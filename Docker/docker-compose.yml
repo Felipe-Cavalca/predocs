@@ -23,7 +23,7 @@ services:
       context: ../
       dockerfile: Docker/Dockerfile.server
     volumes:
-      - ../:/var/www/html
+      - ../server/:/var/www/html
     ports:
       - "8000:80"
 
