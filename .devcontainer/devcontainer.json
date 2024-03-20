@@ -2,5 +2,5 @@
   "name": "DevContainer Predocs",
   "dockerComposeFile": "../Docker/docker-compose.yml",
   "service": "predocs",
-  "workspaceFolder": "/usr/share/nginx/html"
+  "workspaceFolder": "/var/www/html"
 }
