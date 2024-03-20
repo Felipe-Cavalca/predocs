@@ -1,6 +1,11 @@
 {
-  "name": "DevContainer Predocs",
+  "name": "DevContainer PreDocs",
   "dockerComposeFile": "../Docker/docker-compose.yml",
   "service": "predocs",
-  "workspaceFolder": "/var/www/html"
+  "workspaceFolder": "/var/www/html",
+  "forwardPorts": [
+    8080, // Local port - PreDocs
+    3000, // Frontend
+    8000 // Backend
+  ]
 }
