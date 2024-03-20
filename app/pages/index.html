@@ -11,23 +11,15 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-10 offset-md-1" id="content">
-                <!-- Conteudo do md aparecera aqui -->
+                Bem vindo ao PreDocs!
             </div>
         </div>
     </div>
 
     <script id="coreJs" src="../core/predocs.js"></script>
-    <script src="../libs/showdown_2.1.0.min.js"></script>
     <script type="text/javascript">
-        const before = (preDocs) => {
-        };
-
-        const after = (preDocs) => {
-            const converter = new showdown.Converter();
-            const markdownText = preDocs.requestGet("/../README.md");
-            const htmlText = converter.makeHtml(markdownText);
-            document.getElementById("content").innerHTML = htmlText;
-        };
+        const before = (preDocs) => { };
+        const after = (preDocs) => { };
 
         let preDocs = new Predocs(before, after);
     </script>
