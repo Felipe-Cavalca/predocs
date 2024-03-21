@@ -7,5 +7,13 @@
     7000, // Local port - PreDocs
     8000, // Frontend
     9000 // Backend
-  ]
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "felixfbecker.php-debug",
+        "mhutchie.git-graph"
+      ]
+    }
+  }
 }
