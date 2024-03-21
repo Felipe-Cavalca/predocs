@@ -140,7 +140,7 @@ class Predocs {
             let attrs = {
                 rel: "stylesheet",
                 type: "text/css",
-                href: cssFile
+                href: $this.#getUrl(cssFile)
             };
             let elem = $this.#dom.createElement("link", attrs);
             $this.#dom.insertBefore(elem, head);
@@ -155,7 +155,7 @@ class Predocs {
         jsFiles.forEach(function (jsFile) {
             let attrs = {
                 type: "text/javascript",
-                src: jsFile
+                src: $this.#getUrl(jsFile)
             };
             let elem = $this.#dom.createElement("script", attrs);
             $this.#dom.insertChild(elem, body);
@@ -226,19 +226,17 @@ class Predocs {
     }
 
     #getUrl(url) {
+        let domain = window.location.protocol + "//" + window.location.hostname;
         if (url.startsWith("/server")) {
-            const domain = window.location.hostname;
-            return "https://" + domain + "/" + url
+            url = url.replace("/server", "");
+            return domain + ":9000" + url
         } else {
             if (url.startsWith("/")) {
-                let elem = this.#dom.getElement("#coreJs");
-                let src = this.#dom.getAttribute(elem, "src");
-                let raiz = src.replace("/core/predocs.js", "");
-                return raiz + url;
+                domain = domain + ":8000";
+                return domain + url;
             }
-
-            return url;
         }
+        return url;
     }
 
     getParamUrl($param) {
