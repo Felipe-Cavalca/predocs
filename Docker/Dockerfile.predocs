@@ -12,3 +12,8 @@ RUN apt-get update && apt-get install -y git
 
 # Liberando perimssão para a pasta
 RUN chmod -R 777 /var/www/html
+
+# Set UTF-8 encoding for HTTP requests
+RUN echo "AddDefaultCharset UTF-8" >> /etc/apache2/conf-available/charset.conf \
+    && a2enconf charset \
+    && service apache2 restart
