@@ -1,5 +1,8 @@
-Header set Access-Control-Allow-Origin "*"
-Header set Access-Control-Allow-Methods "GET,POST,OPTIONS,DELETE,PUT"
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, DELETE, PUT"
+    Header set Access-Control-Allow-Headers "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+</IfModule>
 
 # Mudando arquivo inicio do servidor
 DirectoryIndex index.php

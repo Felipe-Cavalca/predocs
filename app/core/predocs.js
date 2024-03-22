@@ -87,6 +87,9 @@ class Predocs {
     // Classe para manipulação de elementos do dom
     #dom = new DomPredocs();
 
+    // Configurações do framework
+    #settings = null;
+
     // Configurações do app
     #configApp = null;
 
@@ -118,6 +121,16 @@ class Predocs {
             this.#configApp = JSON.parse(this.requestGet("/config/app.json"));
         }
         return this.#configApp;
+    }
+
+    get settings() {
+        if (this.#settings === null) {
+            let protocol = window.location.protocol;
+            let host = window.location.host;
+            let urlBase = protocol + "//" + host;
+            this.#settings = JSON.parse(this.requestGet(urlBase + "/config/settings.json"));
+        }
+        return this.#settings;
     }
 
     get listComponents() {
@@ -226,17 +239,12 @@ class Predocs {
     }
 
     #getUrl(url) {
-        let domain = window.location.protocol + "//" + window.location.hostname;
         if (url.startsWith("/server")) {
             url = url.replace("/server", "");
-            return domain + ":9000" + url
+            return this.settings.urlAPI  + url;
         } else {
-            if (url.startsWith("/")) {
-                domain = domain + ":8000";
-                return domain + url;
-            }
+            return url;
         }
-        return url;
     }
 
     getParamUrl($param) {
