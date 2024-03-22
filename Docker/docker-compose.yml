@@ -22,8 +22,7 @@ services:
     volumes:
       - ../app/:/usr/local/apache2/htdocs
     ports:
-      - "8000:8000"
-      - "8080:80"
+      - "8000:80"
     networks:
       - rede_predocs
 
