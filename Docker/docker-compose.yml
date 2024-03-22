@@ -1,4 +1,8 @@
 version: '3'
+volumes:
+  db_data:
+networks:
+  rede_predocs:
 services:
   predocs:
     build:
@@ -8,6 +12,8 @@ services:
       - ../:/var/www/html
     ports:
       - "7000:80"
+    networks:
+      - rede_predocs
 
   frontend:
     build:
@@ -16,7 +22,10 @@ services:
     volumes:
       - ../app/:/usr/local/apache2/htdocs
     ports:
-      - "8000:80"
+      - "8000:8000"
+      - "8080:80"
+    networks:
+      - rede_predocs
 
   server:
     build:
@@ -26,6 +35,8 @@ services:
       - ../server/:/var/www/html
     ports:
       - "9000:80"
+    networks:
+      - rede_predocs
 
   bd:
     build:
@@ -33,6 +44,5 @@ services:
       dockerfile: Docker/Dockerfile.bd
     volumes:
       - db_data:/var/lib/mysql
-
-volumes:
-  db_data:
+    networks:
+      - rede_predocs
