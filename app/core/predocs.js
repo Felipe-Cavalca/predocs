@@ -125,10 +125,7 @@ class Predocs {
 
     get settings() {
         if (this.#settings === null) {
-            let protocol = window.location.protocol;
-            let host = window.location.host;
-            let urlBase = protocol + "//" + host;
-            this.#settings = JSON.parse(this.requestGet(urlBase + "/config/settings.json"));
+            this.#settings = JSON.parse(this.requestGet("/config/settings.json"));
         }
         return this.#settings;
     }
@@ -241,7 +238,13 @@ class Predocs {
     #getUrl(url) {
         if (url.startsWith("/server")) {
             url = url.replace("/server", "");
-            return this.settings.urlAPI  + url;
+            return this.settings.urlAPI + url;
+        } else if (url.startsWith("/")) {
+            let elem = document.querySelector("[src$='predocs.js']");
+            let src = elem.src;
+            let appPath = src.substring(0, src.lastIndexOf("/"));
+            let parentPath = appPath.substring(0, appPath.lastIndexOf("/"));
+            return parentPath + url;
         } else {
             return url;
         }
