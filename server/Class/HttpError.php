@@ -73,6 +73,16 @@ class HttpError extends \Error
         ];
     }
 
+    public function e409($message)
+    {
+        $this->statusCode = 409;
+        $this->return = [
+            "status" => false,
+            "statusCode" => 409,
+            "message" => $message ?? "Conflito"
+        ];
+    }
+
     public function methodNotAllowed()
     {
         $this->e405();
@@ -81,5 +91,10 @@ class HttpError extends \Error
     public function badRequest($params)
     {
         $this->e400($params);
+    }
+
+    public function conflict($message)
+    {
+        $this->e409($message);
     }
 }
