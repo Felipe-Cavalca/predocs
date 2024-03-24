@@ -53,6 +53,19 @@ class HttpError extends \Error
         ];
     }
 
+    public function e401($message)
+    {
+        if (count($message) === 1) {
+            $message = $message[0];
+        }
+        $this->statusCode = 401;
+        $this->return = [
+            "status" => 401,
+            "message" => "Não autorizado",
+            "errors" => $message
+        ];
+    }
+
     public function e404()
     {
         $this->statusCode = 404;
@@ -91,6 +104,11 @@ class HttpError extends \Error
     public function badRequest($params)
     {
         $this->e400($params);
+    }
+
+    public function Unauthorized($message)
+    {
+        $this->e401($message);
     }
 
     public function conflict($message)
