@@ -17,13 +17,13 @@ class RequiredFields implements AttributesInterface
 
     private function validateRequiredFields(array $fields)
     {
-        foreach ($fields as $key => $params) {
-            if (is_int($key)) {
-                $key = $params;
-                $params = FILTER_DEFAULT;
+        foreach ($fields as $field => $param) {
+            if (is_int($field)) {
+                $field = $param;
+                $param = FILTER_DEFAULT;
             }
-            static::existField($key);
-            static::validateType($key, $params);
+            static::existField($field);
+            static::validateType($field, $param);
         }
     }
 
@@ -37,9 +37,9 @@ class RequiredFields implements AttributesInterface
         }
     }
 
-    private function validateType($field, $params)
+    private function validateType($field, $param)
     {
-        if (!filter_var($_POST[$field], $params)) {
+        if (!filter_var($_POST[$field], $param)) {
             throw new HttpError("badRequest", [
                 "error" =>  "Campo inválido",
                 "fieldName" => $field,
