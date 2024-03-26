@@ -87,9 +87,6 @@ class Predocs {
     // Classe para manipulação de elementos do dom
     #dom = new DomPredocs();
 
-    // Configurações do framework
-    #settings = null;
-
     // Configurações do app
     #configApp = null;
 
@@ -121,13 +118,6 @@ class Predocs {
             this.#configApp = JSON.parse(this.requestGet("/config/app.json"));
         }
         return this.#configApp;
-    }
-
-    get settings() {
-        if (this.#settings === null) {
-            this.#settings = JSON.parse(this.requestGet("/config/settings.json"));
-        }
-        return this.#settings;
     }
 
     get listComponents() {
@@ -236,10 +226,7 @@ class Predocs {
     }
 
     #getUrl(url) {
-        if (url.startsWith("/server")) {
-            url = url.replace("/server", "");
-            return this.settings.urlAPI + url;
-        } else if (url.startsWith("/")) {
+        if (url.startsWith("/")) {
             let elem = document.querySelector("[src$='predocs.js']");
             let src = elem.src;
             let appPath = src.substring(0, src.lastIndexOf("/"));
