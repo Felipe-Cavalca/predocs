@@ -284,7 +284,7 @@ class Predocs {
             }
 
             if (beforeResult !== false) {
-                const action = "/Api" + form.action.replace(location.origin, "");
+                const action = "/api" + form.action.replace(location.origin, "");
                 const method = this.#dom.getAttribute(form, "method");
                 const formData = new FormData(form);
                 const formDataObject = Object.fromEntries(formData);
