@@ -8,7 +8,7 @@ services:
   predocs:
     build:
       context: ./
-      dockerfile: Docker/Dockerfile.predocs
+      dockerfile: docker/Dockerfile.predocs
     volumes:
       - ./:/var/www/html
     ports:
@@ -19,7 +19,7 @@ services:
   app:
     build:
       context: ./
-      dockerfile: Docker/Dockerfile.app
+      dockerfile: docker/Dockerfile.app
     volumes:
       - ./app/:/usr/local/apache2/htdocs
     ports:
@@ -30,7 +30,7 @@ services:
   api:
     build:
       context: ./
-      dockerfile: Docker/Dockerfile.api
+      dockerfile: docker/Dockerfile.api
     volumes:
       - ./api/:/var/www/html
     ports:
@@ -41,7 +41,7 @@ services:
   bd:
     build:
       context: ./
-      dockerfile: Docker/Dockerfile.bd
+      dockerfile: docker/Dockerfile.bd
     volumes:
       - db_data:/var/lib/mysql
     ports:
