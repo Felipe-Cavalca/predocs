@@ -10,18 +10,6 @@ O Predocs é um framework para desenvolvimento web voltado para programadores qu
 1. docker
 1. docker-compose
 
-## Configuração para instalação
-
-### Docker
-#### Banco de dados
-para alterar as configurações do banco de dados mude o arquivo `Docker/Dockerfile.bd`
-
-### Front
-Para que o front consiga reconhecer as urls dos outros containers é preciso configurar o arquivo `app/config/settings.json`
-
-### Server
-As configurações de ambientes do servidor ficam localizados nos arquivos `/server/settings.env` e nos arquivos da pasta `/server/Envs`
-
 ## Instalação
 
 1. Clone o repositorio com o comando: ```git clone https://github.com/Felipe-Cavalca/predocs```
@@ -35,13 +23,14 @@ Após a instalação o sistema estara pronto para uso.
 ## Links
 
 ### Front
-O frontend do sistema roda no endereço localhost:8000
+O frontend do sistema roda no endereço `localhost:8000`
 
 ### Back
-O backend do sistema roda no endereço localhost:9000
+O backend do sistema roda no endereço `localhost:9000`
+Ou através do fron via `/api`
 
 ### Banco
-A base de dados roda na porta 3306
+A base de dados roda na porta `3306`
 
 ## Contribuição
 
