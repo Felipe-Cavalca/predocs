@@ -1,7 +1,7 @@
 # Dockerfile.api
 FROM php:8.3-apache
 
-COPY ./api /var/www/html
+COPY ./Api /var/www/html
 
 # instalando os módulos necessários
 RUN a2enmod rewrite
