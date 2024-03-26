@@ -4,6 +4,7 @@ volumes:
 networks:
   rede_predocs:
 services:
+
   predocs:
     build:
       context: ./
@@ -15,10 +16,10 @@ services:
     networks:
       - rede_predocs
 
-  frontend:
+  app:
     build:
       context: ./
-      dockerfile: Docker/Dockerfile.frontend
+      dockerfile: Docker/Dockerfile.app
     volumes:
       - ./app/:/usr/local/apache2/htdocs
     ports:
@@ -26,12 +27,12 @@ services:
     networks:
       - rede_predocs
 
-  server:
+  api:
     build:
       context: ./
-      dockerfile: Docker/Dockerfile.server
+      dockerfile: Docker/Dockerfile.api
     volumes:
-      - ./server/:/var/www/html
+      - ./api/:/var/www/html
     ports:
       - "9000:80"
     networks:
