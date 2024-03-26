@@ -1,6 +1,6 @@
 {
   "name": "DevContainer PreDocs",
-  "dockerComposeFile": "../docker-compose.yml",
+  "dockerComposeFile": "docker-compose.yml",
   "service": "predocs",
   "workspaceFolder": "/var/www/html",
   "forwardPorts": [
