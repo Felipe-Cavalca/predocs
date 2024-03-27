@@ -39,7 +39,7 @@ class RequiredParams implements AttributesInterface
 
     private function validateType($field, $param)
     {
-        if (!filter_var($_POST[$field], $param)) {
+        if (!filter_var($_GET[$field], $param)) {
             throw new HttpError("badRequest", [
                 "error" =>  "Campo inválido",
                 "fieldName" => $field,
