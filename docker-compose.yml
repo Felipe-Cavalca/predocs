@@ -4,7 +4,6 @@ volumes:
 networks:
   rede_predocs:
 services:
-
   predocs:
     build:
       context: ./
@@ -15,7 +14,6 @@ services:
       - "7000:80"
     networks:
       - rede_predocs
-
   app:
     build:
       context: ./
@@ -26,7 +24,6 @@ services:
       - "8000:80"
     networks:
       - rede_predocs
-
   api:
     build:
       context: ./
@@ -37,7 +34,6 @@ services:
       - "9000:80"
     networks:
       - rede_predocs
-
   bd:
     build:
       context: ./
