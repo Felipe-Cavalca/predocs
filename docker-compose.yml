@@ -9,7 +9,7 @@ services:
       context: ./
       dockerfile: docker/Dockerfile.predocs
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www/html/
     ports:
       - "7000:80"
     networks:
@@ -19,7 +19,7 @@ services:
       context: ./
       dockerfile: docker/Dockerfile.app
     volumes:
-      - ./app/:/usr/local/apache2/htdocs
+      - ./app/:/usr/local/apache2/htdocs/
     ports:
       - "8000:80"
     networks:
