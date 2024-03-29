@@ -6,34 +6,28 @@ O Predocs é um framework para desenvolvimento web voltado para programadores qu
 
 ## Requisitos de Sistema
 
-1. git
-1. docker
-1. docker-compose
+1. Sistema ubuntu
 
 ## Instalação
 
-1. Clone o repositorio com o comando: ```git clone https://github.com/Felipe-Cavalca/predocs```
-
-1. Navegue a pasta onde o projeto foi clonado
-1. Execute o comando: ```docker-compose up```
+1. baixe o [`arquivo de instalação`](install.sh)
+1. Execute o [`arquivo de instalação`](install.sh)
 1. Aguarde a instalação do projeto.
 
-Após a instalação o sistema estara pronto para uso.
-
 ## Links
+
+### Documentação
+A documentação pode ser lida atravéz de arquivos `md` na pasta [`docs`](./docs/index.md) ou caso o sistema já esteja instalado atavéz do link de documentação `localhost:7000/docs`
 
 ### Front
 O frontend do sistema roda no endereço `localhost:8000`
 
-### Back
+### API
 O backend do sistema roda no endereço `localhost:9000`
-Ou através do fron via `/api`
+Ou através do `Front` via `/api`
 
 ### Banco
 A base de dados roda na porta `3306`
-
-## Contribuição
-
 
 ## Política de Segurança
 
