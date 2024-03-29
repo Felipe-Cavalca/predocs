@@ -1,16 +1,5 @@
 # Política de Segurança
 
-## Versões Suportadas
-
-Este projeto oferece suporte às seguintes versões do PHP com atualizações de segurança.
-
-| Versão  | Suporte            |
-| ------- | ------------------ |
-| < 8.0   | :x:                |
-| 8.0.x   | :x:                |
-| 8.1.x   | :white_check_mark: |
-| 8.2.x   | :white_check_mark: |
-
 ## Relatando uma Vulnerabilidade
 
 Se você identificou uma vulnerabilidade em nossa aplicação, gostaríamos de saber para que possamos tomar medidas para corrigi-la.
