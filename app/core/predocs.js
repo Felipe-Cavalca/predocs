@@ -174,7 +174,7 @@ class Predocs {
 
         for (let name in components) {
             if (!this.#dom.existComponent(name)) {
-                return;
+                continue;
             }
 
             let componentData = components[name];
