@@ -16,6 +16,11 @@ O Predocs é um framework para desenvolvimento web voltado para programadores qu
     curl -o install.sh https://raw.githubusercontent.com/Felipe-Cavalca/predocs/main/install.sh
     ```
 1. Execute o [`arquivo de instalação`](install.sh)
+    * Para executar o arquivo você pode usar o comando
+    ```
+    chmod +x install.sh
+    ./install.sh
+    ```
 1. Aguarde a instalação do projeto.
 
 ## Links
