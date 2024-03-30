@@ -79,6 +79,11 @@ class DomPredocs {
                 console.warn("Registro do Service Worker falhou:", err);
             });
     }
+
+    existComponent(componentName) {
+        let component = document.querySelector("c-" + componentName);
+        return component !== null;
+    }
 };
 
 // Classe principal do framework
@@ -168,6 +173,10 @@ class Predocs {
         const strConstrutorComponent = this.requestGet(this.#getUrl("/core") + "/createComponent.js");
 
         for (let name in components) {
+            if (!this.#dom.existComponent(name)) {
+                return;
+            }
+
             let componentData = components[name];
 
             let htmlComponent = this.requestGet(`${pathComponent}/${componentData.html}.html`);
