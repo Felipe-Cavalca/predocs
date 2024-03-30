@@ -29,7 +29,7 @@ O Predocs é um framework para desenvolvimento web voltado para programadores qu
 A documentação pode ser lida atravéz de arquivos `md` na pasta [`docs`](./docs/index.md) ou caso o sistema já esteja instalado atavéz do link de documentação `localhost:7000/docs`
 
 ### Front
-O frontend do sistema roda no endereço `localhost:8000`
+O frontend do sistema roda no endereço `localhost`
 
 ### API
 O backend do sistema roda no endereço `localhost:9000`
