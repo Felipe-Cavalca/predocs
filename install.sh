@@ -16,10 +16,10 @@ sudo apt upgrade -y
 sudo apt install -y git
 
 # Clonar o repositório do GitHub
-git clone repo_url
+git clone $repo_url
 
 # Navegar para o diretório do projeto
-cd repo_name
+cd $repo_name
 
 # Instalar o Docker e o Docker Compose se eles não estiverem instalados
 if ! [ -x "$(command -v docker)" ]; then
