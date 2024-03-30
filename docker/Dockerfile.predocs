@@ -2,14 +2,25 @@
 FROM php:8.3-apache
 
 COPY ./ /var/www/html
+COPY ./docker/entrypoint.sh /usr/local/bin/
 
 # instalando git
 RUN apt-get update && apt-get install -y git
 
 # Liberando perimssão para a pasta
 RUN chmod -R 777 /var/www/html
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+RUN a2enconf charset
+RUN a2enmod rewrite
+RUN a2enmod headers
+RUN docker-php-ext-install pdo_mysql
 
 # Set UTF-8 encoding for HTTP requests
-RUN echo "AddDefaultCharset UTF-8" >> /etc/apache2/conf-available/charset.conf \
-    && a2enconf charset \
-    && service apache2 restart
+RUN echo "AddDefaultCharset UTF-8" >> /etc/apache2/conf-available/charset.conf
+
+# Reinicia o apache
+run service apache2 restart
+
+# Setando o ponto de entrada
+ENTRYPOINT ["entrypoint.sh"]

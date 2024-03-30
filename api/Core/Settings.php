@@ -27,34 +27,7 @@ final class Settings
 
     protected static function getEnv(string $param): mixed
     {
-        return getenv($param) ?: $_ENV[$param] ?: $_SERVER[$param] ?: null;
-    }
-
-    private static function setEnvironmentVariables(string $path): void
-    {
-        if (!file_exists($path)) {
-            throw new Exception("File .env Not Found");
-        }
-
-        $lanes = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        foreach ($lanes as $lane) {
-            if (strpos(trim($lane), "#") === 0) {
-                continue;
-            }
-
-            list($name, $value) = explode("=", $lane, 2);
-            $name = trim($name);
-            $value = trim($value);
-
-            putenv(sprintf("%s=%s", $name, $value));
-            $_ENV[$name] = $value;
-            $_SERVER[$name] = $value;
-        }
-    }
-
-    private static function listFilesDotEnv($env = "local"): array
-    {
-        return glob(__DIR__ . "/../envs/{$env}*.env");
+        return getenv($param) ?: null;
     }
 
     private static function setHeaders(): void
@@ -71,8 +44,8 @@ final class Settings
 
     private static function iniSet(): void
     {
-        ini_set("display_errors", static::getEnv("PHP.DISPLAY_ERRORS"));
-        ini_set("display_startup_errors", static::getEnv("PHP.DISPLAY_STARTUP_ERRORS"));
+        ini_set("display_errors", static::getEnv("PHP_DISPLAY_ERRORS"));
+        ini_set("display_startup_errors", static::getEnv("PHP_DISPLAY_STARTUP_ERRORS"));
     }
 
     public static function init(): void
@@ -80,13 +53,6 @@ final class Settings
         // Valida se já foi inicializado
         if (self::$initialized) {
             return;
-        }
-
-        static::setEnvironmentVariables(__DIR__ . "/../settings.env");
-
-        $arquivosAmbiente = static::listFilesDotEnv();
-        foreach ($arquivosAmbiente as $arquivo) {
-            static::setEnvironmentVariables($arquivo);
         }
 
         static::iniSet();
@@ -97,24 +63,24 @@ final class Settings
 
     public function getSettingsDatabase()
     {
-        $driver = $this->getEnv("DB.DRIVER");
+        $driver = $this->getEnv("MYSQL_DRIVER");
 
         if ($driver == "MySQL") {
             return [
                 "driver" => "mysql",
-                "host" => static::getEnv("DB.HOST"),
-                "port" => static::getEnv("DB.PORT"),
-                "database" => static::getEnv("DB.DATABASE"),
-                "username" => static::getEnv("DB.USERNAME"),
-                "password" => static::getEnv("DB.PASSWORD"),
+                "host" => static::getEnv("MYSQL_HOST"),
+                "port" => static::getEnv("MYSQL_PORT"),
+                "database" => static::getEnv("MYSQL_DATABASE"),
+                "username" => static::getEnv("MYSQL_USER"),
+                "password" => static::getEnv("MYSQL_PASSWORD"),
             ];
         } else if ($driver == "sqlite") {
             return [
                 "driver" => "sqlite",
-                "database" => static::getEnv("DB.DATABASE"),
+                "database" => static::getEnv("DB_DATABASE"),
             ];
         } else {
-            throw new Exception("Variável de ambiente DATABASE.DRIVER não encontrada");
+            throw new Exception("Variável de ambiente MYSQL_HOST não encontrada");
         }
     }
 }

@@ -1,7 +1,3 @@
 # Dockerfile.bd
 FROM mysql:5.7
-ENV MYSQL_ROOT_PASSWORD=rootpassword
-ENV MYSQL_DATABASE=predocs
-ENV MYSQL_USER=predocs
-ENV MYSQL_PASSWORD=passwordpredocs
 VOLUME /var/lib/mysql
