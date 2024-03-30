@@ -19,4 +19,5 @@ Ao lidar com o erro "Método Não Permitido", você pode considerar o seguinte:
 Para evitar o erro "Método Não Permitido", certifique-se de que seu cliente está usando o método HTTP correto para a operação desejada. Consulte a documentação da sua API para obter informações detalhadas sobre os métodos permitidos em cada endpoint.
 
 ---
-[index](/docs/index.md)
+* [Erros](/docs/errors/index.md)
+* [index](/docs/index.md)
