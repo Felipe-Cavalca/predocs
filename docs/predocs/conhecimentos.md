@@ -1,7 +1,9 @@
 # Conhecimentos
+
 Para trabalhar nesse projeto é preciso ter algum conhecimento prévio sobre algumas tecnologias.
 
-## Conhecimento basico em:
+## Conhecimento basico em
+
 - HTML
 - CSS
 - JavaScript
@@ -10,5 +12,6 @@ Para trabalhar nesse projeto é preciso ter algum conhecimento prévio sobre alg
 - Docker
 
 ---
-* [Documentação do desenvolvedor](/docs/predocs/index.md)
-* [index](/docs/index.md)
+
+- [Documentação do desenvolvedor](/docs/predocs/index.md)
+- [index](/docs/index.md)
