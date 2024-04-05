@@ -13,10 +13,12 @@ Caso tenha criado seu projeto utilizando esse como base alguns detalhes precisam
 ## Scripts
 
 O projeto contem alguns scripts para algumas tarefas no sistema.
-[Instalar banco](/docs/predocs/scripts/instalar_banco.md)
-[Atualizar banco](/docs/predocs/scripts/atualizar_banco.md)
-[Executar testes](/docs/predocs//scripts/rodar_testes.md)
+
+- [Instalar dependencias](/docs/predocs/scripts/instalar_dependencias.md)
+- [Instalar banco](/docs/predocs/scripts/instalar_banco.md)
+- [Atualizar banco](/docs/predocs/scripts/atualizar_banco.md)
+- [Executar testes](/docs/predocs//scripts/rodar_testes.md)
 
 ---
 
-* [index](/docs/index.md)
+- [index](/docs/index.md)
