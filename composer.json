@@ -1,0 +1,14 @@
+{
+    "name": "felipe-cavalca/predocs",
+    "description": "Framework para projetos em php",
+    "license": "MIT",
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "authors": [
+        {
+            "name": "Felipe Cavalca",
+            "email": "flpsnocvla@gmail.com"
+        }
+    ]
+}
