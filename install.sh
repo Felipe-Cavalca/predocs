@@ -34,3 +34,6 @@ fi
 
 # Construir e iniciar os serviços usando o Docker Compose
 docker-compose up --build -d
+
+# Instala o banco de dados
+scripts/install_db.sh

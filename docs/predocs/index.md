@@ -10,6 +10,13 @@ Também não esqueça de verificar se seu ambiente de desenvolvimento atende aos
 
 Caso tenha criado seu projeto utilizando esse como base alguns detalhes precisam ser alterados para ser possível rodar ambos os projetos em paralelo, para isso verifique o guia [iniciando](/docs/predocs/iniciando.md) para entender sobre o que precisa ser alterado
 
+## Scripts
+
+O projeto contem alguns scripts para algumas tarefas no sistema.
+[Instalar banco](/docs/predocs/scripts/instalar_banco.md)
+[Atualizar banco](/docs/predocs/scripts/atualizar_banco.md)
+[Executar testes](/docs/predocs//scripts/rodar_testes.md)
+
 ---
 
 * [index](/docs/index.md)
