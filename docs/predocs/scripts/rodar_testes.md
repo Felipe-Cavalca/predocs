@@ -6,5 +6,5 @@ Os Scripts são executados usando o `phpUnit`
 Para executar todos os testes rode o comando:
 
 ```shell
-docker-compose exec predocs bash scripts/run_tests.sh
+docker-compose exec predocs scripts/run_tests.sh
 ```
