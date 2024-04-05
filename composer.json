@@ -5,6 +5,11 @@
     "require-dev": {
         "phpunit/phpunit": "^10.5"
     },
+    "autoload": {
+        "psr-4": {
+            "Predocs\\": "api/"
+        }
+    },
     "authors": [
         {
             "name": "Felipe Cavalca",
