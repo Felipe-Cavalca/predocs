@@ -1,14 +1,16 @@
 # Dockerfile.predocs
 FROM php:8.3-apache
 
-COPY ./ /var/www/html
+# Copia o conteúdo para var/www/html/ do container
+COPY ./ /var/www/html/
 
-# instalando git
-RUN apt-get update && apt-get install -y git
+# Instalação de pacotes necessários
+RUN apt-get update && apt-get install -y \
+    zip \
+    unzip \
+    p7zip-full
 
-# Liberando perimssão para a pasta
-RUN chmod -R 777 /var/www/html
-
+# Instalação de pacotes
 RUN a2enconf charset
 RUN a2enmod rewrite
 RUN a2enmod headers
@@ -17,5 +19,10 @@ RUN docker-php-ext-install pdo_mysql
 # Set UTF-8 encoding for HTTP requests
 RUN echo "AddDefaultCharset UTF-8" >> /etc/apache2/conf-available/charset.conf
 
+# Seta o ServerName para localhost
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+RUN chmod +x ./scripts/*
+
 # Reinicia o apache
-run service apache2 restart
+RUN service apache2 restart

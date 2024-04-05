@@ -1,0 +1,13 @@
+{
+    "name": "felipe-cavalca/predocs",
+    "description": "Framework para projetos em php",
+    "license": "MIT",
+    "require": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Predocs\\": "api/"
+        }
+    }
+}

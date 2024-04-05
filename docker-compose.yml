@@ -22,6 +22,8 @@ services:
       - rede_predocs
     depends_on:
       - bd
+      - app
+      - api
 
   app:
     build:
