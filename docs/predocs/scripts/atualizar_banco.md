@@ -7,5 +7,5 @@ Ao executar o arquivo de atualização `update.sh` já irá executar a execuçã
 Porém caso esteja em ambiente de desenvolvimento e queira executar os scripts manualmente é possivel através do comando:
 
 ```shell
-docker-compose exec predocs scripts/update_db.sh
+docker-compose exec predocs bash scripts/update_db.sh
 ```
