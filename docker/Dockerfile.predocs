@@ -22,5 +22,7 @@ RUN echo "AddDefaultCharset UTF-8" >> /etc/apache2/conf-available/charset.conf
 # Seta o ServerName para localhost
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+RUN chmod +x ./scripts/*
+
 # Reinicia o apache
 RUN service apache2 restart

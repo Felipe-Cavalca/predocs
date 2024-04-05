@@ -1,4 +1,2 @@
 #!/bin/bash
-
-# Roda o phpUnit
-vendor/bin/phpunit ./tests
+/var/www/html/vendor/bin/phpunit /var/www/html/tests/
