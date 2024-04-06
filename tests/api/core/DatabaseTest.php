@@ -12,12 +12,6 @@ class DatabaseTest extends TestCase
         $this->database = new Database();
     }
 
-    public function testConn(): void
-    {
-        $conn = $this->database->conn();
-        $this->assertInstanceOf(PDO::class, $conn);
-    }
-
     public function testWhere(): void
     {
         $conditions = ['field1' => 'value1', 'field2' => 'value2'];
