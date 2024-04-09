@@ -2,6 +2,13 @@ version: '3'
 
 volumes:
   db_data:
+    name: db_data
+    labels:
+      com.example.description: "This volume is used for MySQL"
+  storage:
+    name: storage
+    labels:
+      com.example.description: "This volume is used for data storage"
 
 networks:
   rede_predocs:
@@ -16,8 +23,6 @@ services:
       - ./:/var/www/html/
     env_file:
       - .env
-    ports:
-      - "7000:80"
     networks:
       - rede_predocs
     depends_on:
@@ -45,10 +50,9 @@ services:
       dockerfile: docker/Dockerfile.api
     volumes:
       - ./api/:/var/www/html
+      - storage:/storage
     env_file:
       - .env
-    ports:
-      - "9000:80"
     networks:
       - rede_predocs
 
