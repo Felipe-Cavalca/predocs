@@ -31,13 +31,13 @@ class Database
         }
 
         if (empty(self::$driver)) {
-            self::$driver = self::$settings->getSettingsDatabase()["driver"];
+            self::$driver = self::$settings->database["driver"];
         }
     }
 
     private static function conn(): PDO
     {
-        $dataConn = self::$settings->getSettingsDatabase();
+        $dataConn = self::$settings->database;
 
         switch ($dataConn["driver"]) {
             case "sqlite":
@@ -211,7 +211,7 @@ class Database
             case "mysql":
             default:
                 $query = $this->list("SHOW TABLES");
-                $tables = array_column($query, 'Tables_in_' . self::$settings->getSettingsDatabase()["database"]);
+                $tables = array_column($query, 'Tables_in_' . self::$settings->database["database"]);
                 break;
         }
 
