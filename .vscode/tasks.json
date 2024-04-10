@@ -1,0 +1,52 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build containers",
+            "type": "shell",
+            "command": "docker-compose up --build -d",
+            "args": [],
+            "problemMatcher": {
+                "owner": "docker-compose",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*)$",
+                    "file": 1
+                }
+            }
+        },
+        {
+            "label": "install dependencies",
+            "type": "shell",
+            "command": "docker-compose exec predocs bash scripts/install_dependencies.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "install database",
+            "type": "shell",
+            "command": "docker-compose exec predocs bash scripts/install_db.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "update database",
+            "type": "shell",
+            "command": "docker-compose exec predocs bash scripts/update_db.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "run tests",
+            "type": "shell",
+            "command": "docker-compose exec predocs bash scripts/run_tests.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "shutdown wsl",
+            "type": "shell",
+            "command": "wsl --shutdown",
+            "problemMatcher": []
+        }
+    ]
+}
