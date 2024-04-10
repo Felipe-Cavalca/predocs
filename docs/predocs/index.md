@@ -14,6 +14,14 @@ Caso tenha criado seu projeto utilizando esse como base alguns detalhes precisam
 
 O projeto contem alguns scripts para algumas tarefas no sistema.
 
+### VsCode
+
+Caso esteja usando o VsCode você pode usar o atalho `Ctrl+Shift+P`, selecione a opção `Run task` e selecione qual script deseja executar.
+
+### Docs de scripts
+
+Caso vá executar os scripts manualmente abra o arquivo.
+
 - [Instalar dependencias](/docs/predocs/scripts/instalar_dependencias.md)
 - [Instalar banco](/docs/predocs/scripts/instalar_banco.md)
 - [Atualizar banco](/docs/predocs/scripts/atualizar_banco.md)
