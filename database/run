@@ -6,4 +6,4 @@ include_once "getDatabase.php";
 
 $structurePath = __DIR__ . '/migration/';
 
-runSql($structurePath);
+new Migration($structurePath);

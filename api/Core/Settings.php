@@ -25,6 +25,16 @@ final class Settings
         $this->init();
     }
 
+    public function __get($name)
+    {
+        switch ($name) {
+            case "database":
+                return $this->getSettingsDatabase();
+            default:
+                return $this->getEnv($name);
+        }
+    }
+
     protected static function getEnv(string $param): mixed
     {
         return getenv($param) ?: null;
@@ -61,7 +71,7 @@ final class Settings
         self::$initialized = true;
     }
 
-    public function getSettingsDatabase()
+    private function getSettingsDatabase()
     {
         $driver = $this->getEnv("MYSQL_DRIVER");
 
