@@ -96,9 +96,6 @@ final class Predocs
         $attributes = $reflectionMethod->getAttributes();
         foreach ($attributes as $attribute) {
             $attribute = $attribute->newInstance();
-            if ($attribute instanceof Method) {
-                return;
-            }
         }
     }
 
