@@ -14,5 +14,7 @@ namespace Predocs\Interface;
  */
 interface AttributesInterface
 {
-    public function __construct(mixed $methods);
+    // public function __construct();
+
+    // public static function beforeCall(): mixed;
 }

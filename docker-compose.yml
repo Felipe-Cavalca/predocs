@@ -4,11 +4,15 @@ volumes:
   db_data:
     name: db_data
     labels:
-      com.example.description: "This volume is used for MySQL"
+      com.description: "This volume is used for MySQL"
   storage:
     name: storage
     labels:
-      com.example.description: "This volume is used for data storage"
+      com.description: "This volume is used for data storage"
+  redis_data:
+    name: redis_data
+    labels:
+      com.description: "This volume is used for Redis"
 
 networks:
   rede_predocs:
@@ -26,9 +30,10 @@ services:
     networks:
       - rede_predocs
     depends_on:
-      - bd
       - app
       - api
+      - bd
+      - redis
 
   app:
     build:
@@ -43,6 +48,8 @@ services:
       - "443:443"
     networks:
       - rede_predocs
+    depends_on:
+      - api
 
   api:
     build:
@@ -55,6 +62,9 @@ services:
       - .env
     networks:
       - rede_predocs
+    depends_on:
+      - bd
+      - redis
 
   bd:
     build:
@@ -66,5 +76,14 @@ services:
       - .env
     ports:
       - "3306:3306"
+    networks:
+      - rede_predocs
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
     networks:
       - rede_predocs
