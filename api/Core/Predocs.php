@@ -2,8 +2,6 @@
 
 namespace Predocs\Core;
 
-use Predocs\Attributes\Method;
-use Predocs\Attributes\RequiredFields;
 use Predocs\Enum\Path;
 use Predocs\Class\HttpError;
 use ReflectionMethod;
@@ -61,9 +59,18 @@ final class Predocs
             $this->validateController($this->controller);
             $objController = $this->loadController($this->controller);
             $this->validateAction($objController, $this->action);
+
             $reflectionMethod = new ReflectionMethod($objController, $this->action);
-            $this->validadeAttributes($reflectionMethod);
-            return $this->runAction($objController, $this->action);
+            $attributes = $this->getAttributes($reflectionMethod);
+            $return = $this->runBeforeAttributes($attributes);
+
+            if ($return !== null) {
+                return $return;
+            }
+
+            $return = $this->runAction($objController, $this->action);
+            $this->runAfterAttributes($attributes, $return);
+            return $return;
         } catch (HttpError $th) {
             http_response_code($th->getCode());
             return $th->getReturn();
@@ -91,11 +98,35 @@ final class Predocs
         }
     }
 
-    private function validadeAttributes(ReflectionMethod $reflectionMethod): void
+    private function getAttributes(ReflectionMethod $reflectionMethod): mixed
     {
+        $attributesReturn = [];
         $attributes = $reflectionMethod->getAttributes();
         foreach ($attributes as $attribute) {
-            $attribute = $attribute->newInstance();
+            $attributesReturn[] = $attribute->newInstance();
+        }
+        return $attributesReturn;
+    }
+
+    private function runBeforeAttributes($attributes): mixed
+    {
+        foreach ($attributes as $attribute) {
+            if (method_exists($attribute, "beforeRun")) {
+                $retorno = $attribute->beforeRun();
+                if ($retorno !== null) {
+                    return $retorno;
+                }
+            }
+        }
+        return null;
+    }
+
+    private function runAfterAttributes($attributes, $return): void
+    {
+        foreach ($attributes as $attribute) {
+            if (method_exists($attribute, "afterRun")) {
+                $attribute->afterRun($return);
+            }
         }
     }
 

@@ -15,21 +15,45 @@ use Redis;
  */
 class Cache
 {
-    private $redis;
+    private static $redis;
 
     public function __construct()
     {
-        $this->redis = new Redis();
-        $this->redis->connect('redis', 6379);
+        if (empty(self::$redis)) {
+            self::conn();
+        }
+    }
+
+    private static function conn(): void
+    {
+        self::$redis = new Redis();
+        self::$redis->connect('redis', 6379);
     }
 
     public function set(string $key, mixed $value, int $expire = 0): bool
     {
-        return $this->redis->set($key, serialize($value), $expire);
+        if (is_callable($value)) {
+            $value = $value();
+        }
+
+        return self::$redis->set($key, serialize($value), $expire);
     }
 
-    public function get(string $key): mixed
+    public function get(string $key, mixed $value = null, int $expire = 0): mixed
     {
-        return unserialize($this->redis->get($key));
+        if (!$this->exists($key) && !empty($value)) {
+            $this->set($key, $value, $expire);
+        }
+        return unserialize(self::$redis->get($key));
+    }
+
+    public function exists(string $key): bool
+    {
+        return self::$redis->exists($key);
+    }
+
+    public function del(string $key): bool
+    {
+        return self::$redis->del($key);
     }
 }
