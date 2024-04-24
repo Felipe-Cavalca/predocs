@@ -21,7 +21,6 @@ networks:
 services:
 
   predocs:
-    container_name: predocs
     build:
       context: ./
       dockerfile: docker/Dockerfile.predocs
@@ -38,7 +37,6 @@ services:
       - redis
 
   app:
-    container_name: app
     build:
       context: ./
       dockerfile: docker/Dockerfile.app
@@ -55,7 +53,6 @@ services:
       - api
 
   api:
-    container_name: api
     build:
       context: ./
       dockerfile: docker/Dockerfile.api
@@ -71,7 +68,6 @@ services:
       - redis
 
   db:
-    container_name: db
     build:
       context: ./
       dockerfile: docker/Dockerfile.db
@@ -85,7 +81,6 @@ services:
       - rede_predocs
 
   redis:
-    container_name: cache-redis
     image: redis:latest
     volumes:
       - redis_data:/data
