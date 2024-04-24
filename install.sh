@@ -39,4 +39,4 @@ docker-compose up --build -d
 docker-compose exec predocs bash scripts/install_dependencies.sh
 
 # Instala o banco de dados
-docker-compose exec predocs bash scripts/install_bd.sh
+docker-compose exec predocs bash scripts/install_db.sh

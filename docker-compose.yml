@@ -16,33 +16,36 @@ volumes:
 
 networks:
   rede_predocs:
+    name: rede_predocs
 
 services:
 
   predocs:
+    container_name: predocs
     build:
       context: ./
       dockerfile: docker/Dockerfile.predocs
-    volumes:
-      - ./:/var/www/html/
     env_file:
       - .env
+    volumes:
+      - ./:/var/www/html/
     networks:
       - rede_predocs
     depends_on:
       - app
       - api
-      - bd
+      - db
       - redis
 
   app:
+    container_name: app
     build:
       context: ./
       dockerfile: docker/Dockerfile.app
-    volumes:
-      - ./app/:/usr/local/apache2/htdocs/
     env_file:
       - .env
+    volumes:
+      - ./app/:/usr/local/apache2/htdocs/
     ports:
       - "80:80"
       - "443:443"
@@ -52,34 +55,37 @@ services:
       - api
 
   api:
+    container_name: api
     build:
       context: ./
       dockerfile: docker/Dockerfile.api
+    env_file:
+      - .env
     volumes:
       - ./api/:/var/www/html
       - storage:/storage
-    env_file:
-      - .env
     networks:
       - rede_predocs
     depends_on:
-      - bd
+      - db
       - redis
 
-  bd:
+  db:
+    container_name: db
     build:
       context: ./
-      dockerfile: docker/Dockerfile.bd
-    volumes:
-      - db_data:/var/lib/mysql
+      dockerfile: docker/Dockerfile.db
     env_file:
       - .env
+    volumes:
+      - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
       - rede_predocs
 
   redis:
+    container_name: cache-redis
     image: redis:latest
     volumes:
       - redis_data:/data

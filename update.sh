@@ -13,4 +13,4 @@ docker-compose up --build -d
 docker-compose exec predocs bash scripts/install_dependencies.sh
 
 # Atualiza o banco de dados
-docker-compose exec predocs bash scripts/update_bd.sh
+docker-compose exec predocs bash scripts/update_db.sh
