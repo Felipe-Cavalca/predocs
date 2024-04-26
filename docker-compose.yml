@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
   db_data:
     name: db_data
