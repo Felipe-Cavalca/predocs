@@ -8,8 +8,7 @@ Para a execução do sistema é necessário que as seguintes portas estejam libe
 
 - 80
 - 443
-- 7000
-- 9000
+- 3306
 
 ## Ambiente
 
