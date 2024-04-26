@@ -9,3 +9,8 @@ Porém caso esteja em ambiente de desenvolvimento e queira executar os scripts m
 ```shell
 docker-compose exec predocs bash scripts/install_db.sh
 ```
+
+---
+
+- [Documentação do desenvolvedor](/docs/predocs/index.md)
+- [index](/docs/index.md)

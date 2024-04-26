@@ -8,3 +8,8 @@ Para executar todos os testes rode o comando:
 ```shell
 docker-compose exec predocs bash scripts/run_tests.sh
 ```
+
+---
+
+- [Documentação do desenvolvedor](/docs/predocs/index.md)
+- [index](/docs/index.md)

@@ -11,3 +11,8 @@ Para isso verifique as linhas 3 e 4 do arquivo `install.sh`, o valor padrão dev
 # Url do repositório do GitHub
 repo_url="https://github.com/Felipe-Cavalca/predocs.git"
 ```
+
+---
+
+- [Documentação do desenvolvedor](/docs/predocs/index.md)
+- [index](/docs/index.md)

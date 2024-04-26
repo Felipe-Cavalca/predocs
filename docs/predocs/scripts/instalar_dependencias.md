@@ -6,3 +6,8 @@ elas são instalar sempre que o projeto é instalado ou atualizado, porém caso 
 ```shell
 docker-compose exec predocs bash scripts/install_dependencies.sh
 ```
+
+---
+
+- [Documentação do desenvolvedor](/docs/predocs/index.md)
+- [index](/docs/index.md)
