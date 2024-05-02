@@ -12,6 +12,7 @@ Uma descrição clara e concisa do que é o erro.
 
 **Para Reproduzir**
 Passos para reproduzir o comportamento:
+
 1. Acesse '...'
 2. Clique em '....'
 3. Role até '....'
@@ -24,8 +25,9 @@ Uma descrição clara e concisa do que você esperava que acontecesse.
 Se aplicável, adicione capturas de tela para ajudar a explicar o problema.
 
 **Computador (por favor, forneça as seguintes informações):**
- - Navegador [ex: Chrome, Safari]
- - Versão [ex: 22]
+
+- Navegador [ex: Chrome, Safari]
+- Versão [ex: 22]
 
 **Contexto Adicional**
 Adicione qualquer outro contexto sobre o problema aqui.
