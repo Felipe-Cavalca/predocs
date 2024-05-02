@@ -4,24 +4,29 @@
         {
             "label": "build containers",
             "type": "shell",
-            "command": "docker-compose up --build -d",
-            "args": [],
-            "problemMatcher": {
-                "owner": "docker-compose",
-                "fileLocation": [
-                    "relative",
-                    "${workspaceFolder}"
-                ],
-                "pattern": {
-                    "regexp": "^(.*)$",
-                    "file": 1
-                }
-            }
+            "command": "docker-compose",
+            "args": [
+                "up",
+                "--build",
+                "-d"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "up containers",
+            "type": "shell",
+            "command": "docker-compose",
+            "args": [
+                "up",
+                "-d"
+            ],
+            "problemMatcher": []
         },
         {
             "label": "install dependencies",
             "type": "shell",
             "command": "docker-compose exec predocs bash scripts/install_dependencies.sh",
+            "args": [],
             "problemMatcher": []
         },
         {
