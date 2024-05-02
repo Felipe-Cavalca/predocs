@@ -6,7 +6,6 @@
   "forwardPorts": [
     80, // Frontend
     443, // Frontend https
-    7000, // Local port - PreDocs
-    9000 // Backend
+    3306 // Database
   ]
 }
