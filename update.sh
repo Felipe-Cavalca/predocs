@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# Instalar o Docker e o Docker Compose se eles não estiverem instalados
-if ! [ -x "$(command -v docker)" ]; then
-  echo 'Docker não está instalado. Instalando...'
-  sudo apt-get install docker.io -y
-fi
-
-if ! [ -x "$(command -v docker-compose)" ]; then
-  echo 'Docker Compose não está instalado. Instalando...'
-  sudo apt-get install docker-compose -y
-fi
+# Executa os scripts
+source ./scripts/update/verify_root.sh
+source ./scripts/update/update_sistem.sh
+source ./scripts/update/verify_docker.sh
+source ./scripts/update/verify_git.sh
 
 # Parar os serviços
 docker-compose down
@@ -20,8 +15,5 @@ git pull
 # Reconstruir e reiniciar os serviços
 docker-compose up --build -d
 
-# Instala dependencias
-docker-compose exec predocs bash scripts/install_dependencies.sh
-
-# Atualiza o banco de dados
-docker-compose exec predocs bash scripts/update_db.sh
+# Executa os scripts do projeto
+source ./scripts/update/execute_scripts.sh
