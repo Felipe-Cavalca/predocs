@@ -40,6 +40,3 @@ cd $repo_name
 
 # Construir e iniciar os serviços usando o Docker Compose
 docker-compose up -d
-
-# Executa os scripts do projeto
-source ./scripts/update/execute_scripts.sh
