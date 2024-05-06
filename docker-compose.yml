@@ -43,8 +43,7 @@ services:
     volumes:
       - ./app/:/usr/local/apache2/htdocs/
     ports:
-      - "80:80"
-      - "443:443"
+      - "8000:80"
     networks:
       - rede_predocs
     depends_on:
@@ -74,7 +73,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "33306:3306"
     networks:
       - rede_predocs
 
