@@ -1,14 +1,14 @@
 volumes:
   db_data:
-    name: db_data
+    name: predocs-db_data
     labels:
       com.description: "This volume is used for MySQL"
   storage:
-    name: storage
+    name: predocs-storage
     labels:
       com.description: "This volume is used for data storage"
   redis_data:
-    name: redis_data
+    name: predocs-redis_data
     labels:
       com.description: "This volume is used for Redis"
 
