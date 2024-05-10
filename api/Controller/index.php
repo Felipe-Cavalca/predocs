@@ -8,10 +8,19 @@ use Predocs\Attributes\Method;
 use Predocs\Attributes\RequiredFields;
 use Predocs\Attributes\RequiredParams;
 use Predocs\Attributes\Cache;
+use Predocs\Core\Settings;
 
 class Index implements ControllerInterface
 {
     use Controller;
+
+    #[Method(["GET"])]
+    #[Cache("index-getVars", 10)]
+    public function getVars()
+    {
+        $settings = new Settings();
+        return $settings->app;
+    }
 
     #[Method(["GET"])]
     #[Cache("index-data", 10)]

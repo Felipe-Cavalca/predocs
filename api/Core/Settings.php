@@ -30,6 +30,8 @@ final class Settings
         switch ($name) {
             case "database":
                 return $this->getSettingsDatabase();
+            case "app":
+                return $this->getSettingsApp();
             default:
                 return $this->getEnv($name);
         }
@@ -92,5 +94,17 @@ final class Settings
         } else {
             throw new Exception("Variável de ambiente MYSQL_HOST não encontrada");
         }
+    }
+
+    private function getSettingsApp(): array
+    {
+        // Faz um curl para pegar as variaveis do APP
+        $url = "https://app/config/app.json"; // url para as variaveis do APP
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($response, true);
     }
 }
